@@ -1,11 +1,10 @@
 // src/pages/GraphVisualization.jsx
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useRef, useEffect } from "react";
+import * as d3 from "d3";
 import { graphCodes } from "../data/codes";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
-// Algorithms
 const algorithms = [
   { key: "bfs", label: "Breadth-First Search" },
   { key: "dfs", label: "Depth-First Search" },
@@ -21,145 +20,355 @@ const algorithms = [
 ];
 
 const langs = ["java", "python", "cpp", "javascript"];
-const nodeColors = ["#3B82F6", "#10B981", "#F59E0B", "#EF4444", "#6366F1", "#14B8A6"];
 
 const sampleGraph = {
-  nodes: Array.from({ length: 10 }, (_, i) => ({
-    id: i,
-    x: 100 + (i % 5) * 120,
-    y: 100 + Math.floor(i / 5) * 150
-  })),
+  nodes: [
+    { id: 0, x: 100, y: 100 },
+    { id: 1, x: 250, y: 100 },
+    { id: 2, x: 400, y: 100 },
+    { id: 3, x: 100, y: 250 },
+    { id: 4, x: 250, y: 250 },
+    { id: 5, x: 400, y: 250 },
+    { id: 6, x: 100, y: 400 },
+    { id: 7, x: 250, y: 400 },
+    { id: 8, x: 400, y: 400 },
+  ],
   edges: [
-    [0, 1], [0, 2], [1, 3], [2, 4],
-    [3, 5], [4, 5], [5, 6], [6, 7],
-    [6, 8], [7, 9], [8, 9]
+    { from: 0, to: 1, weight: 4 },
+    { from: 0, to: 3, weight: 8 },
+    { from: 1, to: 2, weight: 7 },
+    { from: 1, to: 4, weight: 2 },
+    { from: 2, to: 5, weight: 9 },
+    { from: 3, to: 4, weight: 7 },
+    { from: 3, to: 6, weight: 14 },
+    { from: 4, to: 5, weight: 10 },
+    { from: 4, to: 7, weight: 4 },
+    { from: 5, to: 8, weight: 2 },
+    { from: 6, to: 7, weight: 9 },
+    { from: 7, to: 8, weight: 11 },
   ]
 };
 
 const GraphVisualization = () => {
   const [selectedAlgo, setSelectedAlgo] = useState("bfs");
   const [selectedLang, setSelectedLang] = useState("java");
-  const [visited, setVisited] = useState([]);
-  const [currentNode, setCurrentNode] = useState(null);
-  const [highlightEdge, setHighlightEdge] = useState(null);
-  const [pathEdges, setPathEdges] = useState([]);
-  const [traversalPath, setTraversalPath] = useState([]); // <-- stores visited order
   const [isRunning, setIsRunning] = useState(false);
+  const svgRef = useRef();
 
-  const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+  useEffect(() => {
+    drawGraph();
+  }, []);
 
-  const resetGraph = () => {
-    setVisited([]);
-    setHighlightEdge(null);
-    setCurrentNode(null);
-    setPathEdges([]);
-    setTraversalPath([]);
-    setIsRunning(false);
+  const sleep = (ms) => new Promise(res => setTimeout(res, ms));
+
+  const drawGraph = () => {
+    const svg = d3.select(svgRef.current);
+    svg.selectAll("*").remove();
+
+    const g = svg.append("g");
+
+    // Draw edges (undirected, no arrows)
+    g.selectAll("line")
+      .data(sampleGraph.edges)
+      .enter()
+      .append("line")
+      .attr("x1", d => sampleGraph.nodes[d.from].x + 25)
+      .attr("y1", d => sampleGraph.nodes[d.from].y + 25)
+      .attr("x2", d => sampleGraph.nodes[d.to].x + 25)
+      .attr("y2", d => sampleGraph.nodes[d.to].y + 25)
+      .attr("stroke", "#A3A3A3")
+      .attr("stroke-width", 2)
+      .attr("class", "edge");
+
+    // Draw nodes
+    g.selectAll("circle")
+      .data(sampleGraph.nodes)
+      .enter()
+      .append("circle")
+      .attr("cx", d => d.x + 25)
+      .attr("cy", d => d.y + 25)
+      .attr("r", 25)
+      .attr("fill", "#3B82F6")
+      .attr("stroke", "#1E40AF")
+      .attr("stroke-width", 2)
+      .attr("class", "node");
+
+    // Labels
+    g.selectAll("text")
+      .data(sampleGraph.nodes)
+      .enter()
+      .append("text")
+      .attr("x", d => d.x + 25)
+      .attr("y", d => d.y + 30)
+      .attr("text-anchor", "middle")
+      .attr("fill", "white")
+      .attr("font-size", "16px")
+      .attr("font-weight", "bold")
+      .text(d => d.id);
   };
 
-  // BFS Animation
+  // BFS Algorithm
   const bfs = async () => {
     setIsRunning(true);
     const queue = [0];
-    const vis = [];
-    const edges = sampleGraph.edges;
-    const path = [];
+    const visited = new Set();
     const traversal = [];
 
     while (queue.length > 0) {
       const node = queue.shift();
-      setCurrentNode(node);
-
-      if (!vis.includes(node)) {
-        vis.push(node);
+      if (!visited.has(node)) {
+        visited.add(node);
         traversal.push(node);
-        setTraversalPath([...traversal]); // <-- update path
-        setVisited([...vis]);
+
+        // Animate node highlight
+        d3.select(svgRef.current)
+          .selectAll("circle")
+          .filter(d => d.id === node)
+          .transition()
+          .duration(500)
+          .attr("fill", "#EF4444")
+          .attr("r", 30);
+
+        // Animate edges to neighbors
+        const neighbors = sampleGraph.edges
+          .filter(e => e.from === node || e.to === node)
+          .map(e => (e.from === node ? e.to : e.from));
+
+        for (let n of neighbors) {
+          if (!visited.has(n) && !queue.includes(n)) {
+            d3.select(svgRef.current)
+              .selectAll("line")
+              .filter(e => (e.from === node && e.to === n) || (e.to === node && e.from === n))
+              .transition()
+              .duration(500)
+              .attr("stroke", "#F59E0B")
+              .attr("stroke-width", 4);
+
+            queue.push(n);
+          }
+        }
         await sleep(500);
-
-        edges.forEach(([u, v]) => {
-          if (u === node || v === node) setHighlightEdge([u, v]);
-        });
-        await sleep(500);
-        setHighlightEdge(null);
-
-        const neighbors = edges
-          .filter(([u, v]) => u === node || v === node)
-          .map(([u, v]) => (u === node ? v : u))
-          .filter(n => !vis.includes(n) && !queue.includes(n));
-
-        neighbors.forEach(n => path.push([node, n]));
-        setPathEdges([...path]);
-
-        queue.push(...neighbors);
       }
     }
-    setCurrentNode(null);
+
+    // Display traversal path after completion as 0 → 1 → 3 → ...
+    const pathDiv = d3.select("#traversal-path");
+    pathDiv.selectAll("*").remove();
+    pathDiv.append("span")
+      .text(traversal.join(" → "))
+      .attr("class", "px-3 py-1 bg-yellow-400 text-black rounded-full shadow-md");
+
     setIsRunning(false);
   };
 
-  // DFS Animation
-  const dfs = async () => {
-    setIsRunning(true);
-    const stack = [0];
-    const vis = [];
-    const edges = sampleGraph.edges;
-    const path = [];
-    const traversal = [];
+  // DFS Algorithm
+const dfs = async () => {
+  setIsRunning(true);
+  const visited = new Set();
+  const traversal = [];
 
-    while (stack.length > 0) {
-      const node = stack.pop();
-      setCurrentNode(node);
+  const dfsVisit = async (node) => {
+    if (visited.has(node)) return;
+    visited.add(node);
+    traversal.push(node);
 
-      if (!vis.includes(node)) {
-        vis.push(node);
-        traversal.push(node);
-        setTraversalPath([...traversal]); // <-- update path
-        setVisited([...vis]);
+    // Animate node
+    d3.select(svgRef.current)
+      .selectAll("circle")
+      .filter(d => d.id === node)
+      .transition()
+      .duration(500)
+      .attr("fill", "#EF4444")
+      .attr("r", 30);
+
+    // Animate edges to neighbors
+    const neighbors = sampleGraph.edges
+      .filter(e => e.from === node || e.to === node)
+      .map(e => (e.from === node ? e.to : e.from));
+
+    for (let n of neighbors) {
+      if (!visited.has(n)) {
+        d3.select(svgRef.current)
+          .selectAll("line")
+          .filter(e => (e.from === node && e.to === n) || (e.to === node && e.from === n))
+          .transition()
+          .duration(500)
+          .attr("stroke", "#F59E0B")
+          .attr("stroke-width", 4);
+
         await sleep(500);
-
-        edges.forEach(([u, v]) => {
-          if (u === node || v === node) setHighlightEdge([u, v]);
-        });
-        await sleep(500);
-        setHighlightEdge(null);
-
-        const neighbors = edges
-          .filter(([u, v]) => u === node || v === node)
-          .map(([u, v]) => (u === node ? v : u))
-          .filter(n => !vis.includes(n) && !stack.includes(n));
-
-        neighbors.forEach(n => path.push([node, n]));
-        setPathEdges([...path]);
-
-        stack.push(...neighbors.reverse());
+        await dfsVisit(n);
       }
     }
-    setCurrentNode(null);
+  };
+
+  await dfsVisit(0);
+
+  // Display traversal path
+  const pathDiv = d3.select("#traversal-path");
+  pathDiv.selectAll("*").remove();
+  pathDiv.append("span")
+    .text(traversal.join(" → "))
+    .attr("class", "px-3 py-1 bg-yellow-400 text-black rounded-full shadow-md");
+
+  setIsRunning(false);
+};
+
+// Dijkstra's Algorithm
+const dijkstra = async () => {
+  setIsRunning(true);
+  const dist = Array(sampleGraph.nodes.length).fill(Infinity);
+  const visited = new Set();
+  const prev = Array(sampleGraph.nodes.length).fill(null);
+  const traversal = [];
+
+  dist[0] = 0;
+
+  while (visited.size < sampleGraph.nodes.length) {
+    // Pick node with smallest distance
+    let node = -1;
+    let minDist = Infinity;
+    for (let i = 0; i < dist.length; i++) {
+      if (!visited.has(i) && dist[i] < minDist) {
+        minDist = dist[i];
+        node = i;
+      }
+    }
+    if (node === -1) break; // disconnected
+
+    visited.add(node);
+    traversal.push(node);
+
+    // Animate node
+    d3.select(svgRef.current)
+      .selectAll("circle")
+      .filter(d => d.id === node)
+      .transition()
+      .duration(500)
+      .attr("fill", "#EF4444")
+      .attr("r", 30);
+
+    // Update neighbors
+    const neighbors = sampleGraph.edges
+      .filter(e => e.from === node || e.to === node)
+      .map(e => ({
+        id: e.from === node ? e.to : e.from,
+        weight: e.weight || 1
+      }));
+
+    for (let { id: n, weight } of neighbors) {
+      if (!visited.has(n) && dist[node] + weight < dist[n]) {
+        dist[n] = dist[node] + weight;
+        prev[n] = node;
+
+        d3.select(svgRef.current)
+          .selectAll("line")
+          .filter(e => (e.from === node && e.to === n) || (e.to === node && e.from === n))
+          .transition()
+          .duration(500)
+          .attr("stroke", "#F59E0B")
+          .attr("stroke-width", 4);
+      }
+    }
+    await sleep(500);
+  }
+
+  // Show traversal path
+  const pathDiv = d3.select("#traversal-path");
+  pathDiv.selectAll("*").remove();
+  pathDiv.append("span")
+    .text(traversal.join(" → "))
+    .attr("class", "px-3 py-1 bg-yellow-400 text-black rounded-full shadow-md");
+
+  setIsRunning(false);
+};
+
+// Prim's Algorithm (Minimum Spanning Tree)
+const prim = async () => {
+  setIsRunning(true);
+  const visited = new Set([0]);
+  const edgesInMST = [];
+  const traversal = [0];
+
+  while (visited.size < sampleGraph.nodes.length) {
+    // Find min edge from visited to unvisited
+    let minEdge = null;
+    for (let e of sampleGraph.edges) {
+      if ((visited.has(e.from) && !visited.has(e.to)) || (visited.has(e.to) && !visited.has(e.from))) {
+        if (!minEdge || (e.weight || 1) < (minEdge.weight || 1)) {
+          minEdge = e;
+        }
+      }
+    }
+    if (!minEdge) break;
+
+    const nextNode = visited.has(minEdge.from) ? minEdge.to : minEdge.from;
+    visited.add(nextNode);
+    traversal.push(nextNode);
+    edgesInMST.push(minEdge);
+
+    // Animate node
+    d3.select(svgRef.current)
+      .selectAll("circle")
+      .filter(d => d.id === nextNode)
+      .transition()
+      .duration(500)
+      .attr("fill", "#EF4444")
+      .attr("r", 30);
+
+    // Animate edge
+    d3.select(svgRef.current)
+      .selectAll("line")
+      .filter(e => (e.from === minEdge.from && e.to === minEdge.to) || (e.to === minEdge.from && e.from === minEdge.to))
+      .transition()
+      .duration(500)
+      .attr("stroke", "#F59E0B")
+      .attr("stroke-width", 4);
+
+    await sleep(500);
+  }
+
+  // Display traversal path
+  const pathDiv = d3.select("#traversal-path");
+  pathDiv.selectAll("*").remove();
+  pathDiv.append("span")
+    .text(traversal.join(" → "))
+    .attr("class", "px-3 py-1 bg-yellow-400 text-black rounded-full shadow-md");
+
+  setIsRunning(false);
+};
+
+  const algoFunctions = {
+    bfs,
+    dfs,
+    dijkstra,
+    prim
+    // dfs, dijkstra, prim, etc. can be implemented similarly
+  };
+
+  const resetGraph = () => {
+    drawGraph();
+    d3.select("#traversal-path").selectAll("*").remove();
     setIsRunning(false);
   };
 
-  const searchFunctions = { bfs, dfs };
+
 
   return (
     <>
       <Navbar />
       <section className="px-8 md:px-20 pt-32 pb-16 bg-[#F9FAFB] text-[#1A1A1A]">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-5xl md:text-6xl font-bold">Graph Algorithms <span className="text-blue-600">Visualizer</span></h1>
-          <p className="mt-4 text-xl text-[#555555] max-w-3xl mx-auto">
-            Visualize graph traversal algorithms with animated nodes, edges, and traversal path.
-          </p>
-        </div>
+        <h1 className="text-5xl font-bold text-center mb-8">
+          Graph Algorithms <span className="text-blue-600">Visualizer</span>
+        </h1>
 
         {/* Algorithm Buttons */}
-        <div className="flex flex-wrap justify-center gap-4 mb-8">
+        <div className="flex flex-wrap justify-center gap-4 mb-6">
           {algorithms.map(algo => (
             <button
               key={algo.key}
               onClick={() => setSelectedAlgo(algo.key)}
-              className={`px-6 py-2 rounded-full font-semibold transition shadow ${selectedAlgo === algo.key ? "bg-blue-600 text-white" : "bg-white text-[#1A1A1A] border border-gray-200 hover:bg-gray-100"}`}
+              className={`px-5 py-2 rounded-full shadow ${selectedAlgo === algo.key ? "bg-blue-600 text-white" : "bg-white border"}`}
             >
               {algo.label}
             </button>
@@ -172,7 +381,7 @@ const GraphVisualization = () => {
             <button
               key={lang}
               onClick={() => setSelectedLang(lang)}
-              className={`px-5 py-2 rounded-full font-semibold transition shadow ${selectedLang === lang ? "bg-gray-800 text-white" : "bg-white text-[#1A1A1A] border border-gray-200 hover:bg-gray-100"}`}
+              className={`px-5 py-2 rounded-full shadow ${selectedLang === lang ? "bg-gray-800 text-white" : "bg-white border"}`}
             >
               {lang.toUpperCase()}
             </button>
@@ -180,84 +389,36 @@ const GraphVisualization = () => {
         </div>
 
         {/* Code Display */}
-        <div className="mb-12">
-          <div className="bg-white border border-gray-200 rounded-2xl shadow-md p-6 max-w-4xl mx-auto">
-            <pre className="bg-[#1E1E1E] text-green-400 rounded-xl p-6 overflow-x-auto text-sm leading-relaxed">
-              {graphCodes[selectedAlgo][selectedLang]}
-            </pre>
-          </div>
+        <div className="bg-white border rounded-xl shadow-md p-6 mb-8 max-w-4xl mx-auto">
+          <pre className="bg-[#1E1E1E] text-green-400 rounded-xl p-6 overflow-x-auto text-sm leading-relaxed">
+            {graphCodes[selectedAlgo][selectedLang]}
+          </pre>
         </div>
 
-        {/* Graph Visualizer */}
-        <div className="relative w-full h-[500px] border border-gray-200 rounded-2xl bg-white shadow-md flex justify-center items-center">
-          {sampleGraph.edges.map(([u, v], idx) => {
-            const nodeU = sampleGraph.nodes.find(n => n.id === u);
-            const nodeV = sampleGraph.nodes.find(n => n.id === v);
-
-            const isPathEdge = pathEdges.some(([a, b]) =>
-              (a === u && b === v) || (a === v && b === u)
-            );
-
-            const highlight = highlightEdge && ((highlightEdge[0] === u && highlightEdge[1] === v) || (highlightEdge[0] === v && highlightEdge[1] === u));
-
-            const length = Math.sqrt(Math.pow(nodeU.x - nodeV.x, 2) + Math.pow(nodeU.y - nodeV.y, 2));
-            const angle = Math.atan2(nodeV.y - nodeU.y, nodeV.x - nodeU.x) * (180 / Math.PI);
-
-            return (
-              <motion.div
-                key={idx}
-                className="absolute border-t-2 origin-left"
-                style={{
-                  width: length,
-                  top: nodeU.y + 25,
-                  left: nodeU.x + 25,
-                  rotate: `${angle}deg`,
-                  borderColor: isPathEdge ? "#F59E0B" : highlight ? "#EF4444" : "#A3A3A3",
-                }}
-                animate={{ opacity: highlight || isPathEdge ? 1 : 0.5 }}
-                transition={{ duration: 0.3 }}
-              />
-            );
-          })}
-
-          {sampleGraph.nodes.map((node, idx) => {
-            const visitedColor = visited.includes(node.id) ? "#EF4444" : nodeColors[idx % nodeColors.length];
-            const isCurrent = currentNode === node.id;
-
-            return (
-              <motion.div
-                key={node.id}
-                className="rounded-full flex items-center justify-center text-white font-bold shadow-md absolute"
-                style={{
-                  width: 50,
-                  height: 50,
-                  backgroundColor: isCurrent ? "#FACC15" : visitedColor,
-                  top: node.y,
-                  left: node.x,
-                }}
-                animate={{ scale: isCurrent ? 1.4 : 1 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              >
-                {node.id}
-              </motion.div>
-            );
-          })}
+        {/* Graph Area */}
+        <div className="flex justify-center mb-6">
+          <svg ref={svgRef} width="800" height="500" className="border rounded-xl shadow bg-white"></svg>
         </div>
 
         {/* Traversal Path */}
-        <div className="mt-6 text-center">
-          <h2 className="font-semibold text-lg mb-2">Traversal Path:</h2>
-          <div className="flex flex-wrap justify-center gap-2">
-            {traversalPath.map((node, idx) => (
-              <span key={idx} className="px-3 py-1 bg-yellow-400 text-black rounded-full shadow-md">{node}</span>
-            ))}
-          </div>
-        </div>
+        <div id="traversal-path" className="flex justify-center mb-6 text-lg font-semibold"></div>
 
         {/* Controls */}
-        <div className="flex justify-center gap-4 mt-6">
-          <button onClick={resetGraph} disabled={isRunning} className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 shadow">Reset</button>
-          <button onClick={() => searchFunctions[selectedAlgo]()} disabled={isRunning} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 disabled:opacity-50 shadow">Run</button>
+        <div className="flex justify-center gap-4 mt-4">
+          <button
+            onClick={resetGraph}
+            disabled={isRunning}
+            className="px-5 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 shadow"
+          >
+            Reset
+          </button>
+          <button
+            onClick={() => algoFunctions[selectedAlgo]()}
+            disabled={isRunning}
+            className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 disabled:opacity-50 shadow"
+          >
+            Run
+          </button>
         </div>
       </section>
       <Footer />

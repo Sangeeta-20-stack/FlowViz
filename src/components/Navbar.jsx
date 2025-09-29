@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { ChevronDown, Home, Code, Database, Info, Mail } from "lucide-react";
 
 const Navbar = () => {
-  const [hoveredLink, setHoveredLink] = useState(null);
   const [isAlgoOpen, setIsAlgoOpen] = useState(false);
 
   const navLinks = [
@@ -16,36 +15,19 @@ const Navbar = () => {
   ];
 
   const algorithms = [
-    { title: "Sorting", links: [
-        { name: "Overview", href: "/sorting-overview" }, 
-        { name: "Sorting Visualizer", href: "/sorting-visualizer" }
-      ] 
-    },
-    { title: "Searching", links: [
-        { name: "Overview", href: "/searching-overview" }, 
-        { name: "Searching Algorithms", href: "/searching-visualizer" }
-      ] 
-    },
-    { title: "Graphs", links: [
-        { name: "Overview", href: "/graph-overview" }, 
-        { name: "Graph Algorithms", href: "/graph-visualizer" }
-      ] 
-    },
-    { title: "Dynamic Programming", links: [
-        { name: "Overview", href: "/dp-overview" }, 
-        { name: "DP Algorithms", href: "/dp-algorithms" }
-      ] 
-    },
-    { title: "Greedy", links: [
-        { name: "Overview", href: "/greedy-overview" }, 
-        { name: "Greedy Algorithms", href: "/greedy-algorithms" }
-      ] 
-    },
-    { title: "Backtracking", links: [
-        { name: "Overview", href: "/backtracking-overview" }, 
-        { name: "Backtracking Algorithms", href: "/backtracking-algorithms" }
-      ] 
-    },
+    { title: "Sorting", links: [{ name: "Overview", href: "/sorting-overview" }, { name: "Sorting Visualizer", href: "/sorting-visualizer" }] },
+    { title: "Searching", links: [{ name: "Overview", href: "/searching-overview" }, { name: "Searching Algorithms", href: "/searching-visualizer" }] },
+    { title: "Graphs", links: [{ name: "Overview", href: "/graph-overview" }, { name: "Graph Algorithms", href: "/graph-visualizer" }] },
+    { title: "Dynamic Programming", links: [{ name: "Overview", href: "/dp-overview" }, { name: "DP Algorithms", href: "/dp-visualizer" }] },
+    { title: "Greedy", links: [{ name: "Overview", href: "/greedy-overview" }, { name: "Greedy Algorithms", href: "/greedy-visualizer" }] },
+    { title: "Backtracking", links: [{ name: "Overview", href: "/backtracking-overview" }, { name: "Backtracking Algorithms", href: "/backtracking-visualizer" }] },
+    { title: "String", links: [{ name: "Overview", href: "/string-overview" }, { name: "String Algorithms", href: "/string-visualizer" }] },
+    { title: "Divide & Conquer", links: [{ name: "Overview", href: "/dac-overview" }, { name: "Divide & Conquer Algorithms", href: "/dac-visualizer" }] },
+    { title: "Branch & Bound", links: [{ name: "Overview", href: "/bnb-overview" }, { name: "Branch & Bound Algorithms", href: "/bnb-visualizer" }] },
+    { title: "Hashing", links: [{ name: "Overview", href: "/hashing-overview" }, { name: "Hashing Algorithms", href: "/hashing-visualizer" }] },
+    { title: "Bit Manipulation", links: [{ name: "Overview", href: "/bit-overview" }, { name: "Bit-Manipulation Algorithms", href: "/bit-visualizer" }] },
+    { title: "Number Theory", links: [{ name: "Overview", href: "/number-overview" }, { name: "Number Algorithms", href: "/number-visualizer" }] },
+    { title: "Game Search", links: [{ name: "Overview", href: "/game-overview" }, { name: "Game Search Algorithms", href: "/game-visualizer" }] },
   ];
 
   return (
@@ -71,16 +53,16 @@ const Navbar = () => {
                     {link.name} <ChevronDown size={16} />
                   </button>
 
-                  {/* Algorithms dropdown */}
-                  <motion.ul
-                    className="absolute top-12 left-0 bg-[#F5F5F5] rounded-lg shadow-lg w-64 py-2 border border-[#E0E0E0]"
+                  {/* Algorithms dropdown - 3 columns */}
+                  <motion.div
+                    className="absolute top-12 left-0 bg-[#F5F5F5] rounded-lg shadow-lg w-[28rem] py-4 border border-[#E0E0E0] grid grid-cols-3 gap-4 px-4"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: isAlgoOpen ? 1 : 0, y: isAlgoOpen ? 0 : -10, transition: { duration: 0.2 } }}
                   >
                     {algorithms.map((algo, idx) => (
-                      <li key={idx} className="px-4 py-2">
-                        <p className="font-semibold">{algo.title}</p>
-                        <ul className="pl-4 mt-1">
+                      <div key={idx}>
+                        <p className="font-semibold mb-1">{algo.title}</p>
+                        <ul className="pl-2">
                           {algo.links.map((subLink, subIdx) => (
                             <li key={subIdx} className="py-1">
                               <Link
@@ -92,9 +74,9 @@ const Navbar = () => {
                             </li>
                           ))}
                         </ul>
-                      </li>
+                      </div>
                     ))}
-                  </motion.ul>
+                  </motion.div>
                 </li>
               );
             } else {
