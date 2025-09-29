@@ -1,51 +1,65 @@
-// src/components/Navbar.jsx
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ChevronDown, Home, Code, Database, Info, Mail } from "lucide-react";
 
 const Navbar = () => {
+  const [hoveredLink, setHoveredLink] = useState(null);
   const [isAlgoOpen, setIsAlgoOpen] = useState(false);
-  const [isSortingOpen, setIsSortingOpen] = useState(false);
-  const [isSearchingOpen, setIsSearchingOpen] = useState(false);
-  const [isGraphOpen, setIsGraphOpen] = useState(false);
-  const [isDPOpen, setIsDPOpen] = useState(false);
-  const [isGreedyOpen, setIsGreedyOpen] = useState(false);
-  const [isBacktrackingOpen, setIsBacktrackingOpen] = useState(false);
-  const [isDSOpen, setIsDSOpen] = useState(false);
 
   const navLinks = [
-    { name: "Home", href: "#" },
-    { name: "Algorithms", href: "#", dropdown: true },
-    { name: "Data Structures", href: "#", dropdown: true },
-    { name: "About Us", href: "#about" },
-    { name: "Contact", href: "#contact" },
+    { name: "Home", href: "/", icon: <Home size={16} /> },
+    { name: "Algorithms", dropdown: true, icon: <Code size={16} /> },
+    { name: "Data Structures", href: "/data-structures", icon: <Database size={16} /> },
+    { name: "About Us", href: "/about", icon: <Info size={16} /> },
+    { name: "Contact", href: "/contact", icon: <Mail size={16} /> },
   ];
 
-  const linkHover = {
-    scale: 1.1,
-    color: "#4DA6FF",
-    transition: { type: "spring", stiffness: 300 },
-  };
+  const algorithms = [
+    { title: "Sorting", links: [
+        { name: "Overview", href: "/sorting-overview" }, 
+        { name: "Sorting Visualizer", href: "/sorting-visualizer" }
+      ] 
+    },
+    { title: "Searching", links: [
+        { name: "Overview", href: "/searching-overview" }, 
+        { name: "Searching Algorithms", href: "/searching-visualizer" }
+      ] 
+    },
+    { title: "Graphs", links: [
+        { name: "Overview", href: "/graph-overview" }, 
+        { name: "Graph Algorithms", href: "/graph-visualizer" }
+      ] 
+    },
+    { title: "Dynamic Programming", links: [
+        { name: "Overview", href: "/dp-overview" }, 
+        { name: "DP Algorithms", href: "/dp-algorithms" }
+      ] 
+    },
+    { title: "Greedy", links: [
+        { name: "Overview", href: "/greedy-overview" }, 
+        { name: "Greedy Algorithms", href: "/greedy-algorithms" }
+      ] 
+    },
+    { title: "Backtracking", links: [
+        { name: "Overview", href: "/backtracking-overview" }, 
+        { name: "Backtracking Algorithms", href: "/backtracking-algorithms" }
+      ] 
+    },
+  ];
 
   return (
-    <motion.nav
-      className="bg-[#FFFFFF] text-[#1A1A1A] px-6 py-4 shadow-md fixed top-0 left-0 w-full z-50 border-b border-[#E0E0E0]"
-      initial={{ y: -50, opacity: 0 }}
-      animate={{ y: 0, opacity: 1, transition: { duration: 0.6 } }}
-    >
+    <nav className="bg-white px-6 py-4 shadow-md fixed top-0 left-0 w-full z-50 border-b border-[#E0E0E0]">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         {/* Brand */}
-        <motion.div
-          className="text-3xl font-extrabold bg-gradient-to-r from-[#4DA6FF] to-[#00CFFF] bg-clip-text text-transparent cursor-pointer"
-          whileHover={{ scale: 1.1, textShadow: "0px 0px 10px rgba(77,166,255,0.7)" }}
-        >
+        <div className="text-3xl font-extrabold bg-gradient-to-r from-[#4DA6FF] to-[#00CFFF] bg-clip-text text-transparent cursor-pointer">
           FlowViz
-        </motion.div>
+        </div>
 
         {/* Links */}
         <ul className="hidden md:flex space-x-4 items-center">
           {navLinks.map((link) => {
-            if (link.name === "Algorithms") {
+            if (link.dropdown) {
               return (
                 <li
                   key={link.name}
@@ -53,246 +67,52 @@ const Navbar = () => {
                   onMouseEnter={() => setIsAlgoOpen(true)}
                   onMouseLeave={() => setIsAlgoOpen(false)}
                 >
-                  <motion.button
-                    className="flex items-center gap-1 font-semibold px-4 py-2 rounded-full transition-colors duration-300 hover:bg-[#F5F5F5]"
-                    whileHover={linkHover}
-                  >
+                  <button className="flex items-center gap-1 font-semibold px-4 py-2 rounded-full hover:bg-[#F5F5F5]">
                     {link.name} <ChevronDown size={16} />
-                  </motion.button>
+                  </button>
 
-                  {/* First-level Dropdown */}
+                  {/* Algorithms dropdown */}
                   <motion.ul
-                    className="absolute top-12 left-0 bg-[#F5F5F5] text-[#1A1A1A] rounded-lg shadow-lg w-48 py-2 border border-[#E0E0E0]"
+                    className="absolute top-12 left-0 bg-[#F5F5F5] rounded-lg shadow-lg w-64 py-2 border border-[#E0E0E0]"
                     initial={{ opacity: 0, y: -10 }}
-                    animate={{
-                      opacity: isAlgoOpen ? 1 : 0,
-                      y: isAlgoOpen ? 0 : -10,
-                      transition: { duration: 0.2 },
-                    }}
+                    animate={{ opacity: isAlgoOpen ? 1 : 0, y: isAlgoOpen ? 0 : -10, transition: { duration: 0.2 } }}
                   >
-                    {/* Sorting */}
-                    <li
-                      className="relative px-4 py-2 font-semibold hover:bg-[#E0E0E0] rounded-md cursor-pointer flex justify-between items-center"
-                      onMouseEnter={() => setIsSortingOpen(true)}
-                      onMouseLeave={() => setIsSortingOpen(false)}
-                    >
-                      Sorting <ChevronRight size={16} />
-                      <motion.ul
-                        className="absolute top-0 left-full bg-[#F5F5F5] w-44 rounded-lg shadow-lg py-2 border border-[#E0E0E0]"
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{
-                          opacity: isSortingOpen ? 1 : 0,
-                          x: isSortingOpen ? 0 : -10,
-                          transition: { duration: 0.2 },
-                        }}
-                      >
-                        {["Overview", "Sorting Algorithms"].map((item, idx) => (
-                          <motion.li
-                            key={idx}
-                            className="px-4 py-2 font-semibold hover:bg-[#E0E0E0] hover:text-[#4DA6FF] rounded-md cursor-pointer transition-colors duration-200"
-                            whileHover={{ scale: 1.05 }}
-                          >
-                            {item}
-                          </motion.li>
-                        ))}
-                      </motion.ul>
-                    </li>
-
-                    {/* Searching */}
-                    <li
-                      className="relative px-4 py-2 font-semibold hover:bg-[#E0E0E0] rounded-md cursor-pointer flex justify-between items-center"
-                      onMouseEnter={() => setIsSearchingOpen(true)}
-                      onMouseLeave={() => setIsSearchingOpen(false)}
-                    >
-                      Searching <ChevronRight size={16} />
-                      <motion.ul
-                        className="absolute top-0 left-full bg-[#F5F5F5] w-44 rounded-lg shadow-lg py-2 border border-[#E0E0E0]"
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{
-                          opacity: isSearchingOpen ? 1 : 0,
-                          x: isSearchingOpen ? 0 : -10,
-                          transition: { duration: 0.2 },
-                        }}
-                      >
-                        {["Overview", "Searching Algorithms"].map((item, idx) => (
-                          <motion.li
-                            key={idx}
-                            className="px-4 py-2 font-semibold hover:bg-[#E0E0E0] hover:text-[#4DA6FF] rounded-md cursor-pointer transition-colors duration-200"
-                            whileHover={{ scale: 1.05 }}
-                          >
-                            {item}
-                          </motion.li>
-                        ))}
-                      </motion.ul>
-                    </li>
-
-                    {/* Graphs */}
-                    <li
-                      className="relative px-4 py-2 font-semibold hover:bg-[#E0E0E0] rounded-md cursor-pointer flex justify-between items-center"
-                      onMouseEnter={() => setIsGraphOpen(true)}
-                      onMouseLeave={() => setIsGraphOpen(false)}
-                    >
-                      Graphs <ChevronRight size={16} />
-                      <motion.ul
-                        className="absolute top-0 left-full bg-[#F5F5F5] w-44 rounded-lg shadow-lg py-2 border border-[#E0E0E0]"
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{
-                          opacity: isGraphOpen ? 1 : 0,
-                          x: isGraphOpen ? 0 : -10,
-                          transition: { duration: 0.2 },
-                        }}
-                      >
-                        {["Overview","Graph Algorithms"].map((item, idx) => (
-                          <motion.li
-                            key={idx}
-                            className="px-4 py-2 font-semibold hover:bg-[#E0E0E0] hover:text-[#4DA6FF] rounded-md cursor-pointer transition-colors duration-200"
-                            whileHover={{ scale: 1.05 }}
-                          >
-                            {item}
-                          </motion.li>
-                        ))}
-                      </motion.ul>
-                    </li>
-
-                    {/* Dynamic Programming */}
-                    <li
-                      className="relative px-4 py-2 font-semibold hover:bg-[#E0E0E0] rounded-md cursor-pointer flex justify-between items-center"
-                      onMouseEnter={() => setIsDPOpen(true)}
-                      onMouseLeave={() => setIsDPOpen(false)}
-                    >
-                      Dynamic Programming <ChevronRight size={16} />
-                      <motion.ul
-                        className="absolute top-0 left-full bg-[#F5F5F5] w-44 rounded-lg shadow-lg py-2 border border-[#E0E0E0]"
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{
-                          opacity: isDPOpen ? 1 : 0,
-                          x: isDPOpen ? 0 : -10,
-                          transition: { duration: 0.2 },
-                        }}
-                      >
-                        {["Overview","DP Algorithms"].map((item, idx) => (
-                          <motion.li
-                            key={idx}
-                            className="px-4 py-2 font-semibold hover:bg-[#E0E0E0] hover:text-[#4DA6FF] rounded-md cursor-pointer transition-colors duration-200"
-                            whileHover={{ scale: 1.05 }}
-                          >
-                            {item}
-                          </motion.li>
-                        ))}
-                      </motion.ul>
-                    </li>
-
-                    {/* Greedy */}
-                    <li
-                      className="relative px-4 py-2 font-semibold hover:bg-[#E0E0E0] rounded-md cursor-pointer flex justify-between items-center"
-                      onMouseEnter={() => setIsGreedyOpen(true)}
-                      onMouseLeave={() => setIsGreedyOpen(false)}
-                    >
-                      Greedy <ChevronRight size={16} />
-                      <motion.ul
-                        className="absolute top-0 left-full bg-[#F5F5F5] w-44 rounded-lg shadow-lg py-2 border border-[#E0E0E0]"
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{
-                          opacity: isGreedyOpen ? 1 : 0,
-                          x: isGreedyOpen ? 0 : -10,
-                          transition: { duration: 0.2 },
-                        }}
-                      >
-                        {["Overview","Greedy Algorithms"].map((item, idx) => (
-                          <motion.li
-                            key={idx}
-                            className="px-4 py-2 font-semibold hover:bg-[#E0E0E0] hover:text-[#4DA6FF] rounded-md cursor-pointer transition-colors duration-200"
-                            whileHover={{ scale: 1.05 }}
-                          >
-                            {item}
-                          </motion.li>
-                        ))}
-                      </motion.ul>
-                    </li>
-
-                    {/* Backtracking */}
-                    <li
-                      className="relative px-4 py-2 font-semibold hover:bg-[#E0E0E0] rounded-md cursor-pointer flex justify-between items-center"
-                      onMouseEnter={() => setIsBacktrackingOpen(true)}
-                      onMouseLeave={() => setIsBacktrackingOpen(false)}
-                    >
-                      Backtracking <ChevronRight size={16} />
-                      <motion.ul
-                        className="absolute top-0 left-full bg-[#F5F5F5] w-44 rounded-lg shadow-lg py-2 border border-[#E0E0E0]"
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{
-                          opacity: isBacktrackingOpen ? 1 : 0,
-                          x: isBacktrackingOpen ? 0 : -10,
-                          transition: { duration: 0.2 },
-                        }}
-                      >
-                        {["Overview","Backtracking Algorithms"].map((item, idx) => (
-                          <motion.li
-                            key={idx}
-                            className="px-4 py-2 font-semibold hover:bg-[#E0E0E0] hover:text-[#4DA6FF] rounded-md cursor-pointer transition-colors duration-200"
-                            whileHover={{ scale: 1.05 }}
-                          >
-                            {item}
-                          </motion.li>
-                        ))}
-                      </motion.ul>
-                    </li>
-                  </motion.ul>
-                </li>
-              );
-            } else if (link.name === "Data Structures") {
-              return (
-                <li
-                  key={link.name}
-                  className="relative"
-                  onMouseEnter={() => setIsDSOpen(true)}
-                  onMouseLeave={() => setIsDSOpen(false)}
-                >
-                  <motion.button
-                    className="flex items-center gap-1 font-semibold px-4 py-2 rounded-full transition-colors duration-300 hover:bg-[#F5F5F5]"
-                    whileHover={linkHover}
-                  >
-                    {link.name} <ChevronDown size={16} />
-                  </motion.button>
-
-                  <motion.ul
-                    className="absolute top-12 left-0 bg-[#F5F5F5] text-[#1A1A1A] rounded-lg shadow-lg w-44 py-2 border border-[#E0E0E0]"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{
-                      opacity: isDSOpen ? 1 : 0,
-                      y: isDSOpen ? 0 : -10,
-                      transition: { duration: 0.2 },
-                    }}
-                  >
-                    {["Overview","Data Structures"].map((item, idx) => (
-                      <motion.li
-                        key={idx}
-                        className="px-4 py-2 font-semibold hover:bg-[#E0E0E0] hover:text-[#4DA6FF] rounded-md cursor-pointer transition-colors duration-200"
-                        whileHover={{ scale: 1.05 }}
-                      >
-                        {item}
-                      </motion.li>
+                    {algorithms.map((algo, idx) => (
+                      <li key={idx} className="px-4 py-2">
+                        <p className="font-semibold">{algo.title}</p>
+                        <ul className="pl-4 mt-1">
+                          {algo.links.map((subLink, subIdx) => (
+                            <li key={subIdx} className="py-1">
+                              <Link
+                                to={subLink.href}
+                                className="text-sm hover:text-[#4DA6FF] hover:underline"
+                              >
+                                {subLink.name}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </li>
                     ))}
                   </motion.ul>
                 </li>
               );
             } else {
               return (
-                <motion.li key={link.name}>
-                  <motion.a
-                    href={link.href}
-                    className="px-4 py-2 font-semibold rounded-full transition-colors duration-300 hover:bg-[#F5F5F5]"
-                    whileHover={linkHover}
+                <li key={link.name}>
+                  <Link
+                    to={link.href}
+                    className="px-4 py-2 font-semibold rounded-full flex items-center gap-2 hover:bg-[#F5F5F5]"
                   >
                     {link.name}
-                  </motion.a>
-                </motion.li>
+                  </Link>
+                </li>
               );
             }
           })}
         </ul>
       </div>
-    </motion.nav>
+    </nav>
   );
 };
 

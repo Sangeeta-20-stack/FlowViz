@@ -1,6 +1,6 @@
-// src/components/Footer.jsx
 import React from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom"; // ✅ Import Link
 import { Mail, Github, Linkedin, Twitter } from "lucide-react";
 
 const Footer = () => {
@@ -29,13 +29,14 @@ const Footer = () => {
           variants={fadeInUp}
           whileHover={hoverEffect}
         >
+          <Link to="/">
             <motion.div
-                    className="text-3xl font-extrabold bg-gradient-to-r from-[#4DA6FF] to-[#00CFFF] bg-clip-text text-transparent cursor-pointer"
-                    whileHover={{ scale: 1.1, textShadow: "0px 0px 10px rgba(77,166,255,0.7)" }}
-                  >
-                    FlowViz
-                  </motion.div>
-          
+              className="text-3xl font-extrabold bg-gradient-to-r from-[#4DA6FF] to-[#00CFFF] bg-clip-text text-transparent cursor-pointer"
+              whileHover={{ scale: 1.1, textShadow: "0px 0px 10px rgba(77,166,255,0.7)" }}
+            >
+              FlowViz
+            </motion.div>
+          </Link>
           <p className="text-white/80">
             Understand. Visualize. Master algorithms.
           </p>
@@ -44,16 +45,25 @@ const Footer = () => {
         {/* Navigation */}
         <motion.div className="flex flex-col gap-2" variants={fadeInUp}>
           <h2 className="font-semibold text-lg mb-2">Navigation</h2>
-          {["Home", "Algorithms", "Data Structures", "About Us", "Contact"].map((link, idx) => (
-            <motion.a
-              key={idx}
-              href="#"
-              className="hover:text-[#4B4B4B] transition"
-              whileHover={{ scale: 1.05, color: "#F5F5F5" }}
-            >
-              {link}
-            </motion.a>
-          ))}
+          <Link to="/">
+            <motion.span className="hover:text-[#4B4B4B] transition" whileHover={{ scale: 1.05, color: "#F5F5F5" }}>
+              Home
+            </motion.span>
+          </Link>
+          <motion.a href="#" className="hover:text-[#4B4B4B] transition" whileHover={{ scale: 1.05, color: "#F5F5F5" }}>
+            Algorithms
+          </motion.a>
+          <motion.a href="#" className="hover:text-[#4B4B4B] transition" whileHover={{ scale: 1.05, color: "#F5F5F5" }}>
+            Data Structures
+          </motion.a>
+          <Link to="/about">
+            <motion.span className="hover:text-[#4B4B4B] transition" whileHover={{ scale: 1.05, color: "#F5F5F5" }}>
+              About Us
+            </motion.span>
+          </Link>
+          <motion.a href="/contact" className="hover:text-[#4B4B4B] transition" whileHover={{ scale: 1.05, color: "#F5F5F5" }}>
+            Contact
+          </motion.a>
         </motion.div>
 
         {/* Resources */}
