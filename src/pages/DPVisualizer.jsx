@@ -76,11 +76,115 @@ const DPVisualizer = () => {
   const dpFunctions = {
     fibonacci: runFibonacci,
     knapsack01: runKnapsack01,
-    longestCommonSubsequence: async () => alert("LCS visualization coming soon!"),
-    coinChange: async () => alert("Coin Change visualization coming soon!"),
-    editDistance: async () => alert("Edit Distance visualization coming soon!"),
-    matrixChainMultiplication: async () => alert("Matrix Chain Multiplication coming soon!"),
-  };
+    longestCommonSubsequence: async () => {
+    setIsRunning(true);
+
+    const str1 = "AGGTAB";
+    const str2 = "GXTXAYB";
+    const m = str1.length;
+    const n = str2.length;
+
+    // Initialize DP table
+    const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+    setInputData({ table: dp.map((row) => [...row]) });
+
+    // Fill DP table
+    for (let i = 1; i <= m; i++) {
+      for (let j = 1; j <= n; j++) {
+        if (str1[i - 1] === str2[j - 1]) {
+          dp[i][j] = dp[i - 1][j - 1] + 1;
+        } else {
+          dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+        }
+
+        // Highlight current cell
+        setHighlightStep({ currentRow: i, currentCol: j, visited: dp.map((row) => row.map(() => true)) });
+        setInputData({ table: dp.map((row) => [...row]) });
+
+        await sleep(200); // animation speed
+      }
+    }
+
+    setIsRunning(false);
+  },
+  coinChange : async () => {
+  setIsRunning(true);
+  const coins = [1, 2, 5];
+  const amount = 11;
+  const dp = Array(amount + 1).fill(Infinity);
+  dp[0] = 0;
+
+  setInputData({ coins, amount, dp: [...dp] });
+
+  for (let i = 1; i <= amount; i++) {
+    for (let coin of coins) {
+      if (i - coin >= 0) {
+        dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+      }
+    }
+    setHighlightStep({ current: i });
+    setInputData({ coins, amount, dp: [...dp] });
+    await sleep(500);
+  }
+
+  setIsRunning(false);
+},
+
+    // -------------------- Edit Distance --------------------
+  editDistance: async () => {
+    setIsRunning(true);
+    const str1 = "kitten";
+    const str2 = "sitting";
+    const m = str1.length;
+    const n = str2.length;
+
+    const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+    for (let i = 0; i <= m; i++) dp[i][0] = i;
+    for (let j = 0; j <= n; j++) dp[0][j] = j;
+
+    setInputData({ table: dp.map(row => [...row]), str1, str2 });
+
+    for (let i = 1; i <= m; i++) {
+      for (let j = 1; j <= n; j++) {
+        if (str1[i - 1] === str2[j - 1]) {
+          dp[i][j] = dp[i - 1][j - 1];
+        } else {
+          dp[i][j] = 1 + Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]);
+        }
+        setHighlightStep({ currentRow: i, currentCol: j, visited: dp.map(row => row.map(() => true)) });
+        setInputData({ table: dp.map(row => [...row]), str1, str2 });
+        await sleep(200);
+      }
+    }
+    setIsRunning(false);
+  },
+
+  // -------------------- Matrix Chain Multiplication --------------------
+  matrixChainMultiplication: async () => {
+    setIsRunning(true);
+    const dims = [40, 20, 30, 10, 30]; // sample dimensions
+    const n = dims.length - 1;
+    const dp = Array.from({ length: n }, () => Array(n).fill(0));
+
+    setInputData({ table: dp.map(row => [...row]), dims });
+
+    for (let len = 2; len <= n; len++) {
+      for (let i = 0; i <= n - len; i++) {
+        const j = i + len - 1;
+        dp[i][j] = Infinity;
+        for (let k = i; k < j; k++) {
+          const cost = dp[i][k] + dp[k + 1][j] + dims[i] * dims[k + 1] * dims[j + 1];
+          if (cost < dp[i][j]) dp[i][j] = cost;
+        }
+        setHighlightStep({ currentRow: i, currentCol: j, visited: dp.map(row => row.map(() => true)) });
+        setInputData({ table: dp.map(row => [...row]), dims });
+        await sleep(300);
+      }
+    }
+    setIsRunning(false);
+  },
+
+};
   // ----------------------------------------------------------------
 
   return (

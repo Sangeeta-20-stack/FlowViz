@@ -51,7 +51,7 @@ import BitVisualizer from "./pages/BitVisualizer";
 import NumberOverview from "./pages/NumberOverview";
 import NumberVisualizer from "./pages/NumberVisualizer";
 
-// Game Search pages (NEW)
+// Game Search pages
 import GameOverview from "./pages/GameOverview";
 import GameVisualizer from "./pages/GameVisualizer";
 
@@ -60,7 +60,27 @@ import DataStructuresOverview from "./pages/DataStructuresOverview";
 
 // Stack pages
 import StackOverview from "./pages/StackOverview";
-//import StackAlgorithms from "./pages/StackAlgorithms";
+import StackVisualizer from "./pages/StackVisualizer";
+
+// Queue pages
+import QueueOverview from "./pages/QueueOverview";
+import QueueAlgorithms from "./pages/QueueAlgorithms";
+
+// Array pages
+import ArrayOverview from "./pages/ArrayOverview";
+import ArrayAlgorithms from "./pages/ArrayAlgorithms";
+
+// LL pages
+import LLOverview from "./pages/LLOverview";
+import LLAlgorithms from "./pages/LLAlgorithms";
+
+// Heap pages
+import HeapOverview from "./pages/HeapOverview";
+import HeapAlgorithms from "./pages/HeapAlgorithms";
+
+// Tree pages
+import TreeOverview from "./pages/TreeOverview";
+import TreeAlgorithms from "./pages/TreeAlgorithms";
 
 function App() {
   return (
@@ -110,27 +130,45 @@ function App() {
         <Route path="/hashing-overview" element={<HashingOverview />} />
         <Route path="/hashing-visualizer" element={<HashingVisualizer />} />
 
-          {/* Bit Manipulation routes */}
+        {/* Bit Manipulation routes */}
         <Route path="/bit-overview" element={<BitOverview />} />
         <Route path="/bit-visualizer" element={<BitVisualizer />} />
 
-         {/* Number Theory routes */}
+        {/* Number Theory routes */}
         <Route path="/number-overview" element={<NumberOverview />} />
         <Route path="/number-visualizer" element={<NumberVisualizer />} />
 
-              {/* Game Search routes */}
+        {/* Game Search routes */}
         <Route path="/game-overview" element={<GameOverview />} />
         <Route path="/game-visualizer" element={<GameVisualizer />} />
 
         {/* Stack routes */}
-<Route path="/stack-overview" element={<StackOverview />} />
+        <Route path="/stack-overview" element={<StackOverview />} />
+        <Route path="/stack-visualizer" element={<StackVisualizer />} />
 
+        {/* Queue routes */}
+        <Route path="/queue-overview" element={<QueueOverview />} />
+        <Route path="/queue-algorithms" element={<QueueAlgorithms />} />
+
+        {/* Array routes */}
+        <Route path="/array-overview" element={<ArrayOverview />} />
+        <Route path="/array-algorithms" element={<ArrayAlgorithms />} />
+
+        {/* Tree routes */}
+        <Route path="/tree-overview" element={<TreeOverview />} />
+        <Route path="/tree-algorithms" element={<TreeAlgorithms />} />
+
+        {/* Heap routes */}
+        <Route path="/heap-overview" element={<HeapOverview />} />
+        <Route path="/heap-algorithms" element={<HeapAlgorithms />} />
+
+        {/* LL routes */}
+        <Route path="/ll-overview" element={<LLOverview />} />
+        <Route path="/ll-algorithms" element={<LLAlgorithms />} />
 
         {/* Data Structures routes */}
-<Route path="/ds-overview" element={<DataStructuresOverview />} />
-
+        <Route path="/ds-overview" element={<DataStructuresOverview />} />
       </Routes>
-
     </Router>
   );
 }

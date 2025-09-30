@@ -94,7 +94,175 @@ if (algorithm === "knapsack01") {
     </div>
   );
 }
+ // -------------------- Longest Common Subsequence / 2D DP --------------------
+  if (algorithm === "longestCommonSubsequence") {
+    const str1 = inputData.str1 || "AGGTAB";
+    const str2 = inputData.str2 || "GXTXAYB";
 
+    // Sample LCS DP table (can be computed dynamically or use sample)
+    const table =
+      inputData.table ||
+      [
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 1, 1, 1, 1],
+        [0, 1, 1, 1, 1, 1, 1, 1],
+        [0, 1, 1, 1, 2, 2, 2, 2],
+        [0, 1, 1, 1, 2, 2, 2, 2],
+        [0, 1, 1, 1, 2, 2, 3, 3],
+        [0, 1, 1, 1, 2, 2, 3, 3],
+    ];
+
+    const finalAnswer = table[str1.length][str2.length];
+
+    return (
+      <div className="overflow-auto max-h-[400px]">
+        {finalAnswer && (
+          <p className="text-center mb-2 text-gray-700 font-semibold">
+            LCS of "{str1}" and "{str2}" → Length: {finalAnswer}
+          </p>
+        )}
+
+        <table className="border-collapse border border-gray-300 mx-auto">
+          <thead>
+            <tr>
+              <th className="border px-2 py-1"></th>
+              {[...str2].map((ch, idx) => (
+                <th key={idx} className="border px-2 py-1 text-sm font-medium text-gray-700">{ch}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {table.map((row, rIdx) => (
+              <tr key={rIdx}>
+                {rIdx === 0 ? <td className="border px-2 py-1 font-medium text-gray-700"></td> : <td className="border px-2 py-1 font-medium text-gray-700">{str1[rIdx - 1]}</td>}
+                {row.map((val, cIdx) => (
+                  <motion.td
+                    key={cIdx}
+                    animate={{
+                      backgroundColor:
+                        highlightStep.currentRow === rIdx && highlightStep.currentCol === cIdx
+                          ? "#EF4444"
+                          : highlightStep.visited?.[rIdx]?.[cIdx]
+                          ? "#10B981"
+                          : "#3B82F6",
+                    }}
+                    transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                    className="border border-gray-300 px-4 py-2 text-center text-white min-w-[32px]"
+                  >
+                    {val}
+                  </motion.td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+// -------------------- Coin Change / 1D DP --------------------
+if (algorithm === "coinChange") {
+  const coins = inputData.coins || [1, 2, 5]; // sample coin denominations
+  const amount = inputData.amount || 11; // target amount
+  const dp = inputData.dp || Array(amount + 1).fill(Infinity);
+  dp[0] = 0;
+
+  const { current = -1 } = highlightStep || {};
+
+  return (
+    <div>
+      <p className="text-center mb-2 text-gray-700 font-semibold">
+        Coin Change: Coins = [{coins.join(", ")}], Amount = {amount} → Minimum Coins = {dp[amount] === Infinity ? "-" : dp[amount]}
+      </p>
+      <div className="flex items-end justify-center h-64 gap-2 bg-gray-50 rounded-xl p-6 overflow-x-auto">
+        {dp.map((val, idx) => (
+          <motion.div
+            key={idx}
+            animate={{
+              backgroundColor: idx === current ? "#EF4444" : blockColors[idx % blockColors.length],
+            }}
+            transition={{ type: "spring", stiffness: 200, damping: 20 }}
+            className="rounded-t-xl shadow-md flex items-end justify-center"
+            style={{ width: "32px", height: `${(val === Infinity ? 0 : val) * 20 + 20}px` }}
+          >
+            <span className="text-xs text-white font-bold">{val === Infinity ? "-" : val}</span>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+}
+ // -------------------- Edit Distance / 2D DP --------------------
+  if (algorithm === "editDistance") {
+    const str1 = inputData.str1 || "kitten";
+    const str2 = inputData.str2 || "sitting";
+    const dp = inputData.table || Array.from({ length: str1.length + 1 }, () => Array(str2.length + 1).fill(0));
+
+    return (
+      <div className="overflow-auto max-h-[400px]">
+        <table className="border-collapse border border-gray-300 mx-auto">
+          <tbody>
+            {dp.map((row, rIdx) => (
+              <tr key={rIdx}>
+                {row.map((val, cIdx) => (
+                  <motion.td
+                    key={cIdx}
+                    animate={{
+                      backgroundColor:
+                        currentRow === rIdx && currentCol === cIdx
+                          ? "#EF4444"
+                          : visited?.[rIdx]?.[cIdx]
+                          ? "#10B981"
+                          : "#3B82F6",
+                    }}
+                    transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                    className="border border-gray-300 px-4 py-2 text-center text-white min-w-[32px]"
+                  >
+                    {val}
+                  </motion.td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+
+  // -------------------- Matrix Chain Multiplication / 2D DP --------------------
+  if (algorithm === "matrixChainMultiplication") {
+    const dp = inputData.table || [[0, 0], [0, 0]];
+    return (
+      <div className="overflow-auto max-h-[400px]">
+        <table className="border-collapse border border-gray-300 mx-auto">
+          <tbody>
+            {dp.map((row, rIdx) => (
+              <tr key={rIdx}>
+                {row.map((val, cIdx) => (
+                  <motion.td
+                    key={cIdx}
+                    animate={{
+                      backgroundColor:
+                        currentRow === rIdx && currentCol === cIdx
+                          ? "#EF4444"
+                          : visited?.[rIdx]?.[cIdx]
+                          ? "#10B981"
+                          : "#3B82F6",
+                    }}
+                    transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                    className="border border-gray-300 px-4 py-2 text-center text-white min-w-[32px]"
+                  >
+                    {val}
+                  </motion.td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+
+  
 
   return <p className="text-gray-500 text-center py-10">Visualization not available yet</p>;
 };
