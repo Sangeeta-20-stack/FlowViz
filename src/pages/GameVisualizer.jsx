@@ -12,7 +12,7 @@ const algorithms = [
   { key: "minimax", label: "Minimax" },
   { key: "alphaBeta", label: "Alpha-Beta Pruning" },
   { key: "monteCarlo", label: "Monte Carlo Tree Search" },
-  { key: "bestFirst", label: "Best-First Search" },
+  { key: "bestFirstSearch", label: "Best-First Search" },
   { key: "hillClimbing", label: "Hill Climbing" },
 ];
 
