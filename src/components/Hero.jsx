@@ -1,5 +1,6 @@
 // src/components/Hero.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import * as d3 from "d3";
 import { motion } from "framer-motion";
 import { Sparkles, Play, BookOpen, Cpu, ArrowRightCircle } from "lucide-react";
 
@@ -9,6 +10,8 @@ const Hero = () => {
   const [comparisons, setComparisons] = useState(0);
   const [swaps, setSwaps] = useState(0);
   const [pass, setPass] = useState(0);
+
+  const svgRef = useRef();
 
   const generateArray = () => {
     const arr = Array.from({ length: 12 }, () =>
@@ -36,7 +39,7 @@ const Hero = () => {
           setArray([...arr]);
           setComparisons(comp);
           setSwaps(swp);
-          await new Promise((resolve) => setTimeout(resolve, 150));
+          await new Promise((resolve) => setTimeout(resolve, 200));
         }
       }
     }
@@ -47,16 +50,44 @@ const Hero = () => {
     generateArray();
   }, []);
 
-  const barColors = [
-    "#3B82F6",
-    "#10B981",
-    "#F59E0B",
-    "#EF4444",
-    "#6366F1",
-    "#14B8A6",
-  ];
+  useEffect(() => {
+    if (!svgRef.current || array.length === 0) return;
 
-  // Animation preset
+    const svg = d3.select(svgRef.current);
+    const width = 400;
+    const height = 250;
+
+    const xScale = d3
+      .scaleBand()
+      .domain(d3.range(array.length))
+      .range([0, width])
+      .padding(0.2);
+
+    const yScale = d3.scaleLinear().domain([0, d3.max(array)]).range([0, height]);
+
+    const colorScale = d3
+      .scaleOrdinal()
+      .domain(d3.range(array.length))
+      .range(["#3B82F6", "#10B981", "#F59E0B", "#EF4444", "#6366F1", "#14B8A6"]);
+
+    // Bind data
+    svg
+      .selectAll("rect")
+      .data(array)
+      .join("rect")
+      .attr("x", (_, i) => xScale(i))
+      .attr("width", xScale.bandwidth())
+      .attr("rx", 6)
+      .attr("ry", 6)
+      .transition()
+      .duration(300)
+      .attr("y", (d) => height - yScale(d))
+      .attr("height", (d) => yScale(d))
+      .attr("fill", (_, i) => colorScale(i));
+
+  }, [array]);
+
+  // Animation preset (Framer still used for left-side text/buttons)
   const fadeInUp = {
     hidden: { opacity: 0, y: 40 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
@@ -64,7 +95,7 @@ const Hero = () => {
 
   return (
     <section className="flex flex-col md:flex-row items-center justify-between px-16 pt-32 pb-16 bg-[#FFFFFF] text-[#1A1A1A]">
-      {/* ✅ Left Content unchanged */}
+      {/* ✅ Left Side (unchanged) */}
       <motion.div
         className="md:w-1/2 flex flex-col gap-6 md:pr-16"
         initial="hidden"
@@ -121,70 +152,51 @@ const Hero = () => {
           </motion.button>
         </motion.div>
       </motion.div>
-{/* ✅ Right Side - Bars fixed so text doesn’t hide */}
-<div className="md:w-1/2 flex justify-center mt-10 md:mt-0">
-  <div className="bg-white p-6 rounded-3xl shadow-lg w-full max-w-md border border-gray-100">
-    {/* Header */}
-    <div className="flex justify-between items-center mb-4">
-      <span className="flex items-center gap-2 font-semibold text-[#1A1A1A]">
-        <span className="w-2 h-2 bg-green-500 rounded-full"></span> Live Demo
-      </span>
-      <span className="text-sm text-gray-500">
-        Bubble Sort · <span className="font-semibold">{array.length}</span> bars
-      </span>
-    </div>
 
-    {/* Bars */}
-    <div className="flex items-end justify-center h-64 gap-2 bg-gradient-to-t from-gray-50 to-transparent rounded-xl p-4 overflow-hidden">
-      {array.map((value, idx) => {
-        const color = barColors[idx % barColors.length];
-        return (
-          <motion.div
-            key={idx}
-            animate={{
-              height: `${value * 3}px`,
-              backgroundColor: color,
-            }}
-            transition={{ type: "spring", stiffness: 200, damping: 20 }}
-            className="rounded-t-xl shadow-md"
-            style={{
-              width: "24px",
-              background: `linear-gradient(to top, ${color}, #fff)`,
-            }}
-          ></motion.div>
-        );
-      })}
-    </div>
+      {/* ✅ Right Side - D3 Bars */}
+      <div className="md:w-1/2 flex justify-center mt-10 md:mt-0">
+        <div className="bg-white p-6 rounded-3xl shadow-lg w-full max-w-md border border-gray-100">
+          {/* Header */}
+          <div className="flex justify-between items-center mb-4">
+            <span className="flex items-center gap-2 font-semibold text-[#1A1A1A]">
+              <span className="w-2 h-2 bg-green-500 rounded-full"></span> Live Demo
+            </span>
+            <span className="text-sm text-gray-500">
+              Bubble Sort · <span className="font-semibold">{array.length}</span> bars
+            </span>
+          </div>
 
-    {/* Stats */}
-    <div className="flex justify-between items-center mt-4 text-sm font-medium">
-      <span className="text-gray-600">Pass {pass}</span>
-      <span className="text-green-600">Comparisons: {comparisons}</span>
-      <span className="text-red-500">Swaps: {swaps}</span>
-    </div>
+          {/* ✅ D3 SVG for bars */}
+          <svg ref={svgRef} width={400} height={250} className="rounded-xl bg-gradient-to-t from-gray-50 to-transparent"></svg>
 
-    {/* Buttons */}
-    <div className="flex justify-center gap-4 mt-6">
-      <motion.button
-        onClick={generateArray}
-        disabled={isSorting}
-        className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 shadow"
-        whileHover={{ scale: 1.05 }}
-      >
-        Generate
-      </motion.button>
-      <motion.button
-        onClick={bubbleSort}
-        disabled={isSorting}
-        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 disabled:opacity-50 shadow"
-        whileHover={{ scale: 1.05 }}
-      >
-        Sort
-      </motion.button>
-    </div>
-  </div>
-</div>
+          {/* Stats */}
+          <div className="flex justify-between items-center mt-4 text-sm font-medium">
+            <span className="text-gray-600">Pass {pass}</span>
+            <span className="text-green-600">Comparisons: {comparisons}</span>
+            <span className="text-red-500">Swaps: {swaps}</span>
+          </div>
 
+          {/* Buttons */}
+          <div className="flex justify-center gap-4 mt-6">
+            <motion.button
+              onClick={generateArray}
+              disabled={isSorting}
+              className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 shadow"
+              whileHover={{ scale: 1.05 }}
+            >
+              Generate
+            </motion.button>
+            <motion.button
+              onClick={bubbleSort}
+              disabled={isSorting}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 disabled:opacity-50 shadow"
+              whileHover={{ scale: 1.05 }}
+            >
+              Sort
+            </motion.button>
+          </div>
+        </div>
+      </div>
     </section>
   );
 };

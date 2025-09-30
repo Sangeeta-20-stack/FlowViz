@@ -5,11 +5,12 @@ import { ChevronDown, Home, Code, Database, Info, Mail } from "lucide-react";
 
 const Navbar = () => {
   const [isAlgoOpen, setIsAlgoOpen] = useState(false);
+  const [isDSOpen, setIsDSOpen] = useState(false);
 
   const navLinks = [
     { name: "Home", href: "/", icon: <Home size={16} /> },
     { name: "Algorithms", dropdown: true, icon: <Code size={16} /> },
-    { name: "Data Structures", href: "/data-structures", icon: <Database size={16} /> },
+    { name: "Data Structures", dropdown: true, icon: <Database size={16} /> },
     { name: "About Us", href: "/about", icon: <Info size={16} /> },
     { name: "Contact", href: "/contact", icon: <Mail size={16} /> },
   ];
@@ -30,6 +31,32 @@ const Navbar = () => {
     { title: "Game Search", links: [{ name: "Overview", href: "/game-overview" }, { name: "Game Search Algorithms", href: "/game-visualizer" }] },
   ];
 
+  const dataStructures = [
+    { category: "Overview", links: [{ name: "Data Structures Overview", href: "/ds-overview" }] },
+  {
+    category: "Linear",
+    links: [
+      { name: "Stack", href: "/stack", sublinks: [
+        { name: "Overview", href: "/stack-overview" },
+        { name: "Algorithms", href: "/stack-algorithms" }
+      ]},
+      { name: "Queue", href: "/queue", sublinks: [
+        { name: "Overview", href: "/queue-overview" },
+        { name: "Algorithms", href: "/queue-algorithms" }
+      ]},
+      { name: "Linked List", href: "/linkedlist" },
+      { name: "Array", href: "/array" },
+    ],
+  },
+  {
+    category: "Non-Linear",
+    links: [
+      { name: "Tree", href: "/tree" },
+      { name: "Graph", href: "/graph" },
+    ],
+  },
+];
+
   return (
     <nav className="bg-white px-6 py-4 shadow-md fixed top-0 left-0 w-full z-50 border-b border-[#E0E0E0]">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -41,56 +68,159 @@ const Navbar = () => {
         {/* Links */}
         <ul className="hidden md:flex space-x-4 items-center">
           {navLinks.map((link) => {
-            if (link.dropdown) {
-              return (
-                <li
-                  key={link.name}
-                  className="relative"
-                  onMouseEnter={() => setIsAlgoOpen(true)}
-                  onMouseLeave={() => setIsAlgoOpen(false)}
-                >
-                  <button className="flex items-center gap-1 font-semibold px-4 py-2 rounded-full hover:bg-[#F5F5F5]">
-                    {link.name} <ChevronDown size={16} />
-                  </button>
+     if (link.name === "Algorithms") {
+  return (
+    <li
+      key={link.name}
+      className="relative"
+      onMouseEnter={() => setIsAlgoOpen(true)}
+      onMouseLeave={() => setIsAlgoOpen(false)}
+    >
+      <button className="flex items-center gap-1 font-semibold px-3 py-1.5 rounded-full hover:bg-[#F5F5F5]">
+        {link.icon} {link.name} <ChevronDown size={16} />
+      </button>
 
-                  {/* Algorithms dropdown - 3 columns */}
-                  <motion.div
-                    className="absolute top-12 left-0 bg-[#F5F5F5] rounded-lg shadow-lg w-[28rem] py-4 border border-[#E0E0E0] grid grid-cols-3 gap-4 px-4"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: isAlgoOpen ? 1 : 0, y: isAlgoOpen ? 0 : -10, transition: { duration: 0.2 } }}
-                  >
-                    {algorithms.map((algo, idx) => (
-                      <div key={idx}>
-                        <p className="font-semibold mb-1">{algo.title}</p>
-                        <ul className="pl-2">
-                          {algo.links.map((subLink, subIdx) => (
-                            <li key={subIdx} className="py-1">
-                              <Link
-                                to={subLink.href}
-                                className="text-sm hover:text-[#4DA6FF] hover:underline"
-                              >
-                                {subLink.name}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-                  </motion.div>
-                </li>
-              );
-            } else {
-              return (
-                <li key={link.name}>
+      {/* Algorithms dropdown */}
+      <motion.div
+        className="absolute top-10 left-0 bg-[#F5F5F5] rounded-lg shadow-lg w-[32rem] py-2 border border-[#E0E0E0] grid grid-cols-4 gap-x-2 gap-y-1 px-3"
+        initial={{ opacity: 0, y: -5 }}
+        animate={{
+          opacity: isAlgoOpen ? 1 : 0,
+          y: isAlgoOpen ? 0 : -5,
+          pointerEvents: isAlgoOpen ? "auto" : "none",
+          transition: { duration: 0.15 },
+        }}
+      >
+        {algorithms.map((algo, idx) => (
+          <div key={idx} className="flex flex-col">
+            <p className="font-bold mb-1 text-sm">{algo.title}</p>
+            <ul className="pl-1 space-y-0.5">
+              {algo.links.map((subLink, subIdx) => (
+                <li key={subIdx} className="py-0.5">
                   <Link
-                    to={link.href}
-                    className="px-4 py-2 font-semibold rounded-full flex items-center gap-2 hover:bg-[#F5F5F5]"
+                    to={subLink.href}
+                    className="text-sm hover:text-[#4DA6FF] hover:underline"
                   >
-                    {link.name}
+                    {subLink.name}
                   </Link>
                 </li>
-              );
-            }
+              ))}
+            </ul>
+          </div>
+        ))}
+      </motion.div>
+    </li>
+  );
+}
+
+
+
+            if (link.name === "Data Structures") {
+  return (
+    <li
+  key={link.name}
+  className="relative"
+  onMouseEnter={() => setIsDSOpen(true)}
+  onMouseLeave={() => setIsDSOpen(false)}
+>
+  <button className="flex items-center gap-1 font-semibold px-4 py-2 rounded-full hover:bg-[#F5F5F5]">
+    {link.icon} {link.name} <ChevronDown size={16} />
+  </button>
+
+  {/* Data Structures dropdown */}
+  <motion.div
+    className="absolute top-12 left-0 bg-[#F5F5F5] rounded-lg shadow-lg w-[30rem] py-4 border border-[#E0E0E0] grid grid-cols-3 gap-4 px-4"
+    initial={{ opacity: 0, y: -10 }}
+    animate={{
+      opacity: isDSOpen ? 1 : 0,
+      y: isDSOpen ? 0 : -10,
+      pointerEvents: isDSOpen ? "auto" : "none",
+      transition: { duration: 0.2 },
+    }}
+  >
+    {/* Overview */}
+    <div>
+      <p className="font-bold mb-2 border-b border-gray-300 pb-1">Overview</p>
+      <ul className="pl-2">
+        {dataStructures[0].links.map((link, idx) => (
+          <li key={idx} className="py-1">
+            <Link
+              to={link.href}
+              className="text-sm hover:text-[#4DA6FF] hover:underline"
+            >
+              {link.name}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    {/* Linear */}
+    <div>
+      <p className="font-semibold mb-2 border-b border-gray-300 pb-1">Linear</p>
+      <ul className="pl-2 space-y-1">
+        {dataStructures[1].links.map((link, idx) => (
+          <li key={idx} className="py-1 pl-2">
+            <Link
+              to={link.href}
+              className="text-sm hover:text-[#4DA6FF] hover:underline font-medium"
+            >
+              {link.name}
+            </Link>
+            {/* Sublinks dropdown for Stack / Queue */}
+            {link.sublinks && (
+              <ul className="pl-4 mt-1 space-y-1">
+                {link.sublinks.map((sublink, sidx) => (
+                  <li key={sidx}>
+                    <Link
+                      to={sublink.href}
+                      className="text-xs hover:text-[#4DA6FF] hover:underline"
+                    >
+                      {sublink.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    {/* Non-Linear */}
+    <div>
+      <p className="font-semibold mb-2 border-b border-gray-300 pb-1">Non-Linear</p>
+      <ul className="pl-2 space-y-1">
+        {dataStructures[2].links.map((link, idx) => (
+          <li key={idx} className="py-1 pl-2">
+            <Link
+              to={link.href}
+              className="text-sm hover:text-[#4DA6FF] hover:underline"
+            >
+              {link.name}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </motion.div>
+</li>
+
+      );
+    }
+
+              
+
+            return (
+              <li key={link.name}>
+                <Link
+                  to={link.href}
+                  className="px-4 py-2 font-semibold rounded-full flex items-center gap-2 hover:bg-[#F5F5F5]"
+                >
+                  {link.icon} {link.name}
+                </Link>
+              </li>
+            );
           })}
         </ul>
       </div>

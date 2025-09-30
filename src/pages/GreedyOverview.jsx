@@ -7,56 +7,64 @@ import Footer from "../components/Footer";
 
 const GreedyOverview = () => {
   const algorithms = [
-    {
-      name: "Activity Selection",
-      desc: "Selects the maximum number of activities that don't overlap by always choosing the next activity that finishes earliest.",
-      time: "O(n log n) due to sorting",
-      space: "O(1)",
-      notes: "Classic example of greedy strategy for interval scheduling.",
-    },
-    {
-      name: "Fractional Knapsack",
-      desc: "Maximizes the value of items in a knapsack when fractions of items are allowed by picking the highest value/weight ratio first.",
-      time: "O(n log n) due to sorting",
-      space: "O(1)",
-      notes: "Greedy works here; full knapsack (0/1) requires DP.",
-    },
-    {
-      name: "Coin Change (Greedy)",
-      desc: "Finds minimum coins for a value using the largest denomination first (works for canonical coin systems).",
-      time: "O(n)",
-      space: "O(1)",
-      notes: "Greedy may fail for non-standard coin systems.",
-    },
-    {
-      name: "Job Sequencing",
-      desc: "Schedules jobs with deadlines and profits to maximize total profit by picking highest profit jobs first.",
-      time: "O(n log n) due to sorting",
-      space: "O(n)",
-      notes: "Greedy approach uses profit-based ordering with a schedule array.",
-    },
-    {
-      name: "Huffman Coding",
-      desc: "Builds an optimal prefix-free binary code for symbols by repeatedly combining the two least frequent symbols.",
-      time: "O(n log n)",
-      space: "O(n)",
-      notes: "Greedy approach for data compression and encoding.",
-    },
-    {
-      name: "Kruskal's Minimum Spanning Tree",
-      desc: "Constructs MST by always choosing the edge with the smallest weight that doesn't form a cycle.",
-      time: "O(E log E)",
-      space: "O(V + E)",
-      notes: "Greedy works because MST has optimal substructure and edge selection is safe.",
-    },
-    {
-      name: "Prim's Minimum Spanning Tree",
-      desc: "Starts from a node and grows MST by always adding the minimum weight edge connecting tree to a new vertex.",
-      time: "O(E log V) with heap",
-      space: "O(V + E)",
-      notes: "Greedy approach similar to Dijkstra for MST construction.",
-    }
-  ];
+  {
+    name: "Activity Selection",
+    desc: "Selects the maximum number of activities that don't overlap by always choosing the next activity that finishes earliest.",
+    time: "O(n log n) due to sorting",
+    space: "O(1)",
+    notes: "Classic example of greedy strategy for interval scheduling.",
+    diagram: "https://www.interviewbit.com/blog/wp-content/uploads/2021/10/Image-1-8.png",
+  },
+  {
+    name: "Fractional Knapsack",
+    desc: "Maximizes the value of items in a knapsack when fractions of items are allowed by picking the highest value/weight ratio first.",
+    time: "O(n log n) due to sorting",
+    space: "O(1)",
+    notes: "Greedy works here; full knapsack (0/1) requires DP.",
+    diagram: "https://miro.medium.com/v2/resize:fit:1400/1*pUTbOW0WiQGr5HChOgXMwQ.gif",
+  },
+  {
+    name: "Coin Change (Greedy)",
+    desc: "Finds minimum coins for a value using the largest denomination first (works for canonical coin systems).",
+    time: "O(n)",
+    space: "O(1)",
+    notes: "Greedy may fail for non-standard coin systems.",
+    diagram: "https://miro.medium.com/1*A3jpMtpolzw1w10mKhZjxA.png",
+  },
+  {
+    name: "Job Sequencing",
+    desc: "Schedules jobs with deadlines and profits to maximize total profit by picking highest profit jobs first.",
+    time: "O(n log n) due to sorting",
+    space: "O(n)",
+    notes: "Greedy approach uses profit-based ordering with a schedule array.",
+    diagram: "https://miro.medium.com/1*8-BFChf3zGLfVkOuxTLOeQ.gif",
+  },
+  {
+    name: "Huffman Coding",
+    desc: "Builds an optimal prefix-free binary code for symbols by repeatedly combining the two least frequent symbols.",
+    time: "O(n log n)",
+    space: "O(n)",
+    notes: "Greedy approach for data compression and encoding.",
+    diagram: "https://upload.wikimedia.org/wikipedia/commons/c/c8/Huffman_algorithm.gif",
+  },
+  {
+    name: "Kruskal's Minimum Spanning Tree",
+    desc: "Constructs MST by always choosing the edge with the smallest weight that doesn't form a cycle.",
+    time: "O(E log E)",
+    space: "O(V + E)",
+    notes: "Greedy works because MST has optimal substructure and edge selection is safe.",
+    diagram: "https://sahebg.github.io/images/Algo/kruskal.gif",
+  },
+  {
+    name: "Prim's Minimum Spanning Tree",
+    desc: "Starts from a node and grows MST by always adding the minimum weight edge connecting tree to a new vertex.",
+    time: "O(E log V) with heap",
+    space: "O(V + E)",
+    notes: "Greedy approach similar to Dijkstra for MST construction.",
+    diagram: "https://miro.medium.com/1*mX-VBfyuFfSeDjFuDTpKVA.gif",
+  }
+];
+
 
   const fadeInUp = {
     hidden: { opacity: 0, y: 40 },
@@ -110,35 +118,36 @@ const GreedyOverview = () => {
           </ul>
         </motion.div>
 
-        {/* Algorithm Cards */}
-        <div className="grid gap-10 md:grid-cols-2">
-          {algorithms.map((algo, idx) => (
-            <motion.div
-              key={idx}
-              variants={fadeInUp}
-              initial="hidden"
-              animate="visible"
-              transition={{ delay: idx * 0.1 }}
-              className="bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-xl p-8"
-            >
-              <h2 className="text-3xl font-semibold mb-3 text-[#1A1A1A]">{algo.name}</h2>
-              <p className="text-[#555555] mb-5 text-lg">{algo.desc}</p>
-
-              {/* Time & Space */}
-              <div className="flex flex-col gap-3 text-lg">
-                <span className="flex items-center gap-2">
-                  <Clock size={20} className="text-blue-500" /> <strong>Time Complexity:</strong> {algo.time}
-                </span>
-                <span className="flex items-center gap-2">
-                  <Layers size={20} className="text-green-500" /> <strong>Space Complexity:</strong> {algo.space}
-                </span>
-                <span className="flex items-center gap-2">
-                  <Info size={20} className="text-orange-500" /> <strong>Notes:</strong> {algo.notes}
-                </span>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+         {/* Algorithm Cards */}
+                             <div className="grid gap-10 md:grid-cols-2">
+                               {algorithms.map((algo, idx) => (
+                                 <motion.div
+                                   key={idx}
+                                   variants={fadeInUp}
+                                   initial="hidden"
+                                   animate="visible"
+                                   transition={{ delay: idx * 0.1 }}
+                                   className="bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-xl p-6"
+                                 >
+                                   <h2 className="text-2xl md:text-3xl font-semibold mb-2">{algo.name}</h2>
+                                   <img src={algo.diagram} alt={`${algo.name} diagram`} className="w-full h-48 object-contain mb-4 rounded-lg border" />
+                                   <p className="text-[#555555] mb-3 text-lg">{algo.desc}</p>
+                                   <div className="flex flex-col gap-2 text-lg">
+                                     <span className="flex items-center gap-2">
+                                       <Clock size={18} className="text-blue-500" /> <strong>Time Complexity:</strong> {algo.time}
+                                     </span>
+                                     <span className="flex items-center gap-2">
+                                       <Layers size={18} className="text-green-500" /> <strong>Space Complexity:</strong> {algo.space}
+                                     </span>
+                                     <span className="flex items-center gap-2">
+                                       <Info size={18} className="text-orange-500" /> <strong>Notes:</strong> {algo.notes}
+                                     </span>
+                                   </div>
+                                 </motion.div>
+                               ))}
+                             </div>
+              
+        
 
         {/* Complexity Analysis Table */}
         <motion.div variants={fadeInUp} initial="hidden" animate="visible" className="mt-20">

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { searchingCodes } from "../data/codes";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import Search from "../components/Search";
 
 const algorithms = [
   { key: "linear", label: "Linear Search" },
@@ -31,7 +32,6 @@ const SearchingVisualizer = () => {
   const [comparisons, setComparisons] = useState(0);
   const [highlight, setHighlight] = useState({ current: -1, left: -1, right: -1, mid: -1, prev: -1 });
 
-  // Generate random array
   const generateArray = () => {
     const arr = Array.from({ length: 20 }, () => Math.floor(Math.random() * 90) + 10);
     setArray(arr);
@@ -181,7 +181,7 @@ const SearchingVisualizer = () => {
         await sleep(300);
         if (arr[mid2] === target) return mid2;
         if (target < arr[mid1]) return search(l, mid1 - 1);
-        else if (target > arr[mid2]) return search(mid2 + 1, r);
+        else if (target > arr[mid2]) return search(mid1 + 1, mid2 - 1);
         else return search(mid1 + 1, mid2 - 1);
       }
       return -1;
@@ -271,27 +271,8 @@ const SearchingVisualizer = () => {
               </span>
             </div>
 
-            <div className="flex items-end justify-center h-96 gap-2 bg-gray-50 rounded-xl p-6 overflow-hidden">
-              {array.map((value, idx) => {
-                let color = blockColors[idx % blockColors.length];
-                if (idx === highlight.current) color = "#EF4444"; // Currently being compared
-                else if (idx === highlight.left) color = "#3B82F6"; // Left pointer
-                else if (idx === highlight.right) color = "#10B981"; // Right pointer
-                else if (idx === highlight.mid) color = "#F59E0B"; // Mid pointer
-                else if (idx === highlight.prev) color = "#A3A3A3"; // Previously skipped
-                return (
-                  <motion.div
-                    key={idx}
-                    animate={{ backgroundColor: color }}
-                    transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                    className="rounded-t-xl shadow-md"
-                    style={{ width: "24px", marginBottom: "4px", height: `${value * 3}px`, background: `linear-gradient(to top, ${color}, #fff)` }}
-                  >
-                    <span className="text-xs text-center block pt-1">{value}</span>
-                  </motion.div>
-                );
-              })}
-            </div>
+            {/* ✅ Use Search component */}
+            <Search array={array} highlight={highlight} blockColors={blockColors} />
 
             <div className="flex justify-between items-center mt-4 text-sm font-medium">
               <span className="text-green-600">Comparisons: {comparisons}</span>
