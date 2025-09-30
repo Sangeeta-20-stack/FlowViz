@@ -66,20 +66,7 @@ const Footer = () => {
           </motion.a>
         </motion.div>
 
-        {/* Resources */}
-        <motion.div className="flex flex-col gap-2" variants={fadeInUp}>
-          <h2 className="font-semibold text-lg mb-2">Resources</h2>
-          {["Documentation", "FAQ", "Tutorials", "Blog"].map((res, idx) => (
-            <motion.a
-              key={idx}
-              href="#"
-              className="hover:text-[#4B4B4B] transition"
-              whileHover={{ scale: 1.05, color: "#F5F5F5" }}
-            >
-              {res}
-            </motion.a>
-          ))}
-        </motion.div>
+        
 
         {/* Stay Updated */}
         <motion.div className="flex flex-col gap-4" variants={fadeInUp}>

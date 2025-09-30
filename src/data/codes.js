@@ -5694,7 +5694,3889 @@ function optimalMove(heaps){
 const heaps = [3,4,5];
 const move = optimalMove(heaps);
 console.log(\`Remove \${move.remove} from heap \${move.heap}\`);`
+},
+};
+
+export const stackCodes = {
+  // 1. Implement Stack using Array
+  stackArray: {
+    java: `// Implement Stack using Array
+class Stack {
+    static final int MAX = 1000;
+    int top;
+    int a[] = new int[MAX];
+
+    Stack(){ top = -1; }
+
+    boolean push(int x){
+        if(top >= MAX-1) return false;
+        a[++top] = x;
+        return true;
+    }
+
+    int pop(){
+        if(top < 0) return -1;
+        return a[top--];
+    }
+
+    int peek(){
+        if(top < 0) return -1;
+        return a[top];
+    }
+
+    boolean isEmpty(){ return (top < 0); }
+}`,
+
+    python: `# Implement Stack using Array
+class Stack:
+    def __init__(self, capacity=1000):
+        self.stack = []
+        self.capacity = capacity
+
+    def push(self, x):
+        if len(self.stack) >= self.capacity:
+            return False
+        self.stack.append(x)
+        return True
+
+    def pop(self):
+        if not self.stack:
+            return None
+        return self.stack.pop()
+
+    def peek(self):
+        return self.stack[-1] if self.stack else None
+
+    def isEmpty(self):
+        return len(self.stack) == 0`,
+
+    cpp: `// Implement Stack using Array
+#include <bits/stdc++.h>
+using namespace std;
+#define MAX 1000
+
+class Stack {
+    int top;
+public:
+    int a[MAX];
+    Stack(){ top = -1; }
+
+    bool push(int x){
+        if(top >= MAX-1) return false;
+        a[++top] = x;
+        return true;
+    }
+
+    int pop(){
+        if(top < 0) return -1;
+        return a[top--];
+    }
+
+    int peek(){
+        if(top < 0) return -1;
+        return a[top];
+    }
+
+    bool isEmpty(){ return (top < 0); }
+};`,
+
+    javascript: `// Implement Stack using Array
+class Stack {
+  constructor(capacity=1000){
+    this.items = [];
+    this.capacity = capacity;
+  }
+
+  push(x){
+    if(this.items.length >= this.capacity) return false;
+    this.items.push(x);
+    return true;
+  }
+
+  pop(){
+    if(this.items.length === 0) return null;
+    return this.items.pop();
+  }
+
+  peek(){
+    return this.items.length ? this.items[this.items.length-1] : null;
+  }
+
+  isEmpty(){
+    return this.items.length === 0;
+  }
+}`
+  },
+
+  // 2. Implement Stack using Linked List
+  stackLinkedList: {
+    java: `// Implement Stack using Linked List
+class Node {
+    int data;
+    Node next;
+    Node(int d){ data = d; next = null; }
 }
 
+class Stack {
+    Node top;
+
+    void push(int x){
+        Node node = new Node(x);
+        node.next = top;
+        top = node;
+    }
+
+    int pop(){
+        if(top == null) return -1;
+        int res = top.data;
+        top = top.next;
+        return res;
+    }
+
+    int peek(){
+        return (top != null) ? top.data : -1;
+    }
+
+    boolean isEmpty(){
+        return top == null;
+    }
+}`,
+
+    python: `# Implement Stack using Linked List
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class Stack:
+    def __init__(self):
+        self.top = None
+
+    def push(self, x):
+        newNode = Node(x)
+        newNode.next = self.top
+        self.top = newNode
+
+    def pop(self):
+        if not self.top: return None
+        val = self.top.data
+        self.top = self.top.next
+        return val
+
+    def peek(self):
+        return self.top.data if self.top else None
+
+    def isEmpty(self):
+        return self.top is None`,
+
+    cpp: `// Implement Stack using Linked List
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+    Node(int d){ data = d; next = NULL; }
 };
+
+class Stack {
+    Node* top;
+public:
+    Stack(){ top = NULL; }
+
+    void push(int x){
+        Node* node = new Node(x);
+        node->next = top;
+        top = node;
+    }
+
+    int pop(){
+        if(!top) return -1;
+        int val = top->data;
+        top = top->next;
+        return val;
+    }
+
+    int peek(){
+        return top ? top->data : -1;
+    }
+
+    bool isEmpty(){
+        return top == NULL;
+    }
+};`,
+
+    javascript: `// Implement Stack using Linked List
+class Node {
+  constructor(data){
+    this.data = data;
+    this.next = null;
+  }
+}
+
+class Stack {
+  constructor(){
+    this.top = null;
+  }
+
+  push(x){
+    let node = new Node(x);
+    node.next = this.top;
+    this.top = node;
+  }
+
+  pop(){
+    if(!this.top) return null;
+    let val = this.top.data;
+    this.top = this.top.next;
+    return val;
+  }
+
+  peek(){
+    return this.top ? this.top.data : null;
+  }
+
+  isEmpty(){
+    return this.top === null;
+  }
+}`
+  },
+
+  // 3. Implement Two Stacks in a Single Array
+  twoStacksArray: {
+    java: `// Implement Two Stacks in One Array
+class TwoStacks {
+    int[] arr;
+    int top1, top2, size;
+
+    TwoStacks(int n){
+        size = n;
+        arr = new int[n];
+        top1 = -1;
+        top2 = n;
+    }
+
+    void push1(int x){
+        if(top1 < top2-1) arr[++top1] = x;
+    }
+
+    void push2(int x){
+        if(top1 < top2-1) arr[--top2] = x;
+    }
+
+    int pop1(){
+        return (top1 >= 0) ? arr[top1--] : -1;
+    }
+
+    int pop2(){
+        return (top2 < size) ? arr[top2++] : -1;
+    }
+}`,
+
+    python: `# Implement Two Stacks in One Array
+class TwoStacks:
+    def __init__(self, n):
+        self.size = n
+        self.arr = [0]*n
+        self.top1 = -1
+        self.top2 = n
+
+    def push1(self, x):
+        if self.top1 < self.top2-1:
+            self.top1 += 1
+            self.arr[self.top1] = x
+
+    def push2(self, x):
+        if self.top1 < self.top2-1:
+            self.top2 -= 1
+            self.arr[self.top2] = x
+
+    def pop1(self):
+        if self.top1 >= 0:
+            val = self.arr[self.top1]
+            self.top1 -= 1
+            return val
+        return None
+
+    def pop2(self):
+        if self.top2 < self.size:
+            val = self.arr[self.top2]
+            self.top2 += 1
+            return val
+        return None`,
+
+    cpp: `// Implement Two Stacks in One Array
+#include <bits/stdc++.h>
+using namespace std;
+
+class TwoStacks {
+    int* arr;
+    int top1, top2, size;
+public:
+    TwoStacks(int n){
+        size = n;
+        arr = new int[n];
+        top1 = -1;
+        top2 = n;
+    }
+
+    void push1(int x){
+        if(top1 < top2-1) arr[++top1] = x;
+    }
+
+    void push2(int x){
+        if(top1 < top2-1) arr[--top2] = x;
+    }
+
+    int pop1(){
+        return (top1 >= 0) ? arr[top1--] : -1;
+    }
+
+    int pop2(){
+        return (top2 < size) ? arr[top2++] : -1;
+    }
+};`,
+
+    javascript: `// Implement Two Stacks in One Array
+class TwoStacks {
+  constructor(n){
+    this.size = n;
+    this.arr = new Array(n);
+    this.top1 = -1;
+    this.top2 = n;
+  }
+
+  push1(x){
+    if(this.top1 < this.top2-1) this.arr[++this.top1] = x;
+  }
+
+  push2(x){
+    if(this.top1 < this.top2-1) this.arr[--this.top2] = x;
+  }
+
+  pop1(){
+    return (this.top1 >= 0) ? this.arr[this.top1--] : null;
+  }
+
+  pop2(){
+    return (this.top2 < this.size) ? this.arr[this.top2++] : null;
+  }
+}`
+  },
+
+  // 4. Implement Stack using Queues
+  stackUsingQueues: {
+    java: `// Implement Stack using Queues
+import java.util.*;
+
+class Stack {
+    Queue<Integer> q1 = new LinkedList<>();
+    Queue<Integer> q2 = new LinkedList<>();
+
+    void push(int x){
+        q2.add(x);
+        while(!q1.isEmpty()){
+            q2.add(q1.remove());
+        }
+        Queue<Integer> temp = q1;
+        q1 = q2;
+        q2 = temp;
+    }
+
+    int pop(){
+        if(q1.isEmpty()) return -1;
+        return q1.remove();
+    }
+
+    int top(){
+        if(q1.isEmpty()) return -1;
+        return q1.peek();
+    }
+
+    boolean isEmpty(){
+        return q1.isEmpty();
+    }
+}`,
+
+    python: `# Implement Stack using Queues
+from collections import deque
+
+class Stack:
+    def __init__(self):
+        self.q1 = deque()
+        self.q2 = deque()
+
+    def push(self, x):
+        self.q2.append(x)
+        while self.q1:
+            self.q2.append(self.q1.popleft())
+        self.q1, self.q2 = self.q2, self.q1
+
+    def pop(self):
+        return self.q1.popleft() if self.q1 else None
+
+    def top(self):
+        return self.q1[0] if self.q1 else None
+
+    def isEmpty(self):
+        return not self.q1`,
+
+    cpp: `// Implement Stack using Queues
+#include <bits/stdc++.h>
+using namespace std;
+
+class Stack {
+    queue<int> q1, q2;
+public:
+    void push(int x){
+        q2.push(x);
+        while(!q1.empty()){
+            q2.push(q1.front());
+            q1.pop();
+        }
+        swap(q1, q2);
+    }
+
+    int pop(){
+        if(q1.empty()) return -1;
+        int val = q1.front();
+        q1.pop();
+        return val;
+    }
+
+    int top(){
+        return q1.empty() ? -1 : q1.front();
+    }
+
+    bool isEmpty(){
+        return q1.empty();
+    }
+};`,
+
+    javascript: `// Implement Stack using Queues
+class Stack {
+  constructor(){
+    this.q1 = [];
+    this.q2 = [];
+  }
+
+  push(x){
+    this.q2.push(x);
+    while(this.q1.length){
+      this.q2.push(this.q1.shift());
+    }
+    [this.q1, this.q2] = [this.q2, this.q1];
+  }
+
+  pop(){
+    return this.q1.length ? this.q1.shift() : null;
+  }
+
+  top(){
+    return this.q1.length ? this.q1[0] : null;
+  }
+
+  isEmpty(){
+    return this.q1.length === 0;
+  }
+}`
+  },
+
+  // 5. Implement Queue using Stacks
+  queueUsingStacks: {
+    java: `// Implement Queue using Stacks
+import java.util.*;
+
+class Queue {
+    Stack<Integer> s1 = new Stack<>();
+    Stack<Integer> s2 = new Stack<>();
+
+    void enqueue(int x){
+        s1.push(x);
+    }
+
+    int dequeue(){
+        if(s1.isEmpty() && s2.isEmpty()) return -1;
+        if(s2.isEmpty()){
+            while(!s1.isEmpty()){
+                s2.push(s1.pop());
+            }
+        }
+        return s2.pop();
+    }
+}`,
+
+    python: `# Implement Queue using Stacks
+class Queue:
+    def __init__(self):
+        self.s1 = []
+        self.s2 = []
+
+    def enqueue(self, x):
+        self.s1.append(x)
+
+    def dequeue(self):
+        if not self.s1 and not self.s2:
+            return None
+        if not self.s2:
+            while self.s1:
+                self.s2.append(self.s1.pop())
+        return self.s2.pop()`,
+
+    cpp: `// Implement Queue using Stacks
+#include <bits/stdc++.h>
+using namespace std;
+
+class Queue {
+    stack<int> s1, s2;
+public:
+    void enqueue(int x){
+        s1.push(x);
+    }
+
+    int dequeue(){
+        if(s1.empty() && s2.empty()) return -1;
+        if(s2.empty()){
+            while(!s1.empty()){
+                s2.push(s1.top());
+                s1.pop();
+            }
+        }
+        int val = s2.top();
+        s2.pop();
+        return val;
+    }
+};`,
+
+    javascript: `// Implement Queue using Stacks
+class Queue {
+  constructor(){
+    this.s1 = [];
+    this.s2 = [];
+  }
+
+  enqueue(x){
+    this.s1.push(x);
+  }
+
+  dequeue(){
+    if(!this.s1.length && !this.s2.length) return null;
+    if(!this.s2.length){
+      while(this.s1.length){
+        this.s2.push(this.s1.pop());
+      }
+    }
+    return this.s2.pop();
+  }
+}`
+  },
+  
+  balancedParentheses: {
+    java: `// Balanced Parentheses
+import java.util.Stack;
+class BalancedParentheses {
+    static boolean isValid(String s){
+        Stack<Character> st = new Stack<>();
+        for(char c : s.toCharArray()){
+            if(c=='(' || c=='{' || c=='[') st.push(c);
+            else {
+                if(st.isEmpty()) return false;
+                char top = st.pop();
+                if((c==')' && top!='(') || (c=='}' && top!='{') || (c==']' && top!='[')) return false;
+            }
+        }
+        return st.isEmpty();
+    }
+}`,
+    python: `# Balanced Parentheses
+def isValid(s):
+    stack = []
+    mapping = {')':'(', '}':'{', ']':'['}
+    for c in s:
+        if c in mapping.values():
+            stack.append(c)
+        elif c in mapping:
+            if not stack or stack.pop() != mapping[c]:
+                return False
+    return not stack`,
+    cpp: `// Balanced Parentheses
+#include <bits/stdc++.h>
+using namespace std;
+bool isValid(string s){
+    stack<char> st;
+    for(char c:s){
+        if(c=='('||c=='{'||c=='[') st.push(c);
+        else{
+            if(st.empty()) return false;
+            char top=st.top(); st.pop();
+            if((c==')'&&top!='(')||(c=='}'&&top!='{')||(c==']'&&top!='[')) return false;
+        }
+    }
+    return st.empty();
+}`,
+    javascript: `// Balanced Parentheses
+function isValid(s){
+    const stack = [];
+    const map = {')':'(', '}':'{', ']':'['};
+    for(const c of s){
+        if('({['.includes(c)) stack.push(c);
+        else {
+            if(stack.pop() !== map[c]) return false;
+        }
+    }
+    return stack.length === 0;
+}`
+  },
+
+  nextGreaterElement: {
+    java: `// Next Greater Element
+import java.util.*;
+class NGE {
+    static int[] nextGreater(int[] arr){
+        int n=arr.length;
+        int[] res = new int[n];
+        Stack<Integer> st = new Stack<>();
+        for(int i=n-1;i>=0;i--){
+            while(!st.isEmpty() && st.peek()<=arr[i]) st.pop();
+            res[i] = st.isEmpty()?-1:st.peek();
+            st.push(arr[i]);
+        }
+        return res;
+    }
+}`,
+    python: `# Next Greater Element
+def next_greater(arr):
+    stack, res = [], [-1]*len(arr)
+    for i in range(len(arr)-1,-1,-1):
+        while stack and stack[-1]<=arr[i]:
+            stack.pop()
+        res[i] = stack[-1] if stack else -1
+        stack.append(arr[i])
+    return res`,
+    cpp: `// Next Greater Element
+#include <bits/stdc++.h>
+using namespace std;
+vector<int> nextGreater(vector<int>& arr){
+    int n=arr.size();
+    vector<int> res(n,-1);
+    stack<int> st;
+    for(int i=n-1;i>=0;i--){
+        while(!st.empty() && st.top()<=arr[i]) st.pop();
+        if(!st.empty()) res[i]=st.top();
+        st.push(arr[i]);
+    }
+    return res;
+}`,
+    javascript: `// Next Greater Element
+function nextGreater(arr){
+    const stack=[], res=new Array(arr.length).fill(-1);
+    for(let i=arr.length-1;i>=0;i--){
+        while(stack.length && stack[stack.length-1]<=arr[i]) stack.pop();
+        if(stack.length) res[i]=stack[stack.length-1];
+        stack.push(arr[i]);
+    }
+    return res;
+}`
+  },
+
+  nextSmallerElement: {
+    java: `// Next Smaller Element
+import java.util.*;
+class NSE {
+    static int[] nextSmaller(int[] arr){
+        int n=arr.length;
+        int[] res = new int[n];
+        Stack<Integer> st = new Stack<>();
+        for(int i=n-1;i>=0;i--){
+            while(!st.isEmpty() && st.peek()>=arr[i]) st.pop();
+            res[i] = st.isEmpty()?-1:st.peek();
+            st.push(arr[i]);
+        }
+        return res;
+    }
+}`,
+    python: `# Next Smaller Element
+def next_smaller(arr):
+    stack, res = [], [-1]*len(arr)
+    for i in range(len(arr)-1,-1,-1):
+        while stack and stack[-1]>=arr[i]:
+            stack.pop()
+        res[i] = stack[-1] if stack else -1
+        stack.append(arr[i])
+    return res`,
+    cpp: `// Next Smaller Element
+#include <bits/stdc++.h>
+using namespace std;
+vector<int> nextSmaller(vector<int>& arr){
+    int n=arr.size();
+    vector<int> res(n,-1);
+    stack<int> st;
+    for(int i=n-1;i>=0;i--){
+        while(!st.empty() && st.top()>=arr[i]) st.pop();
+        if(!st.empty()) res[i]=st.top();
+        st.push(arr[i]);
+    }
+    return res;
+}`,
+    javascript: `// Next Smaller Element
+function nextSmaller(arr){
+    const stack=[], res=new Array(arr.length).fill(-1);
+    for(let i=arr.length-1;i>=0;i--){
+        while(stack.length && stack[stack.length-1]>=arr[i]) stack.pop();
+        if(stack.length) res[i]=stack[stack.length-1];
+        stack.push(arr[i]);
+    }
+    return res;
+}`
+  },
+
+  stockSpan: {
+    java: `// Stock Span Problem
+import java.util.*;
+class StockSpan {
+    static int[] calculateSpan(int[] price){
+        int n=price.length;
+        int[] span = new int[n];
+        Stack<Integer> st = new Stack<>();
+        for(int i=0;i<n;i++){
+            while(!st.isEmpty() && price[st.peek()]<=price[i]) st.pop();
+            span[i] = st.isEmpty()?i+1:i-st.peek();
+            st.push(i);
+        }
+        return span;
+    }
+}`,
+    python: `# Stock Span Problem
+def calculate_span(price):
+    stack, span = [], []
+    for i,p in enumerate(price):
+        while stack and price[stack[-1]]<=p:
+            stack.pop()
+        span.append(i+1 if not stack else i-stack[-1])
+        stack.append(i)
+    return span`,
+    cpp: `// Stock Span Problem
+#include <bits/stdc++.h>
+using namespace std;
+vector<int> calculateSpan(vector<int>& price){
+    int n=price.size();
+    vector<int> span(n);
+    stack<int> st;
+    for(int i=0;i<n;i++){
+        while(!st.empty() && price[st.top()]<=price[i]) st.pop();
+        span[i]=st.empty()?i+1:i-st.top();
+        st.push(i);
+    }
+    return span;
+}`,
+    javascript: `// Stock Span Problem
+function calculateSpan(price){
+    const stack=[], span=[];
+    for(let i=0;i<price.length;i++){
+        while(stack.length && price[stack[stack.length-1]]<=price[i]) stack.pop();
+        span.push(stack.length===0?i+1:i-stack[stack.length-1]);
+        stack.push(i);
+    }
+    return span;
+}`
+  },
+
+  celebrityProblem: {
+    java: `// Celebrity Problem
+import java.util.*;
+class Celebrity {
+    static int findCelebrity(int[][] M, int n){
+        Stack<Integer> st = new Stack<>();
+        for(int i=0;i<n;i++) st.push(i);
+        while(st.size()>=2){
+            int a=st.pop(), b=st.pop();
+            if(M[a][b]==1) st.push(b);
+            else st.push(a);
+        }
+        int c = st.pop();
+        for(int i=0;i<n;i++){
+            if(i!=c && (M[c][i]==1 || M[i][c]==0)) return -1;
+        }
+        return c;
+    }
+}`,
+    python: `# Celebrity Problem
+def find_celebrity(M):
+    n=len(M)
+    stack=list(range(n))
+    while len(stack)>=2:
+        a,b=stack.pop(),stack.pop()
+        stack.append(b if M[a][b]==1 else a)
+    c=stack.pop()
+    if all(i==c or (M[c][i]==0 and M[i][c]==1) for i in range(n)):
+        return c
+    return -1`,
+    cpp: `// Celebrity Problem
+#include <bits/stdc++.h>
+using namespace std;
+int findCelebrity(vector<vector<int>>& M){
+    int n=M.size();
+    stack<int> st;
+    for(int i=0;i<n;i++) st.push(i);
+    while(st.size()>=2){
+        int a=st.top(); st.pop();
+        int b=st.top(); st.pop();
+        st.push(M[a][b]==1?b:a);
+    }
+    int c=st.top(); st.pop();
+    for(int i=0;i<n;i++){
+        if(i!=c && (M[c][i]==1 || M[i][c]==0)) return -1;
+    }
+    return c;
+}`,
+    javascript: `// Celebrity Problem
+function findCelebrity(M){
+    let n=M.length;
+    const stack=[];
+    for(let i=0;i<n;i++) stack.push(i);
+    while(stack.length>=2){
+        const a=stack.pop(), b=stack.pop();
+        stack.push(M[a][b]===1?b:a);
+    }
+    const c=stack.pop();
+    for(let i=0;i<n;i++){
+        if(i!==c && (M[c][i]===1 || M[i][c]===0)) return -1;
+    }
+    return c;
+}`
+  },
+
+  evaluatePostfix: {
+    java: `// Evaluate Postfix Expression
+import java.util.*;
+class PostfixEval {
+    static int eval(String exp){
+        Stack<Integer> st = new Stack<>();
+        for(char c: exp.toCharArray()){
+            if(Character.isDigit(c)) st.push(c-'0');
+            else{
+                int b=st.pop(), a=st.pop();
+                switch(c){
+                    case '+': st.push(a+b); break;
+                    case '-': st.push(a-b); break;
+                    case '*': st.push(a*b); break;
+                    case '/': st.push(a/b); break;
+                }
+            }
+        }
+        return st.pop();
+    }
+}`,
+    python: `# Evaluate Postfix Expression
+def eval_postfix(exp):
+    stack=[]
+    for c in exp:
+        if c.isdigit(): stack.append(int(c))
+        else:
+            b,a=stack.pop(),stack.pop()
+            stack.append(a+b if c=='+' else a-b if c=='-' else a*b if c=='*' else a//b)
+    return stack.pop()`,
+    cpp: `// Evaluate Postfix Expression
+#include <bits/stdc++.h>
+using namespace std;
+int evalPostfix(string exp){
+    stack<int> st;
+    for(char c:exp){
+        if(isdigit(c)) st.push(c-'0');
+        else{
+            int b=st.top(); st.pop();
+            int a=st.top(); st.pop();
+            if(c=='+') st.push(a+b);
+            else if(c=='-') st.push(a-b);
+            else if(c=='*') st.push(a*b);
+            else if(c=='/') st.push(a/b);
+        }
+    }
+    return st.top();
+}`,
+    javascript: `// Evaluate Postfix Expression
+function evalPostfix(exp){
+    const stack=[];
+    for(const c of exp){
+        if(!isNaN(c)) stack.push(+c);
+        else{
+            const b=stack.pop(), a=stack.pop();
+            stack.push(c==='+'?a+b:c==='-'?a-b:c==='*'?a*b:a/b);
+        }
+    }
+    return stack.pop();
+}`
+  },
+
+  infixToPostfix: {
+    java: `// Convert Infix to Postfix
+import java.util.*;
+class InfixToPostfix {
+    static int prec(char c){
+        if(c=='+'||c=='-') return 1;
+        if(c=='*'||c=='/') return 2;
+        return 0;
+    }
+    static String convert(String exp){
+        StringBuilder res=new StringBuilder();
+        Stack<Character> st=new Stack<>();
+        for(char c:exp.toCharArray()){
+            if(Character.isLetterOrDigit(c)) res.append(c);
+            else if(c=='(') st.push(c);
+            else if(c==')'){
+                while(!st.isEmpty() && st.peek()!='(') res.append(st.pop());
+                st.pop();
+            } else{
+                while(!st.isEmpty() && prec(st.peek())>=prec(c)) res.append(st.pop());
+                st.push(c);
+            }
+        }
+        while(!st.isEmpty()) res.append(st.pop());
+        return res.toString();
+    }
+}`,
+    python: `# Infix to Postfix
+def infix_to_postfix(exp):
+    stack,res=[],[]
+    prec={'+' :1,'-':1,'*':2,'/':2}
+    for c in exp:
+        if c.isalnum(): res.append(c)
+        elif c=='(': stack.append(c)
+        elif c==')':
+            while stack and stack[-1]!='(': res.append(stack.pop())
+            stack.pop()
+        else:
+            while stack and stack[-1]!='(' and prec.get(stack[-1],0)>=prec.get(c,0):
+                res.append(stack.pop())
+            stack.append(c)
+    while stack: res.append(stack.pop())
+    return ''.join(res)`,
+    cpp: `// Infix to Postfix
+#include <bits/stdc++.h>
+using namespace std;
+int prec(char c){return c=='+'||c=='-'?1:c=='*'||c=='/'?2:0;}
+string infixToPostfix(string exp){
+    stack<char> st; string res="";
+    for(char c:exp){
+        if(isalnum(c)) res+=c;
+        else if(c=='(') st.push(c);
+        else if(c==')'){
+            while(!st.empty() && st.top()!='('){res+=st.top(); st.pop();}
+            st.pop();
+        } else{
+            while(!st.empty() && st.top()!='(' && prec(st.top())>=prec(c)){res+=st.top(); st.pop();}
+            st.push(c);
+        }
+    }
+    while(!st.empty()){res+=st.top(); st.pop();}
+    return res;
+}`,
+    javascript: `// Infix to Postfix
+function infixToPostfix(exp){
+    const stack=[], res=[];
+    const prec={'+':1,'-':1,'*':2,'/':2};
+    for(const c of exp){
+        if(/[a-zA-Z0-9]/.test(c)) res.push(c);
+        else if(c==='(') stack.push(c);
+        else if(c===')'){while(stack.length && stack[stack.length-1]!=='(') res.push(stack.pop()); stack.pop();}
+        else{
+            while(stack.length && stack[stack.length-1]!=='(' && prec[stack[stack.length-1]]>=prec[c]) res.push(stack.pop());
+            stack.push(c);
+        }
+    }
+    while(stack.length) res.push(stack.pop());
+    return res.join('');
+}`
+  },
+
+  minStack: {
+    java: `// Min Stack
+import java.util.*;
+class MinStack {
+    Stack<Integer> st=new Stack<>();
+    Stack<Integer> minSt=new Stack<>();
+    void push(int x){st.push(x); if(minSt.isEmpty()||x<=minSt.peek()) minSt.push(x);}
+    void pop(){if(st.pop().equals(minSt.peek())) minSt.pop();}
+    int top(){return st.peek();}
+    int getMin(){return minSt.peek();}
+}`,
+    python: `# Min Stack
+class MinStack:
+    def __init__(self):
+        self.stack=[]
+        self.minStack=[]
+    def push(self,x):
+        self.stack.append(x)
+        if not self.minStack or x<=self.minStack[-1]: self.minStack.append(x)
+    def pop(self):
+        if self.stack.pop()==self.minStack[-1]: self.minStack.pop()
+    def top(self): return self.stack[-1]
+    def getMin(self): return self.minStack[-1]`,
+    cpp: `// Min Stack
+#include <bits/stdc++.h>
+using namespace std;
+class MinStack{
+    stack<int> st, minSt;
+public:
+    void push(int x){st.push(x); if(minSt.empty()||x<=minSt.top()) minSt.push(x);}
+    void pop(){if(st.top()==minSt.top()) minSt.pop(); st.pop();}
+    int top(){return st.top();}
+    int getMin(){return minSt.top();}
+};`,
+    javascript: `// Min Stack
+class MinStack {
+    constructor(){ this.stack=[]; this.minStack=[]; }
+    push(x){ this.stack.push(x); if(!this.minStack.length||x<=this.minStack[this.minStack.length-1]) this.minStack.push(x);}
+    pop(){if(this.stack.pop()===this.minStack[this.minStack.length-1]) this.minStack.pop();}
+    top(){return this.stack[this.stack.length-1];}
+    getMin(){return this.minStack[this.minStack.length-1];}
+}`
+  },
+
+  sortStackRecursion: {
+    java: `// Sort a Stack using Recursion
+import java.util.*;
+class SortStack {
+    static void sortedInsert(Stack<Integer> st,int x){
+        if(st.isEmpty() || x>st.peek()){st.push(x); return;}
+        int temp=st.pop();
+        sortedInsert(st,x);
+        st.push(temp);
+    }
+    static void sortStack(Stack<Integer> st){
+        if(!st.isEmpty()){
+            int x=st.pop();
+            sortStack(st);
+            sortedInsert(st,x);
+        }
+    }
+}`,
+    python: `# Sort a Stack using Recursion
+def sorted_insert(stack,x):
+    if not stack or x>stack[-1]: stack.append(x); return
+    temp=stack.pop()
+    sorted_insert(stack,x)
+    stack.append(temp)
+def sort_stack(stack):
+    if stack:
+        x=stack.pop()
+        sort_stack(stack)
+        sorted_insert(stack,x)`,
+    cpp: `// Sort a Stack using Recursion
+#include <bits/stdc++.h>
+using namespace std;
+void sortedInsert(stack<int>& st,int x){
+    if(st.empty() || x>st.top()){st.push(x); return;}
+    int temp=st.top(); st.pop();
+    sortedInsert(st,x);
+    st.push(temp);
+}
+void sortStack(stack<int>& st){
+    if(!st.empty()){
+        int x=st.top(); st.pop();
+        sortStack(st);
+        sortedInsert(st,x);
+    }
+}`,
+    javascript: `// Sort a Stack using Recursion
+function sortedInsert(stack,x){
+    if(!stack.length || x>stack[stack.length-1]){ stack.push(x); return; }
+    const temp=stack.pop()
+    sortedInsert(stack,x)
+    stack.push(temp)
+}
+function sortStack(stack){
+    if(stack.length){
+        const x=stack.pop()
+        sortStack(stack)
+        sortedInsert(stack,x)
+    }
+}`
+  },
+
+  reverseStack: {
+    java: `// Reverse a Stack
+import java.util.*;
+class ReverseStack {
+    static void insertAtBottom(Stack<Integer> st,int x){
+        if(st.isEmpty()){st.push(x); return;}
+        int temp=st.pop();
+        insertAtBottom(st,x);
+        st.push(temp);
+    }
+    static void reverse(Stack<Integer> st){
+        if(!st.isEmpty()){
+            int x=st.pop();
+            reverse(st);
+            insertAtBottom(st,x);
+        }
+    }
+}`,
+    python: `# Reverse a Stack
+def insert_at_bottom(stack,x):
+    if not stack: stack.append(x); return
+    temp=stack.pop()
+    insert_at_bottom(stack,x)
+    stack.append(temp)
+def reverse_stack(stack):
+    if stack:
+        x=stack.pop()
+        reverse_stack(stack)
+        insert_at_bottom(stack,x)`,
+    cpp: `// Reverse a Stack
+#include <bits/stdc++.h>
+using namespace std;
+void insertAtBottom(stack<int>& st,int x){
+    if(st.empty()){st.push(x); return;}
+    int temp=st.top(); st.pop();
+    insertAtBottom(st,x);
+    st.push(temp);
+}
+void reverseStack(stack<int>& st){
+    if(!st.empty()){
+        int x=st.top(); st.pop();
+        reverseStack(st);
+        insertAtBottom(st,x);
+    }
+}`,
+    javascript: `// Reverse a Stack
+function insertAtBottom(stack,x){
+    if(!stack.length){stack.push(x); return;}
+    const temp=stack.pop()
+    insertAtBottom(stack,x)
+    stack.push(temp)
+}
+function reverseStack(stack){
+    if(stack.length){
+        const x=stack.pop()
+        reverseStack(stack)
+        insertAtBottom(stack,x)
+    }
+}`
+  }
+
+};
+
+// src/data/codes.js
+
+export const queueAlgorithms = {
+  queueArray: {
+    java: `// Queue using Array
+class Queue {
+    int front, rear, size;
+    int capacity;
+    int[] array;
+    Queue(int capacity) {
+        this.capacity = capacity;
+        front = size = 0;
+        rear = capacity - 1;
+        array = new int[capacity];
+    }
+    boolean isFull() { return size == capacity; }
+    boolean isEmpty() { return size == 0; }
+    void enqueue(int item) {
+        if(isFull()) return;
+        rear = (rear + 1) % capacity;
+        array[rear] = item;
+        size++;
+    }
+    int dequeue() {
+        if(isEmpty()) return Integer.MIN_VALUE;
+        int item = array[front];
+        front = (front + 1) % capacity;
+        size--;
+        return item;
+    }
+    int front() { return isEmpty() ? -1 : array[front]; }
+    int rear() { return isEmpty() ? -1 : array[rear]; }
+}`,
+    python: `# Queue using Array (list)
+class Queue:
+    def __init__(self, capacity):
+        self.queue = []
+        self.capacity = capacity
+    def isFull(self): return len(self.queue) == self.capacity
+    def isEmpty(self): return len(self.queue) == 0
+    def enqueue(self, item):
+        if not self.isFull(): self.queue.append(item)
+    def dequeue(self):
+        if not self.isEmpty(): return self.queue.pop(0)
+    def front(self): return self.queue[0] if not self.isEmpty() else None
+    def rear(self): return self.queue[-1] if not self.isEmpty() else None`,
+    cpp: `// Queue using Array
+#include <iostream>
+using namespace std;
+class Queue {
+    int front, rear, size, capacity;
+    int* array;
+public:
+    Queue(int c) { capacity=c; front=size=0; rear=c-1; array=new int[c]; }
+    bool isFull() { return size==capacity; }
+    bool isEmpty() { return size==0; }
+    void enqueue(int item) { if(!isFull()){ rear=(rear+1)%capacity; array[rear]=item; size++; } }
+    int dequeue() { if(isEmpty()) return INT_MIN; int item=array[front]; front=(front+1)%capacity; size--; return item; }
+    int Front() { return isEmpty()? -1: array[front]; }
+    int Rear() { return isEmpty()? -1: array[rear]; }
+};`,
+    javascript: `// Queue using Array
+class Queue {
+  constructor(capacity) { this.queue=[]; this.capacity=capacity; }
+  isFull() { return this.queue.length===this.capacity; }
+  isEmpty() { return this.queue.length===0; }
+  enqueue(item) { if(!this.isFull()) this.queue.push(item); }
+  dequeue() { if(!this.isEmpty()) return this.queue.shift(); return null; }
+  front() { return this.isEmpty()? null : this.queue[0]; }
+  rear() { return this.isEmpty()? null : this.queue[this.queue.length-1]; }
+}`
+  },
+
+  queueLinkedList: {
+    java: `// Queue using Linked List
+class Node { int data; Node next; Node(int d){data=d;} }
+class Queue {
+    Node front, rear;
+    void enqueue(int item) {
+        Node node=new Node(item);
+        if(rear!=null) rear.next=node;
+        rear=node;
+        if(front==null) front=rear;
+    }
+    int dequeue() {
+        if(front==null) return Integer.MIN_VALUE;
+        int val=front.data;
+        front=front.next;
+        if(front==null) rear=null;
+        return val;
+    }
+}`, 
+    python: `# Queue using Linked List
+class Node:
+    def __init__(self, data): self.data=data; self.next=None
+class Queue:
+    def __init__(self): self.front=self.rear=None
+    def enqueue(self, item):
+        node=Node(item)
+        if self.rear: self.rear.next=node
+        self.rear=node
+        if not self.front: self.front=self.rear
+    def dequeue(self):
+        if not self.front: return None
+        val=self.front.data
+        self.front=self.front.next
+        if not self.front: self.rear=None
+        return val`,
+    cpp: `// Queue using Linked List
+struct Node { int data; Node* next; Node(int d){data=d; next=nullptr;} };
+class Queue {
+    Node *front, *rear;
+public:
+    Queue(){ front=rear=nullptr; }
+    void enqueue(int item){
+        Node* node=new Node(item);
+        if(rear) rear->next=node;
+        rear=node;
+        if(!front) front=rear;
+    }
+    int dequeue(){
+        if(!front) return INT_MIN;
+        int val=front->data;
+        front=front->next;
+        if(!front) rear=nullptr;
+        return val;
+    }
+};`,
+    javascript: `// Queue using Linked List
+class Node { constructor(data){ this.data=data; this.next=null; } }
+class Queue {
+  constructor(){ this.front=this.rear=null; }
+  enqueue(item){
+    let node=new Node(item);
+    if(this.rear) this.rear.next=node;
+    this.rear=node;
+    if(!this.front) this.front=this.rear;
+  }
+  dequeue(){
+    if(!this.front) return null;
+    let val=this.front.data;
+    this.front=this.front.next;
+    if(!this.front) this.rear=null;
+    return val;
+  }
+}`
+  },
+
+  circularQueue: {
+    java: `// Circular Queue Implementation
+class CircularQueue {
+    int front, rear, size, capacity;
+    int[] arr;
+    CircularQueue(int c){ capacity=c; front=size=0; rear=c-1; arr=new int[c]; }
+    boolean isFull(){ return size==capacity; }
+    boolean isEmpty(){ return size==0; }
+    void enqueue(int item){ if(!isFull()){ rear=(rear+1)%capacity; arr[rear]=item; size++; } }
+    int dequeue(){ if(isEmpty()) return -1; int val=arr[front]; front=(front+1)%capacity; size--; return val; }
+}`, 
+    python: `# Circular Queue
+class CircularQueue:
+    def __init__(self, capacity):
+        self.queue=[None]*capacity; self.front=self.size=0; self.rear=capacity-1; self.capacity=capacity
+    def isFull(self): return self.size==self.capacity
+    def isEmpty(self): return self.size==0
+    def enqueue(self, item):
+        if not self.isFull():
+            self.rear=(self.rear+1)%self.capacity
+            self.queue[self.rear]=item
+            self.size+=1
+    def dequeue(self):
+        if self.isEmpty(): return None
+        val=self.queue[self.front]
+        self.front=(self.front+1)%self.capacity
+        self.size-=1
+        return val`,
+    cpp: `// Circular Queue
+class CircularQueue{
+    int front,rear,size,capacity;
+    int* arr;
+public:
+    CircularQueue(int c){ capacity=c; front=size=0; rear=c-1; arr=new int[c]; }
+    bool isFull(){ return size==capacity; }
+    bool isEmpty(){ return size==0; }
+    void enqueue(int item){ if(!isFull()){ rear=(rear+1)%capacity; arr[rear]=item; size++; } }
+    int dequeue(){ if(isEmpty()) return INT_MIN; int val=arr[front]; front=(front+1)%capacity; size--; return val; }
+};`,
+    javascript: `// Circular Queue
+class CircularQueue {
+  constructor(capacity){ this.queue=Array(capacity); this.capacity=capacity; this.front=0; this.rear=capacity-1; this.size=0; }
+  isFull(){ return this.size===this.capacity; }
+  isEmpty(){ return this.size===0; }
+  enqueue(item){ if(!this.isFull()){ this.rear=(this.rear+1)%this.capacity; this.queue[this.rear]=item; this.size++; } }
+  dequeue(){ if(this.isEmpty()) return null; let val=this.queue[this.front]; this.front=(this.front+1)%this.capacity; this.size--; return val; }
+}`
+  },
+
+  priorityQueue: {
+    java: `// Priority Queue using Java PriorityQueue
+import java.util.PriorityQueue;
+PriorityQueue<Integer> pq = new PriorityQueue<>(); // min-heap
+pq.add(5); pq.add(1); pq.add(3);
+int min = pq.poll(); // removes 1`,
+    python: `# Priority Queue using heapq
+import heapq
+pq=[]; heapq.heappush(pq,5); heapq.heappush(pq,1); heapq.heappush(pq,3)
+min_item=heapq.heappop(pq)`,
+    cpp: `// Priority Queue using STL
+#include <queue>
+#include <vector>
+using namespace std;
+priority_queue<int, vector<int>, greater<int>> pq;
+pq.push(5); pq.push(1); pq.push(3);
+int min_val=pq.top(); pq.pop();`,
+    javascript: `// Priority Queue using MinHeap class
+class MinHeap{
+  constructor(){ this.heap=[]; }
+  insert(val){ this.heap.push(val); this.heap.sort((a,b)=>a-b); }
+  extractMin(){ return this.heap.shift(); }
+}`
+  },
+
+  dequeOperations: {
+    java: `// Deque using ArrayDeque
+import java.util.ArrayDeque;
+ArrayDeque<Integer> deque = new ArrayDeque<>();
+deque.addFirst(1); deque.addLast(2);
+int front = deque.removeFirst(); int rear = deque.removeLast();`,
+    python: `# Deque using collections.deque
+from collections import deque
+dq = deque()
+dq.append(1); dq.appendleft(2)
+front=dq.popleft(); rear=dq.pop()`,
+    cpp: `// Deque using std::deque
+#include <deque>
+using namespace std;
+deque<int> dq;
+dq.push_back(1); dq.push_front(2);
+int front=dq.front(); dq.pop_front();
+int rear=dq.back(); dq.pop_back();`,
+    javascript: `// Deque implementation using array
+class Deque {
+  constructor(){ this.arr=[]; }
+  addFront(val){ this.arr.unshift(val); }
+  addRear(val){ this.arr.push(val); }
+  removeFront(){ return this.arr.shift(); }
+  removeRear(){ return this.arr.pop(); }
+}`
+  },
+
+  slidingWindow: {
+    java: `// Sliding Window Maximum using Deque
+import java.util.*;
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        Deque<Integer> dq = new ArrayDeque<>();
+        int n = nums.length, res[] = new int[n-k+1], ri=0;
+        for(int i=0;i<n;i++){
+            while(!dq.isEmpty() && dq.peek()<i-k+1) dq.poll();
+            while(!dq.isEmpty() && nums[dq.peekLast()]<nums[i]) dq.pollLast();
+            dq.offer(i);
+            if(i>=k-1) res[ri++]=nums[dq.peek()];
+        }
+        return res;
+    }
+}`,
+    python: `# Sliding Window Maximum using deque
+from collections import deque
+def maxSlidingWindow(nums,k):
+    dq,res=deque(),[]
+    for i,n in enumerate(nums):
+        if dq and dq[0]==i-k: dq.popleft()
+        while dq and nums[dq[-1]]<n: dq.pop()
+        dq.append(i)
+        if i>=k-1: res.append(nums[dq[0]])
+    return res`,
+    cpp: `// Sliding Window Maximum using deque
+#include <deque>
+#include <vector>
+using namespace std;
+vector<int> maxSlidingWindow(vector<int>& nums,int k){
+    deque<int> dq; vector<int> res;
+    for(int i=0;i<nums.size();i++){
+        if(!dq.empty() && dq.front()==i-k) dq.pop_front();
+        while(!dq.empty() && nums[dq.back()]<nums[i]) dq.pop_back();
+        dq.push_back(i);
+        if(i>=k-1) res.push_back(nums[dq.front()]);
+    }
+    return res;
+}`,
+    javascript: `// Sliding Window Maximum using deque
+function maxSlidingWindow(nums,k){
+  const dq=[],res=[];
+  for(let i=0;i<nums.length;i++){
+    if(dq.length && dq[0]===i-k) dq.shift();
+    while(dq.length && nums[dq[dq.length-1]]<nums[i]) dq.pop();
+    dq.push(i);
+    if(i>=k-1) res.push(nums[dq[0]]);
+  }
+  return res;
+}`
+  },
+
+  generateBinary: {
+    java: `// Generate Binary Numbers from 1 to N using Queue
+import java.util.*;
+class Solution {
+    public List<String> generateBinary(int n){
+        List<String> res = new ArrayList<>();
+        Queue<String> q = new LinkedList<>();
+        q.offer("1");
+        for(int i=0;i<n;i++){
+            String s=q.poll();
+            res.add(s);
+            q.offer(s+"0");
+            q.offer(s+"1");
+        }
+        return res;
+    }
+}`,
+    python: `# Generate Binary Numbers from 1 to N using Queue
+from collections import deque
+def generateBinary(n):
+    q=deque(["1"]); res=[]
+    for _ in range(n):
+        s=q.popleft()
+        res.append(s)
+        q.append(s+"0"); q.append(s+"1")
+    return res`,
+    cpp: `// Generate Binary Numbers from 1 to N using Queue
+#include <queue>
+#include <vector>
+#include <string>
+using namespace std;
+vector<string> generateBinary(int n){
+    vector<string> res; queue<string> q;
+    q.push("1");
+    for(int i=0;i<n;i++){
+        string s=q.front(); q.pop();
+        res.push_back(s);
+        q.push(s+"0"); q.push(s+"1");
+    }
+    return res;
+}`,
+    javascript: `// Generate Binary Numbers from 1 to N using Queue
+function generateBinary(n){
+  const q=["1"], res=[];
+  for(let i=0;i<n;i++){
+    let s=q.shift();
+    res.push(s);
+    q.push(s+"0"); q.push(s+"1");
+  }
+  return res;
+}`
+  },
+
+  rottenOranges: {
+    java: `// Rotten Oranges Problem (BFS)
+import java.util.*;
+class Solution {
+    int orangesRotting(int[][] grid) {
+        int m=grid.length, n=grid[0].length, fresh=0, minutes=0;
+        Queue<int[]> q = new LinkedList<>();
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(grid[i][j]==2) q.offer(new int[]{i,j});
+                else if(grid[i][j]==1) fresh++;
+            }
+        }
+        int[][] dirs={{0,1},{1,0},{0,-1},{-1,0}};
+        while(!q.isEmpty() && fresh>0){
+            int size=q.size(); minutes++;
+            for(int i=0;i<size;i++){
+                int[] cell=q.poll();
+                for(int[] d:dirs){
+                    int r=cell[0]+d[0], c=cell[1]+d[1];
+                    if(r>=0 && r<m && c>=0 && c<n && grid[r][c]==1){
+                        grid[r][c]=2; fresh--; q.offer(new int[]{r,c});
+                    }
+                }
+            }
+        }
+        return fresh==0? minutes:-1;
+    }
+}`,
+    python: `# Rotten Oranges Problem (BFS)
+from collections import deque
+def orangesRotting(grid):
+    m,n=len(grid),len(grid[0]); fresh=0; q=deque()
+    for i in range(m):
+        for j in range(n):
+            if grid[i][j]==2: q.append((i,j))
+            elif grid[i][j]==1: fresh+=1
+    dirs=[(0,1),(1,0),(0,-1),(-1,0)]; minutes=0
+    while q and fresh>0:
+        for _ in range(len(q)):
+            i,j=q.popleft()
+            for di,dj in dirs:
+                r,c=i+di,j+dj
+                if 0<=r<m and 0<=c<n and grid[r][c]==1:
+                    grid[r][c]=2; fresh-=1; q.append((r,c))
+        minutes+=1
+    return minutes if fresh==0 else -1`,
+    cpp: `// Rotten Oranges Problem (BFS)
+#include <queue>
+#include <vector>
+using namespace std;
+int orangesRotting(vector<vector<int>>& grid){
+    int m=grid.size(), n=grid[0].size(), fresh=0, minutes=0;
+    queue<pair<int,int>> q;
+    for(int i=0;i<m;i++)
+        for(int j=0;j<n;j++)
+            if(grid[i][j]==2) q.push({i,j});
+            else if(grid[i][j]==1) fresh++;
+    int dirs[4][2]={{0,1},{1,0},{0,-1},{-1,0}};
+    while(!q.empty() && fresh>0){
+        int size=q.size(); minutes++;
+        for(int k=0;k<size;k++){
+            auto cell=q.front(); q.pop();
+            for(auto d:dirs){
+                int r=cell.first+d[0], c=cell.second+d[1];
+                if(r>=0 && r<m && c>=0 && c<n && grid[r][c]==1){
+                    grid[r][c]=2; fresh--; q.push({r,c});
+                }
+            }
+        }
+    }
+    return fresh==0? minutes:-1;
+}`,
+    javascript: `// Rotten Oranges Problem (BFS)
+function orangesRotting(grid){
+  const m=grid.length, n=grid[0].length; let fresh=0, q=[];
+  for(let i=0;i<m;i++)
+    for(let j=0;j<n;j++){
+      if(grid[i][j]===2) q.push([i,j]);
+      else if(grid[i][j]===1) fresh++;
+    }
+  const dirs=[[0,1],[1,0],[0,-1],[-1,0]]; let minutes=0;
+  while(q.length && fresh>0){
+    let size=q.length;
+    for(let k=0;k<size;k++){
+      let [i,j]=q.shift();
+      for(let [di,dj] of dirs){
+        let r=i+di, c=j+dj;
+        if(r>=0 && r<m && c>=0 && c<n && grid[r][c]===1){
+          grid[r][c]=2; fresh--; q.push([r,c]);
+        }
+      }
+    }
+    minutes++;
+  }
+  return fresh===0? minutes:-1;
+}`
+  },
+
+  firstNonRepeating: {
+    java: `// First Non-Repeating Character in a Stream
+import java.util.*;
+class Stream {
+    Queue<Character> q=new LinkedList<>();
+    int[] freq=new int[256];
+    void insert(char ch){ q.offer(ch); freq[ch]++; }
+    char firstNonRepeating(){
+        while(!q.isEmpty() && freq[q.peek()]>1) q.poll();
+        return q.isEmpty() ? '#' : q.peek();
+    }
+}`,
+    python: `# First Non-Repeating Character in Stream
+from collections import deque, Counter
+class Stream:
+    def __init__(self): self.q=deque(); self.freq=Counter()
+    def insert(self,ch): self.q.append(ch); self.freq[ch]+=1
+    def firstNonRepeating(self):
+        while self.q and self.freq[self.q[0]]>1: self.q.popleft()
+        return self.q[0] if self.q else '#'`,
+    cpp: `// First Non-Repeating Character in Stream
+#include <queue>
+#include <vector>
+using namespace std;
+class Stream{
+    queue<char> q; vector<int> freq;
+public:
+    Stream(): freq(256,0){}
+    void insert(char ch){ q.push(ch); freq[ch]++; }
+    char firstNonRepeating(){
+        while(!q.empty() && freq[q.front()]>1) q.pop();
+        return q.empty()?'#':q.front();
+    }
+};`,
+    javascript: `// First Non-Repeating Character in Stream
+class Stream {
+  constructor(){ this.q=[]; this.freq={}; }
+  insert(ch){ this.q.push(ch); this.freq[ch]=(this.freq[ch]||0)+1; }
+  firstNonRepeating(){
+    while(this.q.length && this.freq[this.q[0]]>1) this.q.shift();
+    return this.q.length? this.q[0]:'#';
+  }
+}`
+  },
+ 
+
+  interleavingQueue: {
+    java: `// Interleaving First Half and Second Half of Queue
+import java.util.*;
+class Solution {
+    void interleaveQueue(Queue<Integer> q){
+        int n = q.size()/2;
+        Stack<Integer> s = new Stack<>();
+        for(int i=0;i<n;i++) s.push(q.poll());
+        while(!s.isEmpty()) q.offer(s.pop());
+        for(int i=0;i<n;i++) q.offer(q.poll());
+        for(int i=0;i<n;i++) s.push(q.poll());
+        while(!s.isEmpty()){ q.offer(s.pop()); q.offer(q.poll()); }
+    }
+}`,
+    python: `# Interleaving First Half and Second Half of Queue
+from collections import deque
+def interleaveQueue(q):
+    n=len(q)//2; s=[]
+    for _ in range(n): s.append(q.popleft())
+    while s: q.append(s.pop())
+    for _ in range(n): q.append(q.popleft())
+    for _ in range(n): s.append(q.popleft())
+    while s: q.append(s.pop()); q.append(q.popleft())`,
+    cpp: `// Interleaving First Half and Second Half of Queue
+#include <queue>
+#include <stack>
+using namespace std;
+void interleaveQueue(queue<int>& q){
+    int n=q.size()/2; stack<int> s;
+    for(int i=0;i<n;i++){ s.push(q.front()); q.pop(); }
+    while(!s.empty()){ q.push(s.top()); s.pop(); }
+    for(int i=0;i<n;i++){ q.push(q.front()); q.pop(); }
+    for(int i=0;i<n;i++){ s.push(q.front()); q.pop(); }
+    while(!s.empty()){ q.push(s.top()); s.pop(); q.push(q.front()); q.pop(); }
+}`,
+    javascript: `// Interleaving First Half and Second Half of Queue
+function interleaveQueue(q){
+  let n=Math.floor(q.length/2), s=[];
+  for(let i=0;i<n;i++) s.push(q.shift());
+  while(s.length) q.push(s.pop());
+  for(let i=0;i<n;i++) q.push(q.shift());
+  for(let i=0;i<n;i++) s.push(q.shift());
+  while(s.length){ q.push(s.pop()); q.push(q.shift()); }
+}`
+  },
+
+  stackUsingQueues: {
+    java: `// Implement Stack using Two Queues
+import java.util.*;
+class StackUsingQueues{
+    Queue<Integer> q1=new LinkedList<>(), q2=new LinkedList<>();
+    void push(int x){ q2.offer(x); while(!q1.isEmpty()) q2.offer(q1.poll()); Queue<Integer> tmp=q1; q1=q2; q2=tmp; }
+    int pop(){ return q1.isEmpty()?-1:q1.poll(); }
+    int top(){ return q1.isEmpty()?-1:q1.peek(); }
+}`,
+    python: `# Implement Stack using Two Queues
+from collections import deque
+class StackUsingQueues:
+    def __init__(self): self.q1=deque(); self.q2=deque()
+    def push(self,x):
+        self.q2.append(x)
+        while self.q1: self.q2.append(self.q1.popleft())
+        self.q1,self.q2=self.q2,self.q1
+    def pop(self): return self.q1.popleft() if self.q1 else -1
+    def top(self): return self.q1[0] if self.q1 else -1`,
+    cpp: `// Implement Stack using Two Queues
+#include <queue>
+using namespace std;
+class StackUsingQueues{
+    queue<int> q1,q2;
+public:
+    void push(int x){ q2.push(x); while(!q1.empty()){ q2.push(q1.front()); q1.pop(); } swap(q1,q2); }
+    int pop(){ if(q1.empty()) return -1; int val=q1.front(); q1.pop(); return val; }
+    int top(){ return q1.empty()?-1:q1.front(); }
+};`,
+    javascript: `// Implement Stack using Two Queues
+class StackUsingQueues{
+  constructor(){ this.q1=[]; this.q2=[]; }
+  push(x){ this.q2.push(x); while(this.q1.length) this.q2.push(this.q1.shift()); [this.q1,this.q2]=[this.q2,this.q1]; }
+  pop(){ return this.q1.length? this.q1.shift(): -1; }
+  top(){ return this.q1.length? this.q1[0]: -1; }
+}`
+  },
+
+  lruCache: {
+    java: `// LRU Cache using Queue + HashMap
+import java.util.*;
+class LRUCache {
+    private int capacity; private LinkedHashMap<Integer,Integer> map;
+    LRUCache(int capacity){ this.capacity=capacity; map=new LinkedHashMap<>(capacity,0.75f,true); }
+    public int get(int key){ return map.getOrDefault(key,-1); }
+    public void put(int key,int value){
+        map.put(key,value);
+        if(map.size()>capacity){ Iterator<Integer> it=map.keySet().iterator(); map.remove(it.next()); }
+    }
+}`,
+    python: `# LRU Cache using OrderedDict
+from collections import OrderedDict
+class LRUCache:
+    def __init__(self,capacity): self.cap=capacity; self.cache=OrderedDict()
+    def get(self,key): return self.cache.pop(key) if key in self.cache else -1
+    def put(self,key,value):
+        if key in self.cache: self.cache.pop(key)
+        elif len(self.cache)>=self.cap: self.cache.popitem(last=False)
+        self.cache[key]=value`,
+    cpp: `// LRU Cache using list + unordered_map
+#include <unordered_map>
+#include <list>
+using namespace std;
+class LRUCache{
+    int cap; list<int> keys; unordered_map<int,pair<int,list<int>::iterator>> mp;
+public:
+    LRUCache(int capacity){ cap=capacity; }
+    int get(int key){
+        if(mp.find(key)==mp.end()) return -1;
+        keys.erase(mp[key].second);
+        keys.push_front(key);
+        mp[key].second=keys.begin();
+        return mp[key].first;
+    }
+    void put(int key,int value){
+        if(mp.find(key)!=mp.end()){ keys.erase(mp[key].second); }
+        else if(keys.size()==cap){ int k=keys.back(); keys.pop_back(); mp.erase(k); }
+        keys.push_front(key); mp[key]={value,keys.begin()};
+    }
+};`,
+    javascript: `// LRU Cache using Map
+class LRUCache{
+  constructor(capacity){ this.cap=capacity; this.cache=new Map(); }
+  get(key){ if(!this.cache.has(key)) return -1; let val=this.cache.get(key); this.cache.delete(key); this.cache.set(key,val); return val; }
+  put(key,value){ if(this.cache.has(key)) this.cache.delete(key); else if(this.cache.size>=this.cap) this.cache.delete(this.cache.keys().next().value); this.cache.set(key,value); }
+}`
+  },
+
+  taskScheduler: {
+    java: `// Task Scheduling / CPU Task Scheduler (Queue Simulation)
+import java.util.*;
+class Solution {
+    public int leastInterval(char[] tasks, int n){
+        int[] freq=new int[26]; for(char c: tasks) freq[c-'A']++;
+        PriorityQueue<Integer> pq=new PriorityQueue<>(Collections.reverseOrder());
+        for(int f: freq) if(f>0) pq.offer(f);
+        int time=0;
+        while(!pq.isEmpty()){
+            List<Integer> tmp=new ArrayList<>();
+            int k=n+1;
+            while(k>0 && !pq.isEmpty()){
+                tmp.add(pq.poll()); time++; k--;
+            }
+            for(int t: tmp) if(--t>0) pq.offer(t);
+            if(!pq.isEmpty()) time+=k;
+        }
+        return time;
+    }
+}`,
+    python: `# Task Scheduling / CPU Task Scheduler
+from collections import Counter
+import heapq
+def leastInterval(tasks,n):
+    freq=[-c for c in Counter(tasks).values()]; heapq.heapify(freq)
+    time=0
+    while freq:
+        tmp=[]; k=n+1
+        for _ in range(k):
+            if freq: tmp.append(heapq.heappop(freq))
+        for t in tmp:
+            if t+1<0: heapq.heappush(freq,t+1)
+        time+=len(tmp) if not freq else n+1
+    return time`,
+    cpp: `// Task Scheduling / CPU Task Scheduler
+#include <vector>
+#include <queue>
+using namespace std;
+int leastInterval(vector<char>& tasks,int n){
+    vector<int> freq(26,0); for(char c:tasks) freq[c-'A']++;
+    priority_queue<int> pq; for(int f:freq) if(f>0) pq.push(f);
+    int time=0;
+    while(!pq.empty()){
+        vector<int> tmp; int k=n+1;
+        while(k>0 && !pq.empty()){ tmp.push_back(pq.top()); pq.pop(); time++; k--; }
+        for(int t:tmp) if(--t>0) pq.push(t);
+        if(!pq.empty()) time+=k;
+    }
+    return time;
+}`,
+    javascript: `// Task Scheduling / CPU Task Scheduler
+function leastInterval(tasks,n){
+  const freq=Array(26).fill(0);
+  for(let c of tasks) freq[c.charCodeAt(0)-65]++;
+  let pq=freq.filter(f=>f>0).sort((a,b)=>b-a);
+  let time=0;
+  while(pq.length){
+    let tmp=[], k=n+1;
+    for(let i=0;i<k && pq.length;i++){ tmp.push(pq.shift()); time++; }
+    for(let t of tmp) if(--t>0) pq.push(t);
+    pq.sort((a,b)=>b-a);
+    if(pq.length) time+=Math.max(0,n+1-tmp.length);
+  }
+  return time;
+}`
+  }
+};
+
+// src/data/codes.js
+
+export const arrayCodes = {
+  reverseArray: {
+    java: `// Reverse Array in Java
+void reverseArray(int[] arr){
+    int n = arr.length;
+    for(int i=0; i<n/2; i++){
+        int temp = arr[i];
+        arr[i] = arr[n-1-i];
+        arr[n-1-i] = temp;
+    }
+}`,
+    python: `# Reverse Array in Python
+def reverseArray(arr):
+    arr.reverse()`,
+    cpp: `// Reverse Array in C++
+void reverseArray(vector<int>& arr){
+    int n = arr.size();
+    for(int i=0;i<n/2;i++){
+        swap(arr[i], arr[n-1-i]);
+    }
+}`,
+    javascript: `// Reverse Array in JS
+function reverseArray(arr){
+    arr.reverse();
+}`
+  },
+
+  rotateArray: {
+    java: `// Rotate Array (Right) by d
+void rotateArray(int[] arr, int d){
+    int n = arr.length;
+    d = d % n;
+    reverse(arr, 0, n-1);
+    reverse(arr, 0, d-1);
+    reverse(arr, d, n-1);
+}
+
+void reverse(int[] arr, int l, int r){
+    while(l<r){
+        int temp = arr[l];
+        arr[l] = arr[r];
+        arr[r] = temp;
+        l++; r--;
+    }
+}`,
+    python: `# Rotate Array (Right) by d
+def rotateArray(arr, d):
+    n = len(arr)
+    d = d % n
+    arr[:] = arr[-d:] + arr[:-d]`,
+    cpp: `// Rotate Array (Right) by d
+void rotateArray(vector<int>& arr, int d){
+    int n = arr.size();
+    d = d % n;
+    reverse(arr.begin(), arr.end());
+    reverse(arr.begin(), arr.begin()+d);
+    reverse(arr.begin()+d, arr.end());
+}`,
+    javascript: `// Rotate Array (Right) by d
+function rotateArray(arr, d){
+    d = d % arr.length;
+    arr = arr.slice(-d).concat(arr.slice(0,-d));
+    return arr;
+}`
+  },
+
+  moveZeros: {
+    java: `// Move zeros to end
+void moveZeros(int[] arr){
+    int n = arr.length, count=0;
+    for(int i=0;i<n;i++){
+        if(arr[i]!=0){
+            arr[count++] = arr[i];
+        }
+    }
+    while(count<n) arr[count++] = 0;
+}`,
+    python: `# Move zeros to end
+def moveZeros(arr):
+    count = 0
+    for i in range(len(arr)):
+        if arr[i]!=0:
+            arr[count]=arr[i]
+            count+=1
+    for i in range(count, len(arr)):
+        arr[i]=0`,
+    cpp: `// Move zeros to end
+void moveZeros(vector<int>& arr){
+    int count=0;
+    for(int i=0;i<arr.size();i++){
+        if(arr[i]!=0) arr[count++] = arr[i];
+    }
+    while(count<arr.size()) arr[count++] = 0;
+}`,
+    javascript: `// Move zeros to end
+function moveZeros(arr){
+    let count=0;
+    for(let i=0;i<arr.length;i++){
+        if(arr[i]!==0) arr[count++] = arr[i];
+    }
+    while(count<arr.length) arr[count++] = 0;
+    return arr;
+}`
+  },
+
+  mergeSortedArrays: {
+    java: `// Merge two sorted arrays
+int[] merge(int[] a, int[] b){
+    int n = a.length, m = b.length;
+    int[] res = new int[n+m];
+    int i=0,j=0,k=0;
+    while(i<n && j<m){
+        res[k++] = a[i]<b[j]?a[i++]:b[j++];
+    }
+    while(i<n) res[k++] = a[i++];
+    while(j<m) res[k++] = b[j++];
+    return res;
+}`,
+    python: `# Merge two sorted arrays
+def merge(a,b):
+    res=[]
+    i=j=0
+    while i<len(a) and j<len(b):
+        if a[i]<b[j]:
+            res.append(a[i]); i+=1
+        else:
+            res.append(b[j]); j+=1
+    res.extend(a[i:])
+    res.extend(b[j:])
+    return res`,
+    cpp: `// Merge two sorted arrays
+vector<int> merge(vector<int>& a, vector<int>& b){
+    vector<int> res;
+    int i=0,j=0;
+    while(i<a.size() && j<b.size()){
+        if(a[i]<b[j]) res.push_back(a[i++]);
+        else res.push_back(b[j++]);
+    }
+    while(i<a.size()) res.push_back(a[i++]);
+    while(j<b.size()) res.push_back(b[j++]);
+    return res;
+}`,
+    javascript: `// Merge two sorted arrays
+function merge(a,b){
+    let res=[], i=0,j=0;
+    while(i<a.length && j<b.length){
+        if(a[i]<b[j]) res.push(a[i++]);
+        else res.push(b[j++]);
+    }
+    while(i<a.length) res.push(a[i++]);
+    while(j<b.length) res.push(b[j++]);
+    return res;
+}`
+  },
+
+  maxSubarraySum: {
+    java: `// Maximum subarray sum (Kadane's)
+int maxSubArray(int[] arr){
+    int maxSoFar=arr[0], maxEnding=arr[0];
+    for(int i=1;i<arr.length;i++){
+        maxEnding = Math.max(arr[i], maxEnding+arr[i]);
+        maxSoFar = Math.max(maxSoFar, maxEnding);
+    }
+    return maxSoFar;
+}`,
+    python: `# Maximum subarray sum (Kadane's)
+def maxSubArray(arr):
+    max_so_far = max_ending = arr[0]
+    for x in arr[1:]:
+        max_ending = max(x, max_ending+x)
+        max_so_far = max(max_so_far, max_ending)
+    return max_so_far`,
+    cpp: `// Maximum subarray sum (Kadane's)
+int maxSubArray(vector<int>& arr){
+    int maxSoFar=arr[0], maxEnding=arr[0];
+    for(int i=1;i<arr.size();i++){
+        maxEnding = max(arr[i], maxEnding+arr[i]);
+        maxSoFar = max(maxSoFar, maxEnding);
+    }
+    return maxSoFar;
+}`,
+    javascript: `// Maximum subarray sum (Kadane's)
+function maxSubArray(arr){
+    let maxSoFar=arr[0], maxEnding=arr[0];
+    for(let i=1;i<arr.length;i++){
+        maxEnding = Math.max(arr[i], maxEnding+arr[i]);
+        maxSoFar = Math.max(maxSoFar, maxEnding);
+    }
+    return maxSoFar;
+}`
+  },
+
+  trappingRainWater: {
+    java: `// Trapping Rain Water
+int trap(int[] height){
+    int n = height.length;
+    int leftMax=0, rightMax=0, left=0, right=n-1, res=0;
+    while(left<=right){
+        if(height[left]<=height[right]){
+            if(height[left]>=leftMax) leftMax=height[left];
+            else res+=leftMax-height[left];
+            left++;
+        } else {
+            if(height[right]>=rightMax) rightMax=height[right];
+            else res+=rightMax-height[right];
+            right--;
+        }
+    }
+    return res;
+}`,
+    python: `# Trapping Rain Water
+def trap(height):
+    left, right = 0, len(height)-1
+    leftMax = rightMax = res = 0
+    while left <= right:
+        if height[left] <= height[right]:
+            if height[left]>=leftMax: leftMax=height[left]
+            else: res+=leftMax-height[left]
+            left+=1
+        else:
+            if height[right]>=rightMax: rightMax=height[right]
+            else: res+=rightMax-height[right]
+            right-=1
+    return res`,
+    cpp: `// Trapping Rain Water
+int trap(vector<int>& height){
+    int left=0,right=height.size()-1, leftMax=0, rightMax=0, res=0;
+    while(left<=right){
+        if(height[left]<=height[right]){
+            if(height[left]>=leftMax) leftMax=height[left];
+            else res+=leftMax-height[left];
+            left++;
+        } else {
+            if(height[right]>=rightMax) rightMax=height[right];
+            else res+=rightMax-height[right];
+            right--;
+        }
+    }
+    return res;
+}`,
+    javascript: `// Trapping Rain Water
+function trap(height){
+    let left=0,right=height.length-1, leftMax=0,rightMax=0,res=0;
+    while(left<=right){
+        if(height[left]<=height[right]){
+            if(height[left]>=leftMax) leftMax=height[left];
+            else res+=leftMax-height[left];
+            left++;
+        } else {
+            if(height[right]>=rightMax) rightMax=height[right];
+            else res+=rightMax-height[right];
+            right--;
+        }
+    }
+    return res;
+}`
+  },
+
+  productExceptSelf: {
+    java: `// Product of Array Except Self
+int[] productExceptSelf(int[] nums){
+    int n = nums.length;
+    int[] left = new int[n];
+    int[] right = new int[n];
+    int[] res = new int[n];
+    left[0]=1;
+    for(int i=1;i<n;i++) left[i]=left[i-1]*nums[i-1];
+    right[n-1]=1;
+    for(int i=n-2;i>=0;i--) right[i]=right[i+1]*nums[i+1];
+    for(int i=0;i<n;i++) res[i]=left[i]*right[i];
+    return res;
+}`,
+    python: `# Product of Array Except Self
+def productExceptSelf(nums):
+    n=len(nums)
+    left=[1]*n
+    right=[1]*n
+    res=[1]*n
+    for i in range(1,n):
+        left[i]=left[i-1]*nums[i-1]
+    for i in range(n-2,-1,-1):
+        right[i]=right[i+1]*nums[i+1]
+    for i in range(n):
+        res[i]=left[i]*right[i]
+    return res`,
+    cpp: `// Product of Array Except Self
+vector<int> productExceptSelf(vector<int>& nums){
+    int n=nums.size();
+    vector<int> left(n,1), right(n,1), res(n,1);
+    for(int i=1;i<n;i++) left[i]=left[i-1]*nums[i-1];
+    for(int i=n-2;i>=0;i--) right[i]=right[i+1]*nums[i+1];
+    for(int i=0;i<n;i++) res[i]=left[i]*right[i];
+    return res;
+}`,
+    javascript: `// Product of Array Except Self
+function productExceptSelf(nums){
+    let n=nums.length, left=Array(n).fill(1), right=Array(n).fill(1), res=Array(n).fill(1);
+    for(let i=1;i<n;i++) left[i]=left[i-1]*nums[i-1];
+    for(let i=n-2;i>=0;i--) right[i]=right[i+1]*nums[i+1];
+    for(let i=0;i<n;i++) res[i]=left[i]*right[i];
+    return res;
+}`
+  },
+
+  majorityElement: {
+    java: `// Majority Element (Boyer-Moore)
+int majorityElement(int[] nums){
+    int count=0, candidate=0;
+    for(int num:nums){
+        if(count==0) candidate=num;
+        count += (num==candidate)?1:-1;
+    }
+    return candidate;
+}`,
+    python: `# Majority Element (Boyer-Moore)
+def majorityElement(nums):
+    count=candidate=0
+    for num in nums:
+        if count==0: candidate=num
+        count += (1 if num==candidate else -1)
+    return candidate`,
+    cpp: `// Majority Element (Boyer-Moore)
+int majorityElement(vector<int>& nums){
+    int count=0, candidate=0;
+    for(int num: nums){
+        if(count==0) candidate=num;
+        count += (num==candidate)?1:-1;
+    }
+    return candidate;
+}`,
+    javascript: `// Majority Element (Boyer-Moore)
+function majorityElement(nums){
+    let count=0, candidate=0;
+    for(let num of nums){
+        if(count===0) candidate=num;
+        count += (num===candidate?1:-1);
+    }
+    return candidate;
+}`
+  },
+
+  stockBuySell: {
+    java: `// Stock Buy and Sell Problem
+int maxProfit(int[] prices){
+    int minPrice=Integer.MAX_VALUE, profit=0;
+    for(int price: prices){
+        minPrice=Math.min(minPrice, price);
+        profit=Math.max(profit, price-minPrice);
+    }
+    return profit;
+}`,
+    python: `# Stock Buy and Sell Problem
+def maxProfit(prices):
+    minPrice=float('inf')
+    profit=0
+    for price in prices:
+        minPrice=min(minPrice, price)
+        profit=max(profit, price-minPrice)
+    return profit`,
+    cpp: `// Stock Buy and Sell Problem
+int maxProfit(vector<int>& prices){
+    int minPrice=INT_MAX, profit=0;
+    for(int price: prices){
+        minPrice=min(minPrice, price);
+        profit=max(profit, price-minPrice);
+    }
+    return profit;
+}`,
+    javascript: `// Stock Buy and Sell Problem
+function maxProfit(prices){
+    let minPrice=Infinity, profit=0;
+    for(let price of prices){
+        minPrice=Math.min(minPrice, price);
+        profit=Math.max(profit, price-minPrice);
+    }
+    return profit;
+}`
+  }
+};
+// src/data/codes.js
+export const linkedListAlgorithms = {
+  // 1. Insertion at head
+  insertAtHead: {
+    java: `class Node {
+    int data;
+    Node next;
+    Node(int d){ data = d; next = null; }
+}
+
+class LinkedList {
+    Node head;
+    
+    void insertAtHead(int data){
+        Node newNode = new Node(data);
+        newNode.next = head;
+        head = newNode;
+    }
+}`,
+    python: `class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    def insert_at_head(self, data):
+        new_node = Node(data)
+        new_node.next = self.head
+        self.head = new_node`,
+    cpp: `struct Node {
+    int data;
+    Node* next;
+    Node(int d){ data = d; next = nullptr; }
+};
+
+class LinkedList {
+    Node* head;
+public:
+    LinkedList(){ head = nullptr; }
+    void insertAtHead(int data){
+        Node* newNode = new Node(data);
+        newNode->next = head;
+        head = newNode;
+    }
+};`,
+    javascript: `class Node {
+    constructor(data){
+        this.data = data;
+        this.next = null;
+    }
+}
+
+class LinkedList {
+    constructor(){
+        this.head = null;
+    }
+
+    insertAtHead(data){
+        const newNode = new Node(data);
+        newNode.next = this.head;
+        this.head = newNode;
+    }
+}`,
+  },
+
+  // 2. Insertion at tail
+  insertAtTail: {
+    java: `void insertAtTail(int data){
+    Node newNode = new Node(data);
+    if(head == null){
+        head = newNode;
+        return;
+    }
+    Node temp = head;
+    while(temp.next != null){
+        temp = temp.next;
+    }
+    temp.next = newNode;
+}`,
+    python: `def insert_at_tail(self, data):
+    new_node = Node(data)
+    if not self.head:
+        self.head = new_node
+        return
+    temp = self.head
+    while temp.next:
+        temp = temp.next
+    temp.next = new_node`,
+    cpp: `void insertAtTail(int data){
+    Node* newNode = new Node(data);
+    if(!head){
+        head = newNode;
+        return;
+    }
+    Node* temp = head;
+    while(temp->next){
+        temp = temp->next;
+    }
+    temp->next = newNode;
+}`,
+    javascript: `insertAtTail(data){
+    const newNode = new Node(data);
+    if(!this.head){
+        this.head = newNode;
+        return;
+    }
+    let temp = this.head;
+    while(temp.next){
+        temp = temp.next;
+    }
+    temp.next = newNode;
+}`,
+  },
+
+  // 3. Insertion at given position
+  insertAtPosition: {
+    java: `void insertAtPosition(int data, int pos){
+    Node newNode = new Node(data);
+    if(pos == 0){
+        newNode.next = head;
+        head = newNode;
+        return;
+    }
+    Node temp = head;
+    for(int i=0;i<pos-1 && temp!=null;i++){
+        temp = temp.next;
+    }
+    if(temp == null) return;
+    newNode.next = temp.next;
+    temp.next = newNode;
+}`,
+    python: `def insert_at_position(self, data, pos):
+    new_node = Node(data)
+    if pos == 0:
+        new_node.next = self.head
+        self.head = new_node
+        return
+    temp = self.head
+    for _ in range(pos-1):
+        if not temp:
+            return
+        temp = temp.next
+    new_node.next = temp.next
+    temp.next = new_node`,
+    cpp: `void insertAtPosition(int data, int pos){
+    Node* newNode = new Node(data);
+    if(pos==0){
+        newNode->next = head;
+        head = newNode;
+        return;
+    }
+    Node* temp = head;
+    for(int i=0;i<pos-1 && temp;i++)
+        temp = temp->next;
+    if(!temp) return;
+    newNode->next = temp->next;
+    temp->next = newNode;
+}`,
+    javascript: `insertAtPosition(data,pos){
+    const newNode = new Node(data);
+    if(pos===0){
+        newNode.next = this.head;
+        this.head = newNode;
+        return;
+    }
+    let temp = this.head;
+    for(let i=0;i<pos-1 && temp;i++){
+        temp = temp.next;
+    }
+    if(!temp) return;
+    newNode.next = temp.next;
+    temp.next = newNode;
+}`,
+  },
+  
+  // 4. Deletion at head
+  deleteHead: {
+    java: `void deleteHead(){
+    if(head==null) return;
+    head = head.next;
+}`,
+    python: `def delete_head(self):
+    if not self.head:
+        return
+    self.head = self.head.next`,
+    cpp: `void deleteHead(){
+    if(!head) return;
+    Node* temp = head;
+    head = head->next;
+    delete temp;
+}`,
+    javascript: `deleteHead(){
+    if(!this.head) return;
+    this.head = this.head.next;
+}`,
+  },
+
+  // 5. Deletion at tail
+  deleteTail: {
+    java: `void deleteTail(){
+    if(head==null) return;
+    if(head.next==null){ head=null; return; }
+    Node temp = head;
+    while(temp.next.next != null) temp = temp.next;
+    temp.next = null;
+}`,
+    python: `def delete_tail(self):
+    if not self.head:
+        return
+    if not self.head.next:
+        self.head = None
+        return
+    temp = self.head
+    while temp.next.next:
+        temp = temp.next
+    temp.next = None`,
+    cpp: `void deleteTail(){
+    if(!head) return;
+    if(!head->next){ delete head; head=nullptr; return; }
+    Node* temp = head;
+    while(temp->next->next) temp = temp->next;
+    delete temp->next;
+    temp->next = nullptr;
+}`,
+    javascript: `deleteTail(){
+    if(!this.head) return;
+    if(!this.head.next){ this.head=null; return; }
+    let temp = this.head;
+    while(temp.next.next) temp = temp.next;
+    temp.next = null;
+}`,
+  },
+
+  // 6. Deletion at given position
+  deleteAtPosition: {
+    java: `void deleteAtPosition(int pos){
+    if(head==null) return;
+    if(pos==0){ head=head.next; return; }
+    Node temp=head;
+    for(int i=0;i<pos-1 && temp!=null;i++) temp=temp.next;
+    if(temp==null || temp.next==null) return;
+    temp.next = temp.next.next;
+}`,
+    python: `def delete_at_position(self,pos):
+    if not self.head:
+        return
+    if pos==0:
+        self.head = self.head.next
+        return
+    temp = self.head
+    for _ in range(pos-1):
+        if not temp.next:
+            return
+        temp = temp.next
+    if not temp.next: return
+    temp.next = temp.next.next`,
+    cpp: `void deleteAtPosition(int pos){
+    if(!head) return;
+    if(pos==0){ Node* temp=head; head=head->next; delete temp; return; }
+    Node* temp=head;
+    for(int i=0;i<pos-1 && temp;i++) temp=temp->next;
+    if(!temp || !temp->next) return;
+    Node* toDelete = temp->next;
+    temp->next = temp->next->next;
+    delete toDelete;
+}`,
+    javascript: `deleteAtPosition(pos){
+    if(!this.head) return;
+    if(pos===0){ this.head=this.head.next; return; }
+    let temp=this.head;
+    for(let i=0;i<pos-1 && temp;i++) temp=temp.next;
+    if(!temp || !temp.next) return;
+    temp.next = temp.next.next;
+}`,
+  },
+
+  // 7. Searching
+  search: {
+    java: `boolean search(int key){
+    Node temp=head;
+    while(temp!=null){
+        if(temp.data==key) return true;
+        temp=temp.next;
+    }
+    return false;
+}`,
+    python: `def search(self,key):
+    temp=self.head
+    while temp:
+        if temp.data==key: return True
+        temp = temp.next
+    return False`,
+    cpp: `bool search(int key){
+    Node* temp=head;
+    while(temp){
+        if(temp->data==key) return true;
+        temp=temp->next;
+    }
+    return false;
+}`,
+    javascript: `search(key){
+    let temp=this.head;
+    while(temp){
+        if(temp.data===key) return true;
+        temp=temp.next;
+    }
+    return false;
+}`,
+  },
+
+  // 8. Reverse (iterative)
+  reverseIterative: {
+    java: `void reverse(){
+    Node prev=null, curr=head, next;
+    while(curr!=null){
+        next=curr.next;
+        curr.next=prev;
+        prev=curr;
+        curr=next;
+    }
+    head=prev;
+}`,
+    python: `def reverse_iterative(self):
+    prev=None
+    curr=self.head
+    while curr:
+        nxt=curr.next
+        curr.next=prev
+        prev=curr
+        curr=nxt
+    self.head=prev`,
+    cpp: `void reverseIterative(){
+    Node *prev=nullptr, *curr=head, *next;
+    while(curr){
+        next=curr->next;
+        curr->next=prev;
+        prev=curr;
+        curr=next;
+    }
+    head=prev;
+}`,
+    javascript: `reverseIterative(){
+    let prev=null, curr=this.head, next=null;
+    while(curr){
+        next=curr.next;
+        curr.next=prev;
+        prev=curr;
+        curr=next;
+    }
+    this.head=prev;
+}`,
+  },
+
+  // 9. Reverse (recursive)
+  reverseRecursive: {
+    java: `Node reverseRec(Node node){
+    if(node==null || node.next==null) return node;
+    Node rest = reverseRec(node.next);
+    node.next.next = node;
+    node.next=null;
+    return rest;
+}`,
+    python: `def reverse_recursive(self,node):
+    if not node or not node.next:
+        return node
+    rest = self.reverse_recursive(node.next)
+    node.next.next = node
+    node.next=None
+    return rest`,
+    cpp: `Node* reverseRecursive(Node* node){
+    if(!node || !node->next) return node;
+    Node* rest = reverseRecursive(node->next);
+    node->next->next = node;
+    node->next = nullptr;
+    return rest;
+}`,
+    javascript: `reverseRecursive(node){
+    if(!node || !node.next) return node;
+    let rest=this.reverseRecursive(node.next);
+    node.next.next=node;
+    node.next=null;
+    return rest;
+}`,
+  },
+
+  // 10. Detect cycle (Floyd’s)
+  detectCycle: {
+    java: `boolean hasCycle(){
+    Node slow=head, fast=head;
+    while(fast!=null && fast.next!=null){
+        slow=slow.next;
+        fast=fast.next.next;
+        if(slow==fast) return true;
+    }
+    return false;
+}`,
+    python: `def has_cycle(self):
+    slow=fast=self.head
+    while fast and fast.next:
+        slow=slow.next
+        fast=fast.next.next
+        if slow==fast:
+            return True
+    return False`,
+    cpp: `bool hasCycle(){
+    Node *slow=head,*fast=head;
+    while(fast && fast->next){
+        slow=slow->next;
+        fast=fast->next->next;
+        if(slow==fast) return true;
+    }
+    return false;
+}`,
+    javascript: `hasCycle(){
+    let slow=this.head, fast=this.head;
+    while(fast && fast.next){
+        slow=slow.next;
+        fast=fast.next.next;
+        if(slow===fast) return true;
+    }
+    return false;
+}`,
+  },
+
+  // 11. Remove duplicates (sorted)
+  removeDuplicatesSorted: {
+    java: `void removeDuplicates(){
+    Node temp=head;
+    while(temp!=null && temp.next!=null){
+        if(temp.data==temp.next.data){
+            temp.next=temp.next.next;
+        } else {
+            temp=temp.next;
+        }
+    }
+}`,
+    python: `def remove_duplicates_sorted(self):
+    temp=self.head
+    while temp and temp.next:
+        if temp.data==temp.next.data:
+            temp.next=temp.next.next
+        else:
+            temp=temp.next`,
+    cpp: `void removeDuplicatesSorted(){
+    Node* temp=head;
+    while(temp && temp->next){
+        if(temp->data==temp->next->data)
+            temp->next=temp->next->next;
+        else
+            temp=temp->next;
+    }
+}`,
+    javascript: `removeDuplicatesSorted(){
+    let temp=this.head;
+    while(temp && temp.next){
+        if(temp.data===temp.next.data)
+            temp.next=temp.next.next;
+        else temp=temp.next;
+    }
+}`,
+  },
+
+  // 12. Middle node
+  findMiddle: {
+    java: `Node findMiddle(){
+    Node slow=head, fast=head;
+    while(fast!=null && fast.next!=null){
+        slow=slow.next;
+        fast=fast.next.next;
+    }
+    return slow;
+}`,
+    python: `def find_middle(self):
+    slow=fast=self.head
+    while fast and fast.next:
+        slow=slow.next
+        fast=fast.next.next
+    return slow`,
+    cpp: `Node* findMiddle(){
+    Node *slow=head,*fast=head;
+    while(fast && fast->next){
+        slow=slow->next;
+        fast=fast->next->next;
+    }
+    return slow;
+}`,
+    javascript: `findMiddle(){
+    let slow=this.head, fast=this.head;
+    while(fast && fast.next){
+        slow=slow.next;
+        fast=fast.next.next;
+    }
+    return slow;
+}`,
+  },
+
+  // 13. Nth node from end
+  nthFromEnd: {
+    java: `Node nthFromEnd(int n){
+    Node first=head, second=head;
+    for(int i=0;i<n;i++){
+        if(first==null) return null;
+        first=first.next;
+    }
+    while(first!=null){
+        first=first.next;
+        second=second.next;
+    }
+    return second;
+}`,
+    python: `def nth_from_end(self,n):
+    first=second=self.head
+    for _ in range(n):
+        if not first: return None
+        first=first.next
+    while first:
+        first=first.next
+        second=second.next
+    return second`,
+    cpp: `Node* nthFromEnd(int n){
+    Node *first=head,*second=head;
+    for(int i=0;i<n;i++){
+        if(!first) return nullptr;
+        first=first->next;
+    }
+    while(first){
+        first=first->next;
+        second=second->next;
+    }
+    return second;
+}`,
+    javascript: `nthFromEnd(n){
+    let first=this.head, second=this.head;
+    for(let i=0;i<n;i++){
+        if(!first) return null;
+        first=first.next;
+    }
+    while(first){
+        first=first.next;
+        second=second.next;
+    }
+    return second;
+}`,
+  },
+
+  // 14. Merge two sorted lists
+  mergeSorted: {
+    java: `Node mergeSorted(Node l1, Node l2){
+    if(l1==null) return l2;
+    if(l2==null) return l1;
+    if(l1.data<l2.data){
+        l1.next=mergeSorted(l1.next,l2);
+        return l1;
+    } else {
+        l2.next=mergeSorted(l1,l2.next);
+        return l2;
+    }
+}`,
+    python: `def merge_sorted(self,l1,l2):
+    if not l1: return l2
+    if not l2: return l1
+    if l1.data<l2.data:
+        l1.next=self.merge_sorted(l1.next,l2)
+        return l1
+    else:
+        l2.next=self.merge_sorted(l1,l2.next)
+        return l2`,
+    cpp: `Node* mergeSorted(Node* l1, Node* l2){
+    if(!l1) return l2;
+    if(!l2) return l1;
+    if(l1->data<l2->data){
+        l1->next=mergeSorted(l1->next,l2);
+        return l1;
+    } else {
+        l2->next=mergeSorted(l1,l2->next);
+        return l2;
+    }
+}`,
+    javascript: `mergeSorted(l1,l2){
+    if(!l1) return l2;
+    if(!l2) return l1;
+    if(l1.data<l2.data){
+        l1.next=this.mergeSorted(l1.next,l2);
+        return l1;
+    } else {
+        l2.next=this.mergeSorted(l1,l2.next);
+        return l2;
+    }
+}`,
+  },
+
+  // 15. Palindrome check
+  isPalindrome: {
+    java: `boolean isPalindrome(){
+    Node slow=head, fast=head;
+    Stack<Integer> stack=new Stack<>();
+    while(fast!=null && fast.next!=null){
+        stack.push(slow.data);
+        slow=slow.next;
+        fast=fast.next.next;
+    }
+    if(fast!=null) slow=slow.next;
+    while(slow!=null){
+        if(stack.pop()!=slow.data) return false;
+        slow=slow.next;
+    }
+    return true;
+}`,
+    python: `def is_palindrome(self):
+    slow=fast=self.head
+    stack=[]
+    while fast and fast.next:
+        stack.append(slow.data)
+        slow=slow.next
+        fast=fast.next.next
+    if fast: slow=slow.next
+    while slow:
+        if stack.pop()!=slow.data: return False
+        slow=slow.next
+    return True`,
+    cpp: `bool isPalindrome(){
+    Node *slow=head,*fast=head;
+    stack<int> st;
+    while(fast && fast->next){
+        st.push(slow->data);
+        slow=slow->next;
+        fast=fast->next->next;
+    }
+    if(fast) slow=slow->next;
+    while(slow){
+        if(st.top()!=slow->data) return false;
+        st.pop();
+        slow=slow->next;
+    }
+    return true;
+}`,
+    javascript: `isPalindrome(){
+    let slow=this.head, fast=this.head;
+    const stack=[];
+    while(fast && fast.next){
+        stack.push(slow.data);
+        slow=slow.next;
+        fast=fast.next.next;
+    }
+    if(fast) slow=slow.next;
+    while(slow){
+        if(stack.pop()!==slow.data) return false;
+        slow=slow.next;
+    }
+    return true;
+}`,
+  },
+  // --- Doubly Linked List Operations ---
+
+
+  // 16. DLL: Insertion at head
+  dllInsertHead: {
+    java: `void insertHead(int data){
+    Node newNode=new Node(data);
+    newNode.next=head;
+    newNode.prev=null;
+    if(head!=null) head.prev=newNode;
+    head=newNode;
+}`,
+    python: `def insert_head(self,data):
+    new_node=Node(data)
+    new_node.next=self.head
+    new_node.prev=None
+    if self.head: self.head.prev=new_node
+    self.head=new_node`,
+    cpp: `void insertHead(int data){
+    Node* newNode=new Node(data);
+    newNode->next=head;
+    newNode->prev=nullptr;
+    if(head) head->prev=newNode;
+    head=newNode;
+}`,
+    javascript: `insertHead(data){
+    const newNode={data,prev:null,next:this.head};
+    if(this.head) this.head.prev=newNode;
+    this.head=newNode;
+}`,
+  },
+
+  // 17. DLL: Insertion at tail
+  dllInsertTail: {
+    java: `void insertTail(int data){
+    Node newNode=new Node(data);
+    if(head==null){ head=newNode; return; }
+    Node temp=head;
+    while(temp.next!=null) temp=temp.next;
+    temp.next=newNode;
+    newNode.prev=temp;
+}`,
+    python: `def insert_tail(self,data):
+    new_node=Node(data)
+    if not self.head:
+        self.head=new_node
+        return
+    temp=self.head
+    while temp.next: temp=temp.next
+    temp.next=new_node
+    new_node.prev=temp`,
+    cpp: `void insertTail(int data){
+    Node* newNode=new Node(data);
+    if(!head){ head=newNode; return; }
+    Node* temp=head;
+    while(temp->next) temp=temp->next;
+    temp->next=newNode;
+    newNode->prev=temp;
+}`,
+    javascript: `insertTail(data){
+    const newNode={data,prev:null,next:null};
+    if(!this.head){ this.head=newNode; return; }
+    let temp=this.head;
+    while(temp.next) temp=temp.next;
+    temp.next=newNode;
+    newNode.prev=temp;
+}`,
+  },
+
+  // 18. DLL: Deletion
+  dllDelete: {
+    java: `void deleteNode(Node node){
+    if(head==null || node==null) return;
+    if(node==head) head=node.next;
+    if(node.next!=null) node.next.prev=node.prev;
+    if(node.prev!=null) node.prev.next=node.next;
+}`,
+    python: `def delete_node(self,node):
+    if not self.head or not node: return
+    if node==self.head: self.head=node.next
+    if node.next: node.next.prev=node.prev
+    if node.prev: node.prev.next=node.next`,
+    cpp: `void deleteNode(Node* node){
+    if(!head || !node) return;
+    if(node==head) head=node->next;
+    if(node->next) node->next->prev=node->prev;
+    if(node->prev) node->prev->next=node->next;
+}`,
+    javascript: `deleteNode(node){
+    if(!this.head || !node) return;
+    if(node===this.head) this.head=node.next;
+    if(node.next) node.next.prev=node.prev;
+    if(node.prev) node.prev.next=node.next;
+}`,
+  },
+
+  // --- Circular Linked List Operations ---
+  cllInsert: {
+    java: `void insert(int data){
+    Node newNode=new Node(data);
+    if(head==null){ head=newNode; newNode.next=head; return; }
+    Node temp=head;
+    while(temp.next!=head) temp=temp.next;
+    temp.next=newNode;
+    newNode.next=head;
+}`,
+    python: `def insert(self,data):
+    new_node=Node(data)
+    if not self.head:
+        self.head=new_node
+        new_node.next=self.head
+        return
+    temp=self.head
+    while temp.next!=self.head: temp=temp.next
+    temp.next=new_node
+    new_node.next=self.head`,
+    cpp: `void insert(int data){
+    Node* newNode=new Node(data);
+    if(!head){ head=newNode; newNode->next=head; return; }
+    Node* temp=head;
+    while(temp->next!=head) temp=temp->next;
+    temp->next=newNode;
+    newNode->next=head;
+}`,
+    javascript: `insert(data){
+    const newNode={data,next:null};
+    if(!this.head){ this.head=newNode; newNode.next=this.head; return; }
+    let temp=this.head;
+    while(temp.next!==this.head) temp=temp.next;
+    temp.next=newNode;
+    newNode.next=this.head;
+}`,
+  },
+
+  cllDelete: {
+    java: `void delete(int key){
+    if(head==null) return;
+    Node temp=head, prev=null;
+    while(temp.data!=key && temp.next!=head){ prev=temp; temp=temp.next; }
+    if(temp.data!=key) return;
+    if(prev!=null) prev.next=temp.next;
+    else{
+        Node last=head;
+        while(last.next!=head) last=last.next;
+        head=head.next;
+        last.next=head;
+    }
+}`,
+    python: `def delete(self,key):
+    if not self.head: return
+    temp=self.head; prev=None
+    while temp.data!=key and temp.next!=self.head:
+        prev=temp; temp=temp.next
+    if temp.data!=key: return
+    if prev: prev.next=temp.next
+    else:
+        last=self.head
+        while last.next!=self.head: last=last.next
+        self.head=self.head.next
+        last.next=self.head`,
+    cpp: `void delete(int key){
+    if(!head) return;
+    Node *temp=head,*prev=nullptr;
+    while(temp->data!=key && temp->next!=head){ prev=temp; temp=temp->next; }
+    if(temp->data!=key) return;
+    if(prev) prev->next=temp->next;
+    else{
+        Node* last=head;
+        while(last->next!=head) last=last->next;
+        head=head->next;
+        last->next=head;
+    }
+}`,
+    javascript: `delete(key){
+    if(!this.head) return;
+    let temp=this.head, prev=null;
+    while(temp.data!==key && temp.next!==this.head){ prev=temp; temp=temp.next; }
+    if(temp.data!==key) return;
+    if(prev) prev.next=temp.next;
+    else{
+        let last=this.head;
+        while(last.next!==this.head) last=last.next;
+        this.head=this.head.next;
+        last.next=this.head;
+    }
+}`,
+  },
+
+  // --- Stack using Linked List ---
+  stackPush: {
+    java: `void push(int data){
+    Node newNode=new Node(data);
+    newNode.next=head;
+    head=newNode;
+}`,
+    python: `def push(self,data):
+    new_node=Node(data)
+    new_node.next=self.head
+    self.head=new_node`,
+    cpp: `void push(int data){
+    Node* newNode=new Node(data);
+    newNode->next=head;
+    head=newNode;
+}`,
+    javascript: `push(data){
+    const newNode={data,next:this.head};
+    this.head=newNode;
+}`,
+  },
+
+  stackPop: {
+    java: `int pop(){
+    if(head==null) return -1;
+    int val=head.data;
+    head=head.next;
+    return val;
+}`,
+    python: `def pop(self):
+    if not self.head: return None
+    val=self.head.data
+    self.head=self.head.next
+    return val`,
+    cpp: `int pop(){
+    if(!head) return -1;
+    int val=head->data;
+    Node* temp=head;
+    head=head->next;
+    delete temp;
+    return val;
+}`,
+    javascript: `pop(){
+    if(!this.head) return null;
+    const val=this.head.data;
+    this.head=this.head.next;
+    return val;
+}`,
+  },
+
+  // --- Queue using Linked List ---
+  queueEnqueue: {
+    java: `void enqueue(int data){
+    Node newNode=new Node(data);
+    if(rear==null){ front=rear=newNode; return; }
+    rear.next=newNode;
+    rear=newNode;
+}`,
+    python: `def enqueue(self,data):
+    new_node=Node(data)
+    if not self.rear:
+        self.front=self.rear=new_node
+        return
+    self.rear.next=new_node
+    self.rear=new_node`,
+    cpp: `void enqueue(int data){
+    Node* newNode=new Node(data);
+    if(!rear){ front=rear=newNode; return; }
+    rear->next=newNode;
+    rear=newNode;
+}`,
+    javascript: `enqueue(data){
+    const newNode={data,next:null};
+    if(!this.rear){ this.front=this.rear=newNode; return; }
+    this.rear.next=newNode;
+    this.rear=newNode;
+}`,
+  },
+
+  queueDequeue: {
+    java: `int dequeue(){
+    if(front==null) return -1;
+    int val=front.data;
+    front=front.next;
+    if(front==null) rear=null;
+    return val;
+}`,
+    python: `def dequeue(self):
+    if not self.front: return None
+    val=self.front.data
+    self.front=self.front.next
+    if not self.front: self.rear=None
+    return val`,
+    cpp: `int dequeue(){
+    if(!front) return -1;
+    int val=front->data;
+    Node* temp=front;
+    front=front->next;
+    if(!front) rear=nullptr;
+    delete temp;
+    return val;
+}`,
+    javascript: `dequeue(){
+    if(!this.front) return null;
+    const val=this.front.data;
+    this.front=this.front.next;
+    if(!this.front) this.rear=null;
+    return val;
+}`,
+  },
+
+  // --- XOR Linked List (Memory-efficient variant) ---
+  xorInsertHead: {
+    java: `void insertHead(int data){
+    Node newNode=new Node(data);
+    newNode.npx=XOR(null,head);
+    if(head!=null){
+        head.npx=XOR(newNode, XOR(head.npx, null));
+    }
+    head=newNode;
+}`,
+    python: `# Note: Python requires id() to simulate XOR pointers
+def insert_head(self,data):
+    new_node=Node(data)
+    new_node.npx=id(self.head)^0
+    if self.head: self.head.npx=id(new_node)^self.head.npx
+    self.head=new_node`,
+    cpp: `void insertHead(int data){
+    Node* newNode=new Node(data);
+    newNode->npx=XOR(nullptr,head);
+    if(head) head->npx=XOR(newNode,XOR(head->npx,nullptr));
+    head=newNode;
+}`,
+    javascript: `// JS cannot do XOR pointers natively, conceptually:
+insertHead(data){
+    // Placeholder: XOR Linked List not directly implementable in JS
+}`,
+  },
+
+
+  // TODO: Doubly Linked List, Circular Linked List, Stack/Queue using Linked List, XOR Linked List
+};
+
+export const treeCodes = {
+  // Basic Tree Operations
+  insertBST: {
+    java: `// Java
+class Node {
+    int data;
+    Node left, right;
+    Node(int data) { this.data = data; }
+}
+Node insert(Node root, int key) {
+    if (root == null) return new Node(key);
+    if (key < root.data) root.left = insert(root.left, key);
+    else root.right = insert(root.right, key);
+    return root;
+}`,
+    python: `# Python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+def insert(root, key):
+    if root is None:
+        return Node(key)
+    if key < root.data:
+        root.left = insert(root.left, key)
+    else:
+        root.right = insert(root.right, key)
+    return root`,
+    cpp: `// C++
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+    Node(int val) : data(val), left(NULL), right(NULL) {}
+};
+Node* insert(Node* root, int key) {
+    if (!root) return new Node(key);
+    if (key < root->data) root->left = insert(root->left, key);
+    else root->right = insert(root->right, key);
+    return root;
+}`,
+    javascript: `// JavaScript
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.left = null;
+        this.right = null;
+    }
+}
+function insert(root, key) {
+    if (!root) return new Node(key);
+    if (key < root.data) root.left = insert(root.left, key);
+    else root.right = insert(root.right, key);
+    return root;
+}`,
+  },
+
+  deleteBST: {
+    java: `// Java
+Node delete(Node root, int key) {
+    if (root == null) return null;
+    if (key < root.data) root.left = delete(root.left, key);
+    else if (key > root.data) root.right = delete(root.right, key);
+    else {
+        if (root.left == null) return root.right;
+        else if (root.right == null) return root.left;
+        Node succ = root.right;
+        while(succ.left != null) succ = succ.left;
+        root.data = succ.data;
+        root.right = delete(root.right, succ.data);
+    }
+    return root;
+}`,
+    python: `# Python
+def delete(root, key):
+    if not root: return None
+    if key < root.data: root.left = delete(root.left, key)
+    elif key > root.data: root.right = delete(root.right, key)
+    else:
+        if not root.left: return root.right
+        if not root.right: return root.left
+        succ = root.right
+        while succ.left: succ = succ.left
+        root.data = succ.data
+        root.right = delete(root.right, succ.data)
+    return root`,
+    cpp: `// C++
+Node* deleteNode(Node* root, int key) {
+    if (!root) return nullptr;
+    if (key < root->data) root->left = deleteNode(root->left, key);
+    else if (key > root->data) root->right = deleteNode(root->right, key);
+    else {
+        if (!root->left) return root->right;
+        if (!root->right) return root->left;
+        Node* succ = root->right;
+        while (succ->left) succ = succ->left;
+        root->data = succ->data;
+        root->right = deleteNode(root->right, succ->data);
+    }
+    return root;
+}`,
+    javascript: `// JavaScript
+function deleteNode(root, key) {
+    if (!root) return null;
+    if (key < root.data) root.left = deleteNode(root.left, key);
+    else if (key > root.data) root.right = deleteNode(root.right, key);
+    else {
+        if (!root.left) return root.right;
+        if (!root.right) return root.left;
+        let succ = root.right;
+        while (succ.left) succ = succ.left;
+        root.data = succ.data;
+        root.right = deleteNode(root.right, succ.data);
+    }
+    return root;
+}`,
+  },
+
+  searchBST: {
+    java: `// Java
+boolean search(Node root, int key) {
+    if (root == null) return false;
+    if (root.data == key) return true;
+    return key < root.data ? search(root.left, key) : search(root.right, key);
+}`,
+    python: `# Python
+def search(root, key):
+    if not root: return False
+    if root.data == key: return True
+    return search(root.left, key) if key < root.data else search(root.right, key)`,
+    cpp: `// C++
+bool search(Node* root, int key) {
+    if (!root) return false;
+    if (root->data == key) return true;
+    return key < root->data ? search(root->left, key) : search(root->right, key);
+}`,
+    javascript: `// JavaScript
+function search(root, key) {
+    if (!root) return false;
+    if (root.data === key) return true;
+    return key < root.data ? search(root.left, key) : search(root.right, key);
+}`,
+  },
+
+  height: {
+    java: `// Java
+int height(Node root) {
+    if (root == null) return 0;
+    return 1 + Math.max(height(root.left), height(root.right));
+}`,
+    python: `# Python
+def height(root):
+    if not root: return 0
+    return 1 + max(height(root.left), height(root.right))`,
+    cpp: `// C++
+int height(Node* root) {
+    if (!root) return 0;
+    return 1 + max(height(root->left), height(root->right));
+}`,
+    javascript: `// JavaScript
+function height(root) {
+    if (!root) return 0;
+    return 1 + Math.max(height(root.left), height(root.right));
+}`,
+  },
+
+  size: {
+    java: `// Java
+int size(Node root) {
+    if (root == null) return 0;
+    return 1 + size(root.left) + size(root.right);
+}`,
+    python: `# Python
+def size(root):
+    if not root: return 0
+    return 1 + size(root.left) + size(root.right)`,
+    cpp: `// C++
+int size(Node* root) {
+    if (!root) return 0;
+    return 1 + size(root->left) + size(root->right);
+}`,
+    javascript: `// JavaScript
+function size(root) {
+    if (!root) return 0;
+    return 1 + size(root.left) + size(root.right);
+}`,
+  },
+
+  // Tree Traversals
+  inorder: {
+    java: `// Java Recursive
+void inorder(Node root) {
+    if (root == null) return;
+    inorder(root.left);
+    System.out.print(root.data + " ");
+    inorder(root.right);
+}
+
+// Java Iterative
+void inorderIter(Node root) {
+    Stack<Node> stack = new Stack<>();
+    Node curr = root;
+    while(curr != null || !stack.isEmpty()) {
+        while(curr != null) { stack.push(curr); curr = curr.left; }
+        curr = stack.pop();
+        System.out.print(curr.data + " ");
+        curr = curr.right;
+    }
+}`,
+    python: `# Python Recursive
+def inorder(root):
+    if not root: return
+    inorder(root.left)
+    print(root.data, end=' ')
+    inorder(root.right)
+
+# Python Iterative
+def inorder_iter(root):
+    stack, curr = [], root
+    while curr or stack:
+        while curr:
+            stack.append(curr)
+            curr = curr.left
+        curr = stack.pop()
+        print(curr.data, end=' ')
+        curr = curr.right`,
+    cpp: `// C++ Recursive
+void inorder(Node* root) {
+    if (!root) return;
+    inorder(root->left);
+    cout << root->data << " ";
+    inorder(root->right);
+}
+
+// C++ Iterative
+void inorderIter(Node* root) {
+    stack<Node*> s;
+    Node* curr = root;
+    while(curr || !s.empty()) {
+        while(curr) { s.push(curr); curr = curr->left; }
+        curr = s.top(); s.pop();
+        cout << curr->data << " ";
+        curr = curr->right;
+    }
+}`,
+    javascript: `// JS Recursive
+function inorder(root) {
+    if (!root) return;
+    inorder(root.left);
+    console.log(root.data);
+    inorder(root.right);
+}
+
+// JS Iterative
+function inorderIter(root) {
+    let stack = [], curr = root;
+    while(curr || stack.length) {
+        while(curr) { stack.push(curr); curr = curr.left; }
+        curr = stack.pop();
+        console.log(curr.data);
+        curr = curr.right;
+    }
+}`,
+  },
+
+  preorder: {
+    java: `// Java Recursive
+void preorder(Node root) {
+    if (root == null) return;
+    System.out.print(root.data + " ");
+    preorder(root.left);
+    preorder(root.right);
+}
+
+// Java Iterative
+void preorderIter(Node root) {
+    if(root == null) return;
+    Stack<Node> stack = new Stack<>();
+    stack.push(root);
+    while(!stack.isEmpty()) {
+        Node curr = stack.pop();
+        System.out.print(curr.data + " ");
+        if(curr.right != null) stack.push(curr.right);
+        if(curr.left != null) stack.push(curr.left);
+    }
+}`,
+    python: `# Python Recursive
+def preorder(root):
+    if not root: return
+    print(root.data, end=' ')
+    preorder(root.left)
+    preorder(root.right)
+
+# Python Iterative
+def preorder_iter(root):
+    if not root: return
+    stack = [root]
+    while stack:
+        curr = stack.pop()
+        print(curr.data, end=' ')
+        if curr.right: stack.append(curr.right)
+        if curr.left: stack.append(curr.left)`,
+    cpp: `// C++ Recursive
+void preorder(Node* root) {
+    if (!root) return;
+    cout << root->data << " ";
+    preorder(root->left);
+    preorder(root->right);
+}
+
+// C++ Iterative
+void preorderIter(Node* root) {
+    if(!root) return;
+    stack<Node*> s;
+    s.push(root);
+    while(!s.empty()) {
+        Node* curr = s.top(); s.pop();
+        cout << curr->data << " ";
+        if(curr->right) s.push(curr->right);
+        if(curr->left) s.push(curr->left);
+    }
+}`,
+    javascript: `// JS Recursive
+function preorder(root) {
+    if (!root) return;
+    console.log(root.data);
+    preorder(root.left);
+    preorder(root.right);
+}
+
+// JS Iterative
+function preorderIter(root) {
+    if(!root) return;
+    let stack = [root];
+    while(stack.length) {
+        let curr = stack.pop();
+        console.log(curr.data);
+        if(curr.right) stack.push(curr.right);
+        if(curr.left) stack.push(curr.left);
+    }
+}`,
+  },
+
+  postorder: {
+    java: `// Java Recursive
+void postorder(Node root) {
+    if (root == null) return;
+    postorder(root.left);
+    postorder(root.right);
+    System.out.print(root.data + " ");
+}
+
+// Java Iterative
+void postorderIter(Node root) {
+    if(root == null) return;
+    Stack<Node> s1 = new Stack<>(), s2 = new Stack<>();
+    s1.push(root);
+    while(!s1.isEmpty()) {
+        Node curr = s1.pop();
+        s2.push(curr);
+        if(curr.left != null) s1.push(curr.left);
+        if(curr.right != null) s1.push(curr.right);
+    }
+    while(!s2.isEmpty()) {
+        System.out.print(s2.pop().data + " ");
+    }
+}`,
+    python: `# Python Recursive
+def postorder(root):
+    if not root: return
+    postorder(root.left)
+    postorder(root.right)
+    print(root.data, end=' ')
+
+# Python Iterative
+def postorder_iter(root):
+    if not root: return
+    s1, s2 = [root], []
+    while s1:
+        curr = s1.pop()
+        s2.append(curr)
+        if curr.left: s1.append(curr.left)
+        if curr.right: s1.append(curr.right)
+    while s2:
+        print(s2.pop().data, end=' ')`,
+    cpp: `// C++ Recursive
+void postorder(Node* root) {
+    if (!root) return;
+    postorder(root->left);
+    postorder(root->right);
+    cout << root->data << " ";
+}
+
+// C++ Iterative
+void postorderIter(Node* root) {
+    if(!root) return;
+    stack<Node*> s1, s2;
+    s1.push(root);
+    while(!s1.empty()) {
+        Node* curr = s1.top(); s1.pop();
+        s2.push(curr);
+        if(curr->left) s1.push(curr->left);
+        if(curr->right) s1.push(curr->right);
+    }
+    while(!s2.empty()) {
+        cout << s2.top()->data << " "; s2.pop();
+    }
+}`,
+    javascript: `// JS Recursive
+function postorder(root) {
+    if (!root) return;
+    postorder(root.left);
+    postorder(root.right);
+    console.log(root.data);
+}
+
+// JS Iterative
+function postorderIter(root) {
+    if(!root) return;
+    let s1 = [root], s2 = [];
+    while(s1.length) {
+        let curr = s1.pop();
+        s2.push(curr);
+        if(curr.left) s1.push(curr.left);
+        if(curr.right) s1.push(curr.right);
+    }
+    while(s2.length) {
+        console.log(s2.pop().data);
+    }
+}`,
+  },
+
+  levelOrder: {
+    java: `// Java Level-order BFS
+void levelOrder(Node root) {
+    if(root == null) return;
+    Queue<Node> q = new LinkedList<>();
+    q.add(root);
+    while(!q.isEmpty()) {
+        Node curr = q.poll();
+        System.out.print(curr.data + " ");
+        if(curr.left != null) q.add(curr.left);
+        if(curr.right != null) q.add(curr.right);
+    }
+}`,
+    python: `# Python Level-order BFS
+from collections import deque
+def level_order(root):
+    if not root: return
+    q = deque([root])
+    while q:
+        curr = q.popleft()
+        print(curr.data, end=' ')
+        if curr.left: q.append(curr.left)
+        if curr.right: q.append(curr.right)`,
+    cpp: `// C++ Level-order BFS
+void levelOrder(Node* root) {
+    if(!root) return;
+    queue<Node*> q;
+    q.push(root);
+    while(!q.empty()) {
+        Node* curr = q.front(); q.pop();
+        cout << curr->data << " ";
+        if(curr->left) q.push(curr->left);
+        if(curr->right) q.push(curr->right);
+    }
+}`,
+    javascript: `// JS Level-order BFS
+function levelOrder(root) {
+    if(!root) return;
+    let q = [root];
+    while(q.length) {
+        let curr = q.shift();
+        console.log(curr.data);
+        if(curr.left) q.push(curr.left);
+        if(curr.right) q.push(curr.right);
+    }
+}`,
+  },
+
+  reverseLevelOrder: {
+    java: `// Java Reverse Level-order
+void reverseLevelOrder(Node root) {
+    if(root == null) return;
+    Queue<Node> q = new LinkedList<>();
+    Stack<Node> s = new Stack<>();
+    q.add(root);
+    while(!q.isEmpty()) {
+        Node curr = q.poll();
+        s.push(curr);
+        if(curr.right != null) q.add(curr.right);
+        if(curr.left != null) q.add(curr.left);
+    }
+    while(!s.isEmpty()) System.out.print(s.pop().data + " ");
+}`,
+    python: `# Python Reverse Level-order
+from collections import deque
+def reverse_level_order(root):
+    if not root: return
+    q, stack = deque([root]), []
+    while q:
+        curr = q.popleft()
+        stack.append(curr)
+        if curr.right: q.append(curr.right)
+        if curr.left: q.append(curr.left)
+    while stack:
+        print(stack.pop().data, end=' ')`,
+    cpp: `// C++ Reverse Level-order
+void reverseLevelOrder(Node* root) {
+    if(!root) return;
+    queue<Node*> q;
+    stack<Node*> s;
+    q.push(root);
+    while(!q.empty()) {
+        Node* curr = q.front(); q.pop();
+        s.push(curr);
+        if(curr->right) q.push(curr->right);
+        if(curr->left) q.push(curr->left);
+    }
+    while(!s.empty()) {
+        cout << s.top()->data << " "; s.pop();
+    }
+}`,
+    javascript: `// JS Reverse Level-order
+function reverseLevelOrder(root) {
+    if(!root) return;
+    let q = [root], stack = [];
+    while(q.length) {
+        let curr = q.shift();
+        stack.push(curr);
+        if(curr.right) q.push(curr.right);
+        if(curr.left) q.push(curr.left);
+    }
+    while(stack.length) console.log(stack.pop().data);
+}`,
+  },
+};
+
+// src/data/codes.js
+
+export const heapCodes = {
+  insertHeap: {
+    java: `// Java - Insert into Min Heap
+void insert(int[] heap, int n, int key) {
+    heap[n] = key;
+    int i = n;
+    while (i != 0 && heap[parent(i)] > heap[i]) {
+        swap(heap, i, parent(i));
+        i = parent(i);
+    }
+}`,
+    python: `# Python - Insert into Min Heap
+def insert(heap, key):
+    heap.append(key)
+    i = len(heap) - 1
+    while i > 0 and heap[(i - 1) // 2] > heap[i]:
+        heap[i], heap[(i - 1) // 2] = heap[(i - 1) // 2], heap[i]
+        i = (i - 1) // 2`
+  },
+
+  deleteHeap: {
+    java: `// Java - Delete root from Min Heap
+int deleteRoot(int[] heap, int n) {
+    int root = heap[0];
+    heap[0] = heap[n - 1];
+    n = n - 1;
+    heapify(heap, n, 0);
+    return root;
+}`,
+    python: `# Python - Delete root from Min Heap
+def deleteRoot(heap):
+    root = heap[0]
+    heap[0] = heap[-1]
+    heap.pop()
+    heapify(heap, 0)
+    return root`
+  },
+
+  heapify: {
+    java: `// Java - Heapify (Down) for Min Heap
+void heapify(int[] heap, int n, int i) {
+    int smallest = i;
+    int l = 2 * i + 1;
+    int r = 2 * i + 2;
+
+    if (l < n && heap[l] < heap[smallest]) smallest = l;
+    if (r < n && heap[r] < heap[smallest]) smallest = r;
+
+    if (smallest != i) {
+        swap(heap, i, smallest);
+        heapify(heap, n, smallest);
+    }
+}`,
+    python: `# Python - Heapify (Down) for Min Heap
+def heapify(heap, i):
+    n = len(heap)
+    smallest = i
+    l = 2 * i + 1
+    r = 2 * i + 2
+    if l < n and heap[l] < heap[smallest]:
+        smallest = l
+    if r < n and heap[r] < heap[smallest]:
+        smallest = r
+    if smallest != i:
+        heap[i], heap[smallest] = heap[smallest], heap[i]
+        heapify(heap, smallest)`
+  },
+
+  buildHeap: {
+    java: `// Java - Build Heap from Array
+void buildHeap(int[] heap, int n) {
+    for (int i = n / 2 - 1; i >= 0; i--) {
+        heapify(heap, n, i);
+    }
+}`,
+    python: `# Python - Build Heap from Array
+def buildHeap(arr):
+    n = len(arr)
+    for i in range(n//2 - 1, -1, -1):
+        heapify(arr, i)`
+  },
+
+  peekHeap: {
+    java: `// Java - Peek / Get top element
+int peek(int[] heap) {
+    return heap[0];
+}`,
+    python: `# Python - Peek / Get top element
+def peek(heap):
+    return heap[0]`
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

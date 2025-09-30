@@ -181,6 +181,25 @@ def show(stack):
 
 </div>
 
+{/* Key Takeaways */}
+<motion.div
+  variants={fadeInUp}
+  initial="hidden"
+  animate="visible"
+  className="bg-green-50 border-l-4 border-green-500 p-6 rounded-xl mb-12 shadow-sm"
+>
+  <h2 className="text-3xl font-semibold mb-3 text-green-600 flex items-center gap-2 border-b-2 border-green-200 pb-2">
+    <Sparkles size={26} /> Key Takeaways
+  </h2>
+  <ul className="list-disc list-inside space-y-3 text-[#333333] text-xl">
+    <li>Stacks follow <strong>LIFO (Last In First Out)</strong> principle, meaning the last element added is the first to be removed.</li>
+    <li>Core operations include <strong>push</strong>, <strong>pop</strong>, <strong>peek/top</strong>, and <strong>isEmpty</strong>.</li>
+    <li>Used in function call management, recursion, expression evaluation, and undo mechanisms.</li>
+    <li>Supports efficient O(1) time complexity for push and pop operations.</li>
+    <li>Stacks are foundational for implementing other data structures like syntax parsers, backtracking algorithms, and certain graph algorithms (DFS).</li>
+  </ul>
+</motion.div>
+
 
   <div className="grid gap-10 md:grid-cols-2">
     {stackOperations.map((op, idx) => (

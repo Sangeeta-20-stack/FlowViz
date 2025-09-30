@@ -1,7 +1,7 @@
 // src/pages/HashingVisualizer.jsx
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { hashingAlgorithms } from "../data/codes"; // make sure this exists
+import { hashingAlgorithms } from "../data/codes"; 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
@@ -21,36 +21,20 @@ const fadeInUp = {
 
 const blockColors = ["#3B82F6", "#10B981", "#F59E0B", "#EF4444", "#6366F1", "#14B8A6"];
 
+// GIF links for hashing algorithms
+
+
 const HashingVisualizer = () => {
   const [selectedAlgo, setSelectedAlgo] = useState("hashTableChaining");
   const [selectedLang, setSelectedLang] = useState("java");
   const [array, setArray] = useState([]);
-  const [isRunning, setIsRunning] = useState(false);
-  const [highlight, setHighlight] = useState({ current: -1 });
 
   const generateArray = () => {
     const arr = Array.from({ length: 8 }, () => Math.floor(Math.random() * 20) + 1);
     setArray(arr);
-    setHighlight({ current: -1 });
   };
 
   useEffect(() => generateArray(), []);
-
-  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-  // Placeholder Hashing simulations
-  const runHashTableDemo = async () => {
-    setIsRunning(true);
-    alert(`${selectedAlgo} demo coming soon!`);
-    setIsRunning(false);
-  };
-
-  const hashingFunctions = {
-    hashTableChaining: runHashTableDemo,
-    hashTableOpenAddressing: runHashTableDemo,
-    rollingHash: runHashTableDemo,
-    setMapOps: runHashTableDemo,
-  };
 
   return (
     <>
@@ -72,9 +56,7 @@ const HashingVisualizer = () => {
             <button
               key={algo.key}
               onClick={() => setSelectedAlgo(algo.key)}
-              className={`px-6 py-2 rounded-full font-semibold transition shadow ${
-                selectedAlgo === algo.key ? "bg-blue-600 text-white" : "bg-white text-[#1A1A1A] border border-gray-200 hover:bg-gray-100"
-              }`}
+              className={`px-6 py-2 rounded-full font-semibold transition shadow ${selectedAlgo === algo.key ? "bg-blue-600 text-white" : "bg-white text-[#1A1A1A] border border-gray-200 hover:bg-gray-100"}`}
             >
               {algo.label}
             </button>
@@ -87,9 +69,7 @@ const HashingVisualizer = () => {
             <button
               key={lang}
               onClick={() => setSelectedLang(lang)}
-              className={`px-5 py-2 rounded-full font-semibold transition shadow ${
-                selectedLang === lang ? "bg-gray-800 text-white" : "bg-white text-[#1A1A1A] border border-gray-200 hover:bg-gray-100"
-              }`}
+              className={`px-5 py-2 rounded-full font-semibold transition shadow ${selectedLang === lang ? "bg-gray-800 text-white" : "bg-white text-[#1A1A1A] border border-gray-200 hover:bg-gray-100"}`}
             >
               {lang.toUpperCase()}
             </button>
@@ -100,50 +80,21 @@ const HashingVisualizer = () => {
         <motion.div className="mb-12" initial="hidden" animate="visible" variants={fadeInUp}>
           <div className="bg-white border border-gray-200 rounded-2xl shadow-md p-6 max-w-4xl mx-auto">
             <pre className="bg-[#1E1E1E] text-green-400 rounded-xl p-6 overflow-x-auto text-sm leading-relaxed">
-              {hashingAlgorithms[selectedAlgo][selectedLang]}
+              {hashingAlgorithms[selectedAlgo]?.[selectedLang] || "// Code not available"}
             </pre>
           </div>
         </motion.div>
 
-        {/* Visualizer */}
-        <motion.div className="mb-16" initial="hidden" animate="visible" variants={fadeInUp}>
-          <div className="bg-white border border-gray-200 rounded-2xl shadow-md p-6 max-w-4xl mx-auto">
-            <div className="flex justify-between items-center mb-4">
-              <span className="font-semibold text-[#1A1A1A]">Live Demo</span>
-            </div>
+       
 
-            <div className="flex items-end justify-center h-96 gap-2 bg-gray-50 rounded-xl p-6 overflow-hidden">
-              {array.map((value, idx) => (
-                <motion.div
-                  key={idx}
-                  animate={{ backgroundColor: idx === highlight.current ? "#EF4444" : blockColors[idx % blockColors.length] }}
-                  transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                  className="rounded-t-xl shadow-md"
-                  style={{ width: "24px", marginBottom: "4px", height: `${value * 10}px` }}
-                >
-                  <span className="text-xs text-center block pt-1">{value}</span>
-                </motion.div>
-              ))}
-            </div>
-
-            <div className="flex justify-center gap-4 mt-6">
-              <button
-                onClick={generateArray}
-                disabled={isRunning}
-                className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 shadow"
-              >
-                Generate
-              </button>
-              <button
-                onClick={() => hashingFunctions[selectedAlgo]()}
-                disabled={isRunning}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 disabled:opacity-50 shadow"
-              >
-                Run
-              </button>
-            </div>
-          </div>
-        </motion.div>
+        <div className="flex justify-center gap-4 mt-6">
+          <button
+            onClick={generateArray}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 shadow"
+          >
+            Generate
+          </button>
+        </div>
       </section>
       <Footer />
     </>

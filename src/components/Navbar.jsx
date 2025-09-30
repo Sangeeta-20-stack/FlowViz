@@ -16,45 +16,94 @@ const Navbar = () => {
   ];
 
   const algorithms = [
-    { title: "Sorting", links: [{ name: "Overview", href: "/sorting-overview" }, { name: "Sorting Visualizer", href: "/sorting-visualizer" }] },
-    { title: "Searching", links: [{ name: "Overview", href: "/searching-overview" }, { name: "Searching Algorithms", href: "/searching-visualizer" }] },
-    { title: "Graphs", links: [{ name: "Overview", href: "/graph-overview" }, { name: "Graph Algorithms", href: "/graph-visualizer" }] },
-    { title: "Dynamic Programming", links: [{ name: "Overview", href: "/dp-overview" }, { name: "DP Algorithms", href: "/dp-visualizer" }] },
-    { title: "Greedy", links: [{ name: "Overview", href: "/greedy-overview" }, { name: "Greedy Algorithms", href: "/greedy-visualizer" }] },
-    { title: "Backtracking", links: [{ name: "Overview", href: "/backtracking-overview" }, { name: "Backtracking Algorithms", href: "/backtracking-visualizer" }] },
-    { title: "String", links: [{ name: "Overview", href: "/string-overview" }, { name: "String Algorithms", href: "/string-visualizer" }] },
-    { title: "Divide & Conquer", links: [{ name: "Overview", href: "/dac-overview" }, { name: "Divide & Conquer Algorithms", href: "/dac-visualizer" }] },
-    { title: "Branch & Bound", links: [{ name: "Overview", href: "/bnb-overview" }, { name: "Branch & Bound Algorithms", href: "/bnb-visualizer" }] },
-    { title: "Hashing", links: [{ name: "Overview", href: "/hashing-overview" }, { name: "Hashing Algorithms", href: "/hashing-visualizer" }] },
-    { title: "Bit Manipulation", links: [{ name: "Overview", href: "/bit-overview" }, { name: "Bit-Manipulation Algorithms", href: "/bit-visualizer" }] },
-    { title: "Number Theory", links: [{ name: "Overview", href: "/number-overview" }, { name: "Number Algorithms", href: "/number-visualizer" }] },
-    { title: "Game Search", links: [{ name: "Overview", href: "/game-overview" }, { name: "Game Search Algorithms", href: "/game-visualizer" }] },
+    { title: "Sorting", links: [{ name: "Overview", href: "/sorting-overview" }, { name: "Algorithms", href: "/sorting-visualizer" }] },
+    { title: "Searching", links: [{ name: "Overview", href: "/searching-overview" }, { name: "Algorithms", href: "/searching-visualizer" }] },
+  
+    { title: "Dynamic Programming", links: [{ name: "Overview", href: "/dp-overview" }, { name: "Algorithms", href: "/dp-visualizer" }] },
+    { title: "Greedy", links: [{ name: "Overview", href: "/greedy-overview" }, { name: "Algorithms", href: "/greedy-visualizer" }] },
+    { title: "Backtracking", links: [{ name: "Overview", href: "/backtracking-overview" }, { name: "Algorithms", href: "/backtracking-visualizer" }] },
+    { title: "String", links: [{ name: "Overview", href: "/string-overview" }, { name: "Algorithms", href: "/string-visualizer" }] },
+    { title: "Divide & Conquer", links: [{ name: "Overview", href: "/dac-overview" }, { name: "Algorithms", href: "/dac-visualizer" }] },
+    { title: "Branch & Bound", links: [{ name: "Overview", href: "/bnb-overview" }, { name: "Algorithms", href: "/bnb-visualizer" }] },
+    { title: "Hashing", links: [{ name: "Overview", href: "/hashing-overview" }, { name: "Algorithms", href: "/hashing-visualizer" }] },
+    { title: "Bit Manipulation", links: [{ name: "Overview", href: "/bit-overview" }, { name: "Algorithms", href: "/bit-visualizer" }] },
+    { title: "Number Theory", links: [{ name: "Overview", href: "/number-overview" }, { name: "Algorithms", href: "/number-visualizer" }] },
+    { title: "Game Search", links: [{ name: "Overview", href: "/game-overview" }, { name: "Algorithms", href: "/game-visualizer" }] },
   ];
 
-  const dataStructures = [
-    { category: "Overview", links: [{ name: "Data Structures Overview", href: "/ds-overview" }] },
+ const dataStructures = [
+  {
+    category: "Overview",
+    links: [
+      { name: "Data Structures Overview", href: "/ds-overview" }
+    ],
+  },
   {
     category: "Linear",
     links: [
-      { name: "Stack", href: "/stack", sublinks: [
-        { name: "Overview", href: "/stack-overview" },
-        { name: "Algorithms", href: "/stack-algorithms" }
-      ]},
-      { name: "Queue", href: "/queue", sublinks: [
-        { name: "Overview", href: "/queue-overview" },
-        { name: "Algorithms", href: "/queue-algorithms" }
-      ]},
-      { name: "Linked List", href: "/linkedlist" },
-      { name: "Array", href: "/array" },
+      {
+        name: "Stack",
+        href: "/stack",
+        sublinks: [
+          { name: "Overview", href: "/stack-overview" },
+          { name: "Algorithms", href: "/stack-visualizer" }
+        ]
+      },
+      {
+        name: "Queue",
+        href: "/queue",
+        sublinks: [
+          { name: "Overview", href: "/queue-overview" },
+          { name: "Algorithms", href: "/queue-algorithms" }
+        ]
+      },
+      {
+        name: "Linked List",
+        href: "/linkedlist",
+        sublinks: [
+          { name: "Overview", href: "/ll-overview" },
+          { name: "Algorithms", href: "/ll-algorithms" }
+        ]
+      },
+      {
+        name: "Array",
+        href: "/array",
+        sublinks: [
+          { name: "Overview", href: "/array-overview" },
+          { name: "Algorithms", href: "/array-algorithms" }
+        ]
+      }
     ],
   },
   {
     category: "Non-Linear",
     links: [
-      { name: "Tree", href: "/tree" },
-      { name: "Graph", href: "/graph" },
-    ],
-  },
+      {
+        name: "Tree",
+        href: "/tree",
+        sublinks: [
+          { name: "Overview", href: "/tree-overview" },
+          { name: "Algorithms", href: "/tree-algorithms" }
+        ]
+      },
+      {
+        name: "Graph",
+        href: "/graph",
+        sublinks: [
+          { name: "Overview", href: "/graph-overview" },
+          { name: "Algorithms", href: "/graph-visualizer" }
+        ]
+      },
+      {
+        name: "Heap",
+        href: "/heap",
+        sublinks: [
+          { name: "Overview", href: "/heap-overview" },
+          { name: "Algorithms", href: "/heap-algorithms" }
+        ]
+      }
+    ]
+  }
 ];
 
   return (
@@ -128,53 +177,37 @@ const Navbar = () => {
   </button>
 
   {/* Data Structures dropdown */}
-  <motion.div
-    className="absolute top-12 left-0 bg-[#F5F5F5] rounded-lg shadow-lg w-[30rem] py-4 border border-[#E0E0E0] grid grid-cols-3 gap-4 px-4"
-    initial={{ opacity: 0, y: -10 }}
-    animate={{
-      opacity: isDSOpen ? 1 : 0,
-      y: isDSOpen ? 0 : -10,
-      pointerEvents: isDSOpen ? "auto" : "none",
-      transition: { duration: 0.2 },
-    }}
-  >
-    {/* Overview */}
-    <div>
-      <p className="font-bold mb-2 border-b border-gray-300 pb-1">Overview</p>
-      <ul className="pl-2">
-        {dataStructures[0].links.map((link, idx) => (
-          <li key={idx} className="py-1">
+<motion.div
+  className="absolute top-12 left-0 bg-white rounded-xl shadow-lg w-[32rem] py-4 border border-[#E0E0E0] grid grid-cols-3 gap-6 px-6"
+  initial={{ opacity: 0, y: -10 }}
+  animate={{
+    opacity: isDSOpen ? 1 : 0,
+    y: isDSOpen ? 0 : -10,
+    pointerEvents: isDSOpen ? "auto" : "none",
+    transition: { duration: 0.2 },
+  }}
+>
+  {dataStructures.map((category, catIdx) => (
+    <div key={catIdx}>
+      <p className="font-bold mb-2 text-lg border-b border-gray-200 pb-1">{category.category}</p>
+      <ul className="space-y-2">
+        {category.links.map((link, linkIdx) => (
+          <li key={linkIdx}>
             <Link
               to={link.href}
-              className="text-sm hover:text-[#4DA6FF] hover:underline"
+              className="text-sm font-medium hover:text-[#4DA6FF] hover:underline"
             >
               {link.name}
             </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
 
-    {/* Linear */}
-    <div>
-      <p className="font-semibold mb-2 border-b border-gray-300 pb-1">Linear</p>
-      <ul className="pl-2 space-y-1">
-        {dataStructures[1].links.map((link, idx) => (
-          <li key={idx} className="py-1 pl-2">
-            <Link
-              to={link.href}
-              className="text-sm hover:text-[#4DA6FF] hover:underline font-medium"
-            >
-              {link.name}
-            </Link>
-            {/* Sublinks dropdown for Stack / Queue */}
+            {/* Sublinks */}
             {link.sublinks && (
               <ul className="pl-4 mt-1 space-y-1">
-                {link.sublinks.map((sublink, sidx) => (
-                  <li key={sidx}>
+                {link.sublinks.map((sublink, subIdx) => (
+                  <li key={subIdx}>
                     <Link
                       to={sublink.href}
-                      className="text-xs hover:text-[#4DA6FF] hover:underline"
+                      className="text-xs font-normal hover:text-[#4DA6FF] hover:underline"
                     >
                       {sublink.name}
                     </Link>
@@ -186,24 +219,9 @@ const Navbar = () => {
         ))}
       </ul>
     </div>
+  ))}
+</motion.div>
 
-    {/* Non-Linear */}
-    <div>
-      <p className="font-semibold mb-2 border-b border-gray-300 pb-1">Non-Linear</p>
-      <ul className="pl-2 space-y-1">
-        {dataStructures[2].links.map((link, idx) => (
-          <li key={idx} className="py-1 pl-2">
-            <Link
-              to={link.href}
-              className="text-sm hover:text-[#4DA6FF] hover:underline"
-            >
-              {link.name}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </motion.div>
 </li>
 
       );
