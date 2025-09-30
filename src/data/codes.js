@@ -5597,6 +5597,104 @@ function hillClimb(start){
     }
     return current.value;
 }`
-  }
+  },
+  nimGame: {
+  java: `// Nim Game Optimal Move
+import java.util.*;
+class Nim {
+    static int nimSum(int[] heaps) {
+        int xorSum = 0;
+        for(int heap : heaps) xorSum ^= heap;
+        return xorSum;
+    }
+    static int[] optimalMove(int[] heaps) {
+        int xorSum = nimSum(heaps);
+        if(xorSum == 0) return null; // Losing position
+        for(int i=0;i<heaps.length;i++){
+            int target = heaps[i] ^ xorSum;
+            if(target < heaps[i]){
+                int remove = heaps[i]-target;
+                return new int[]{i, remove};
+            }
+        }
+        return null;
+    }
+    public static void main(String[] args){
+        int[] heaps = {3, 4, 5};
+        int[] move = optimalMove(heaps);
+        System.out.println("Remove " + move[1] + " from heap " + move[0]);
+    }
+}`,
+
+  python: `# Nim Game Optimal Move
+def nim_sum(heaps):
+    xor_sum = 0
+    for h in heaps: xor_sum ^= h
+    return xor_sum
+
+def optimal_move(heaps):
+    xor_sum_val = nim_sum(heaps)
+    if xor_sum_val == 0:
+        return None  # Losing position
+    for i, heap in enumerate(heaps):
+        target = heap ^ xor_sum_val
+        if target < heap:
+            remove = heap - target
+            return (i, remove)
+
+heaps = [3,4,5]
+move = optimal_move(heaps)
+print(f"Remove {move[1]} from heap {move[0]}")`,
+
+  cpp: `// Nim Game Optimal Move
+#include <bits/stdc++.h>
+using namespace std;
+
+int nimSum(vector<int>& heaps){
+    int xorSum = 0;
+    for(int h : heaps) xorSum ^= h;
+    return xorSum;
+}
+
+pair<int,int> optimalMove(vector<int>& heaps){
+    int xorSumVal = nimSum(heaps);
+    if(xorSumVal == 0) return {-1,-1}; // Losing position
+    for(int i=0;i<heaps.size();i++){
+        int target = heaps[i] ^ xorSumVal;
+        if(target < heaps[i]){
+            return {i, heaps[i]-target};
+        }
+    }
+    return {-1,-1};
+}
+
+int main(){
+    vector<int> heaps = {3,4,5};
+    auto move = optimalMove(heaps);
+    cout << "Remove " << move.second << " from heap " << move.first << endl;
+}`,
+
+  javascript: `// Nim Game Optimal Move
+function nimSum(heaps){
+    return heaps.reduce((a,b)=>a^b,0);
+}
+
+function optimalMove(heaps){
+    const xorSum = nimSum(heaps);
+    if(xorSum === 0) return null; // Losing position
+    for(let i=0;i<heaps.length;i++){
+        let target = heaps[i] ^ xorSum;
+        if(target < heaps[i]){
+            let remove = heaps[i]-target;
+            return {heap: i, remove};
+        }
+    }
+}
+
+const heaps = [3,4,5];
+const move = optimalMove(heaps);
+console.log(\`Remove \${move.remove} from heap \${move.heap}\`);`
+}
+
 };
 

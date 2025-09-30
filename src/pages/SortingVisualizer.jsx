@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { sortingCodes } from "../data/codes";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import Sort from "../components/Sort"; 
 
 const algorithms = [
   { key: "bubble", label: "Bubble Sort" },
@@ -506,7 +507,6 @@ const countingSort = async () => {
     <>
       <Navbar />
       <section className="px-8 md:px-20 pt-32 pb-16 bg-[#F9FAFB] text-[#1A1A1A]">
-
         {/* Header */}
         <motion.div className="text-center mb-12" initial="hidden" animate="visible" variants={fadeInUp}>
           <h1 className="text-5xl md:text-6xl font-bold text-[#1A1A1A]">
@@ -570,28 +570,8 @@ const countingSort = async () => {
               </span>
             </div>
 
-        <div className="flex items-end justify-center h-96 gap-2 bg-gray-50 rounded-xl p-6 overflow-hidden">
-  {array.map((value, idx) => {
-    const color = barColors[idx % barColors.length];
-    const maxBarHeight = 320; // maximum height in px for scaling
-    const scaledHeight = (value / 100) * maxBarHeight; // scale values to fit container
-    return (
-      <motion.div
-        key={idx}
-        animate={{ height: `${scaledHeight}px`, backgroundColor: color }}
-        transition={{ type: "spring", stiffness: 200, damping: 20 }}
-        className="rounded-t-xl shadow-md"
-        style={{
-          width: "24px",
-          marginBottom: "4px", // gap from bottom
-          background: `linear-gradient(to top, ${color}, #fff)`,
-        }}
-      />
-    );
-  })}
-</div>
-
-
+            {/* ✅ replaced inline bars with Sort component */}
+            <Sort array={array} />
 
             <div className="flex justify-between items-center mt-4 text-sm font-medium">
               <span className="text-gray-600">Pass {pass}</span>
@@ -620,9 +600,7 @@ const countingSort = async () => {
 
         {/* Footer Note */}
         <motion.div className="text-center" initial="hidden" animate="visible" variants={fadeInUp}>
-          <p className="text-[#555555] text-xl">
-            ✨ Learn sorting visually and understand every comparison and swap.
-          </p>
+          <p className="text-[#555555] text-xl">✨ Learn sorting visually and understand every comparison and swap.</p>
         </motion.div>
       </section>
       <Footer />

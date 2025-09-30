@@ -7,63 +7,81 @@ import Footer from "../components/Footer";
 
 const GameOverview = () => {
   const algorithms = [
-    {
-      name: "A* Search",
-      desc: "Heuristic-based pathfinding algorithm combining cost so far and estimated cost to goal.",
-      time: "O(b^d)",
-      space: "O(b^d)",
-      notes: "Optimal if heuristic is admissible; widely used in pathfinding."
-    },
-    {
-      name: "Breadth-First Search (BFS)",
-      desc: "Explores all nodes at current depth before going deeper.",
-      time: "O(b^d)",
-      space: "O(b^d)",
-      notes: "Finds shortest path in unweighted graphs."
-    },
-    {
-      name: "Depth-First Search (DFS)",
-      desc: "Explores a branch fully before backtracking.",
-      time: "O(b^d)",
-      space: "O(d)",
-      notes: "May not find shortest path; used in game trees and puzzles."
-    },
-    {
-      name: "Minimax",
-      desc: "Adversarial search algorithm for two-player zero-sum games.",
-      time: "O(b^d)",
-      space: "O(d)",
-      notes: "Assumes both players play optimally."
-    },
-    {
-      name: "Alpha-Beta Pruning",
-      desc: "Optimized Minimax that prunes branches that cannot affect the outcome.",
-      time: "O(b^(d/2))",
-      space: "O(d)",
-      notes: "Reduces nodes evaluated compared to standard Minimax."
-    },
-    {
-      name: "Monte Carlo Tree Search (MCTS)",
-      desc: "Uses random simulations to estimate the value of moves in complex games.",
-      time: "Depends on simulations",
-      space: "Depends on tree size",
-      notes: "Used in Go, Chess, and complex strategy games."
-    },
-    {
-      name: "Best-First Search",
-      desc: "Greedy search that expands the most promising node according to a heuristic.",
-      time: "O(b^m)",
-      space: "O(b^m)",
-      notes: "Heuristic-driven; may not guarantee optimal solution."
-    },
-    {
-      name: "Hill Climbing",
-      desc: "Iterative search moving in the direction of increasing heuristic value.",
-      time: "O(b^m)",
-      space: "O(b)",
-      notes: "May get stuck in local maxima; simple optimization strategy."
-    }
-  ];
+  {
+    name: "A* Search",
+    desc: "Heuristic-based pathfinding algorithm combining cost so far and estimated cost to goal.",
+    time: "O(b^d)",
+    space: "O(b^d)",
+    notes: "Optimal if heuristic is admissible; widely used in pathfinding.",
+    diagram: "https://cdn.codegym.cc/images/article/6d117ebf-e0c0-43b6-9150-4805c456ab01/original.gif"
+  },
+  {
+    name: "Breadth-First Search (BFS)",
+    desc: "Explores all nodes at current depth before going deeper.",
+    time: "O(b^d)",
+    space: "O(b^d)",
+    notes: "Finds shortest path in unweighted graphs.",
+    diagram: "https://upload.wikimedia.org/wikipedia/commons/5/5d/Breadth-First-Search-Algorithm.gif"
+  },
+  {
+    name: "Depth-First Search (DFS)",
+    desc: "Explores a branch fully before backtracking.",
+    time: "O(b^d)",
+    space: "O(d)",
+    notes: "May not find shortest path; used in game trees and puzzles.",
+    diagram: "https://upload.wikimedia.org/wikipedia/commons/7/7f/Depth-First-Search.gif"
+  },
+  {
+    name: "Minimax",
+    desc: "Adversarial search algorithm for two-player zero-sum games.",
+    time: "O(b^d)",
+    space: "O(d)",
+    notes: "Assumes both players play optimally.",
+    diagram: "https://miro.medium.com/v2/resize:fit:960/0*FNVaB19gXIyfKtXI.gif"
+  },
+  {
+    name: "Alpha-Beta Pruning",
+    desc: "Optimized Minimax that prunes branches that cannot affect the outcome.",
+    time: "O(b^(d/2))",
+    space: "O(d)",
+    notes: "Reduces nodes evaluated compared to standard Minimax.",
+    diagram: "data:image/png;base64,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"
+  },
+  {
+    name: "Monte Carlo Tree Search (MCTS)",
+    desc: "Uses random simulations to estimate the value of moves in complex games.",
+    time: "Depends on simulations",
+    space: "Depends on tree size",
+    notes: "Used in Go, Chess, and complex strategy games.",
+    diagram: "https://miro.medium.com/v2/resize:fit:1400/1*OecTI4bPj4mgUTRQgLx3lA.gif"
+  },
+  {
+    name: "Best-First Search",
+    desc: "Greedy search that expands the most promising node according to a heuristic.",
+    time: "O(b^m)",
+    space: "O(b^m)",
+    notes: "Heuristic-driven; may not guarantee optimal solution.",
+    diagram: "https://upload.wikimedia.org/wikipedia/commons/e/e7/Best-first-search-example.gifdata:image/png;base64,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"
+  },
+  {
+    name: "Hill Climbing",
+    desc: "Iterative search moving in the direction of increasing heuristic value.",
+    time: "O(b^m)",
+    space: "O(b)",
+    notes: "May get stuck in local maxima; simple optimization strategy.",
+    diagram: "data:image/jpeg;base64,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"
+  },
+  {
+  name: "Nim Game",
+  desc: "A combinatorial game where players take turns removing objects from heaps. The player forced to take the last object loses (or wins, depending on variation). Optimal moves are determined using the XOR (Nim-sum) of heap sizes.",
+  time: "O(1) per move calculation",
+  space: "O(1)",
+  notes: "Classic example of combinatorial game theory; strategy is based on Nim-sum.",
+  diagram: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTB5N7NStsQxR1s_AVXmtmzRL9TisEiRFg5Ww&s"
+}
+
+];
+
 
   const fadeInUp = {
     hidden: { opacity: 0, y: 40 },
@@ -97,35 +115,36 @@ const GameOverview = () => {
           </ul>
         </motion.div>
 
-        {/* Algorithm Cards */}
-        <div className="grid gap-10 md:grid-cols-2">
-          {algorithms.map((algo, idx) => (
-            <motion.div
-              key={idx}
-              variants={fadeInUp}
-              initial="hidden"
-              animate="visible"
-              transition={{ delay: idx * 0.1 }}
-              className="bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-xl p-8"
-            >
-              <h2 className="text-3xl font-semibold mb-3 text-[#1A1A1A]">{algo.name}</h2>
-              <p className="text-[#555555] mb-5 text-lg">{algo.desc}</p>
-
-              {/* Time & Space */}
-              <div className="flex flex-col gap-3 text-lg">
-                <span className="flex items-center gap-2">
-                  <Clock size={20} className="text-blue-500" /> <strong>Time Complexity:</strong> {algo.time}
-                </span>
-                <span className="flex items-center gap-2">
-                  <Layers size={20} className="text-green-500" /> <strong>Space Complexity:</strong> {algo.space}
-                </span>
-                <span className="flex items-center gap-2">
-                  <Info size={20} className="text-orange-500" /> <strong>Notes:</strong> {algo.notes}
-                </span>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+       {/* Algorithm Cards */}
+                                                                      <div className="grid gap-10 md:grid-cols-2">
+                                                                        {algorithms.map((algo, idx) => (
+                                                                          <motion.div
+                                                                            key={idx}
+                                                                            variants={fadeInUp}
+                                                                            initial="hidden"
+                                                                            animate="visible"
+                                                                            transition={{ delay: idx * 0.1 }}
+                                                                            className="bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-xl p-6"
+                                                                          >
+                                                                            <h2 className="text-2xl md:text-3xl font-semibold mb-2">{algo.name}</h2>
+                                                                            <img src={algo.diagram} alt={`${algo.name} diagram`} className="w-full h-48 object-contain mb-4 rounded-lg border" />
+                                                                            <p className="text-[#555555] mb-3 text-lg">{algo.desc}</p>
+                                                                            <div className="flex flex-col gap-2 text-lg">
+                                                                              <span className="flex items-center gap-2">
+                                                                                <Clock size={18} className="text-blue-500" /> <strong>Time Complexity:</strong> {algo.time}
+                                                                              </span>
+                                                                              <span className="flex items-center gap-2">
+                                                                                <Layers size={18} className="text-green-500" /> <strong>Space Complexity:</strong> {algo.space}
+                                                                              </span>
+                                                                              <span className="flex items-center gap-2">
+                                                                                <Info size={18} className="text-orange-500" /> <strong>Notes:</strong> {algo.notes}
+                                                                              </span>
+                                                                            </div>
+                                                                          </motion.div>
+                                                                        ))}
+                                                                      </div>
+                         
+                 
 
         {/* Complexity Analysis Table */}
         <motion.div variants={fadeInUp} initial="hidden" animate="visible" className="mt-20">

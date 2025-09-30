@@ -6,50 +6,58 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 const SearchingOverview = () => {
-  const algorithms = [
-    {
-      name: "Linear Search",
-      desc: "Checks each element in the list sequentially until the target is found.",
-      time: "O(n), Best: O(1)",
-      space: "O(1)",
-      notes: "Simple but inefficient for large datasets.",
-    },
-    {
-      name: "Binary Search",
-      desc: "Divides a sorted array into halves to find the target element efficiently.",
-      time: "O(log n), Best: O(1)",
-      space: "O(1)",
-      notes: "Requires the array to be sorted.",
-    },
-    {
-      name: "Jump Search",
-      desc: "Checks elements at fixed intervals and then performs linear search within the block.",
-      time: "O(√n)",
-      space: "O(1)",
-      notes: "Good for sorted arrays, reduces number of comparisons.",
-    },
-    {
-      name: "Interpolation Search",
-      desc: "Estimates the position of the target based on the value distribution.",
-      time: "O(log log n), Worst: O(n)",
-      space: "O(1)",
-      notes: "Efficient for uniformly distributed sorted data.",
-    },
-    {
-      name: "Exponential Search",
-      desc: "Finds a range where the element may exist, then applies binary search.",
-      time: "O(log n)",
-      space: "O(1)",
-      notes: "Works efficiently on unbounded or large sorted arrays.",
-    },
-    {
-      name: "Ternary Search",
-      desc: "Divides a sorted array into three parts and recursively searches in the appropriate segment.",
-      time: "O(log₃ n)",
-      space: "O(1)",
-      notes: "Less common than binary search but similar concept.",
-    },
-  ];
+  // Add diagram URLs to each algorithm
+const algorithms = [
+  {
+    name: "Linear Search",
+    desc: "Checks each element in the list sequentially until the target is found.",
+    time: "O(n), Best: O(1)",
+    space: "O(1)",
+    notes: "Simple but inefficient for large datasets.",
+    diagram: "https://sushrutkuchik.wordpress.com/wp-content/uploads/2020/05/linear_search.gif?w=438",
+  },
+  {
+    name: "Binary Search",
+    desc: "Divides a sorted array into halves to find the target element efficiently.",
+    time: "O(log n), Best: O(1)",
+    space: "O(1)",
+    notes: "Requires the array to be sorted.",
+    diagram: "https://miro.medium.com/0*Cw4uBeNwbETaYM05.gif",
+  },
+  {
+    name: "Jump Search",
+    desc: "Checks elements at fixed intervals and then performs linear search within the block.",
+    time: "O(√n)",
+    space: "O(1)",
+    notes: "Good for sorted arrays, reduces number of comparisons.",
+    diagram: "https://stackabuse.s3.amazonaws.com/media/jump-search-in-java-1.gif",
+  },
+  {
+    name: "Interpolation Search",
+    desc: "Estimates the position of the target based on the value distribution.",
+    time: "O(log log n), Worst: O(n)",
+    space: "O(1)",
+    notes: "Efficient for uniformly distributed sorted data.",
+    diagram: "https://iq.opengenus.org/content/images/2021/11/ipsrch.svg",
+  },
+  {
+    name: "Exponential Search",
+    desc: "Finds a range where the element may exist, then applies binary search.",
+    time: "O(log n)",
+    space: "O(1)",
+    notes: "Works efficiently on unbounded or large sorted arrays.",
+    diagram: "https://www.baeldung.com/wp-content/uploads/sites/4/2022/06/exponential_search_example.jpg",
+  },
+  {
+    name: "Ternary Search",
+    desc: "Divides a sorted array into three parts and recursively searches in the appropriate segment.",
+    time: "O(log₃ n)",
+    space: "O(1)",
+    notes: "Less common than binary search but similar concept.",
+    diagram: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjYVnQLrsgNpkVhCKaoNIfauQCslJnKWTiMqHw7A0zo6w7LoOykW4al8wBfWM7He8t7o4JcQhkDKrtp4YvlwZh7CcMfqY2ARoBKoyPAqu151N8m63rGEy29_-0QZn2YoVCYbMEk9xIegK-u/s1600/Ternary+search.png",
+  },
+];
+
 
   const fadeInUp = {
     hidden: { opacity: 0, y: 40 },
@@ -110,35 +118,34 @@ const SearchingOverview = () => {
           </ul>
         </motion.div>
 
-        {/* Algorithm Cards */}
-        <div className="grid gap-10 md:grid-cols-2">
-          {algorithms.map((algo, idx) => (
-            <motion.div
-              key={idx}
-              variants={fadeInUp}
-              initial="hidden"
-              animate="visible"
-              transition={{ delay: idx * 0.1 }}
-              className="bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-xl p-8"
-            >
-              <h2 className="text-3xl font-semibold mb-3 text-[#1A1A1A]">{algo.name}</h2>
-              <p className="text-[#555555] mb-5 text-lg">{algo.desc}</p>
-
-              {/* Time & Space */}
-              <div className="flex flex-col gap-3 text-lg">
-                <span className="flex items-center gap-2">
-                  <Clock size={20} className="text-blue-500" /> <strong>Time Complexity:</strong> {algo.time}
-                </span>
-                <span className="flex items-center gap-2">
-                  <Layers size={20} className="text-green-500" /> <strong>Space Complexity:</strong> {algo.space}
-                </span>
-                <span className="flex items-center gap-2">
-                  <Info size={20} className="text-orange-500" /> <strong>Notes:</strong> {algo.notes}
-                </span>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+          {/* Algorithm Cards */}
+               <div className="grid gap-10 md:grid-cols-2">
+                 {algorithms.map((algo, idx) => (
+                   <motion.div
+                     key={idx}
+                     variants={fadeInUp}
+                     initial="hidden"
+                     animate="visible"
+                     transition={{ delay: idx * 0.1 }}
+                     className="bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-xl p-6"
+                   >
+                     <h2 className="text-2xl md:text-3xl font-semibold mb-2">{algo.name}</h2>
+                     <img src={algo.diagram} alt={`${algo.name} diagram`} className="w-full h-48 object-contain mb-4 rounded-lg border" />
+                     <p className="text-[#555555] mb-3 text-lg">{algo.desc}</p>
+                     <div className="flex flex-col gap-2 text-lg">
+                       <span className="flex items-center gap-2">
+                         <Clock size={18} className="text-blue-500" /> <strong>Time Complexity:</strong> {algo.time}
+                       </span>
+                       <span className="flex items-center gap-2">
+                         <Layers size={18} className="text-green-500" /> <strong>Space Complexity:</strong> {algo.space}
+                       </span>
+                       <span className="flex items-center gap-2">
+                         <Info size={18} className="text-orange-500" /> <strong>Notes:</strong> {algo.notes}
+                       </span>
+                     </div>
+                   </motion.div>
+                 ))}
+               </div>
 
         {/* Complexity Analysis Table */}
         <motion.div variants={fadeInUp} initial="hidden" animate="visible" className="mt-20">

@@ -55,6 +55,12 @@ import NumberVisualizer from "./pages/NumberVisualizer";
 import GameOverview from "./pages/GameOverview";
 import GameVisualizer from "./pages/GameVisualizer";
 
+// Data Structures pages
+import DataStructuresOverview from "./pages/DataStructuresOverview";
+
+// Stack pages
+import StackOverview from "./pages/StackOverview";
+//import StackAlgorithms from "./pages/StackAlgorithms";
 
 function App() {
   return (
@@ -115,6 +121,14 @@ function App() {
               {/* Game Search routes */}
         <Route path="/game-overview" element={<GameOverview />} />
         <Route path="/game-visualizer" element={<GameVisualizer />} />
+
+        {/* Stack routes */}
+<Route path="/stack-overview" element={<StackOverview />} />
+
+
+        {/* Data Structures routes */}
+<Route path="/ds-overview" element={<DataStructuresOverview />} />
+
       </Routes>
 
     </Router>
