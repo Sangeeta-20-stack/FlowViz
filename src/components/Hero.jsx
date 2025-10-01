@@ -1,8 +1,8 @@
-// src/components/Hero.jsx
 import React, { useState, useEffect, useRef } from "react";
 import * as d3 from "d3";
 import { motion } from "framer-motion";
 import { Sparkles, Play, BookOpen, Cpu, ArrowRightCircle } from "lucide-react";
+import { Link } from "react-router-dom"; // ✅ Import Link
 
 const Hero = () => {
   const [array, setArray] = useState([]);
@@ -142,25 +142,25 @@ const Hero = () => {
 
         {/* Buttons */}
         <motion.div className="flex gap-4 mt-6">
-          <a href="/ds-overview" className="w-max">
+          <Link to="/ds-overview" className="w-max">
             <motion.button
               className="flex items-center gap-2 bg-[#4B4B4B] text-white px-6 py-3 rounded-lg hover:bg-[#333333] transition font-semibold shadow"
               whileHover={{ scale: 1.05 }}
             >
               <Play size={20} /> Start Learning
             </motion.button>
-          </a>
+          </Link>
 
-          <a href="/searching-overview" className="w-max">
+          <Link to="/searching-overview" className="w-max">
             <motion.button
               className="flex items-center gap-2 border border-[#4B4B4B] text-[#1A1A1A] px-6 py-3 rounded-lg hover:bg-[#F5F5F5] transition font-semibold shadow"
               whileHover={{ scale: 1.05 }}
             >
               Explore Algorithms
             </motion.button>
-          </a>
+          </Link>
         </motion.div>
-      </motion.div> {/* ✅ Left side closed */}
+      </motion.div>
 
       {/* Right Side - D3 Bars */}
       <div className="md:w-1/2 flex justify-center mt-10 md:mt-0">
@@ -175,13 +175,12 @@ const Hero = () => {
             </span>
           </div>
 
-        <svg
-  ref={svgRef}
-  width={400}
-  height={250}
-  className="rounded-xl bg-gradient-to-t from-gray-50 to-transparent border border-red-500"
-/>
-
+          <svg
+            ref={svgRef}
+            width={400}
+            height={250}
+            className="rounded-xl bg-gradient-to-t from-gray-50 to-transparent border border-red-500"
+          />
 
           {/* Stats */}
           <div className="flex justify-between items-center mt-4 text-sm font-medium">

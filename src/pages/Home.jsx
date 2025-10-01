@@ -13,13 +13,19 @@ const Home = () => {
       <Navbar />
 
       {/* Hero Section */}
-      <Hero />
+      <section className="px-4 sm:px-6 md:px-16 lg:px-20">
+        <Hero />
+      </section>
 
       {/* Features Section */}
-      <Features />
+      <section className="px-4 sm:px-6 md:px-16 lg:px-20 mt-16">
+        <Features />
+      </section>
 
       {/* Doubt Submission Form */}
-      <DoubtForm />
+      <section className="px-4 sm:px-6 md:px-16 lg:px-20 mt-16">
+        <DoubtForm />
+      </section>
 
       {/* Footer */}
       <Footer />

@@ -104,8 +104,8 @@ def height(root):
   return (
     <>
       <Navbar />
-      <section className="px-8 md:px-20 py-20 bg-[#FFFFFF] text-[#1A1A1A]">
-        {/* Header */}
+      <section className="px-4 sm:px-8 md:px-16 lg:px-20 py-16 sm:py-20 bg-[#FFFFFF] text-[#1A1A1A]">
+
         <motion.div initial="hidden" animate="visible" variants={fadeInUp} className="text-center mb-12">
           <h1 className="text-5xl md:text-6xl font-bold text-[#1A1A1A]">
             Complete Guide to <span className="text-blue-600">Tree</span> Data Structure
@@ -175,7 +175,8 @@ def height(root):
   </ul>
 </motion.div>
 
-          <div className="grid gap-10 md:grid-cols-2">
+         <div className="grid gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-2">
+
             {treeOperations.map((op, idx) => (
               <motion.div key={idx} variants={fadeInUp} initial="hidden" animate="visible" transition={{ delay: idx * 0.1 }} className="bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-xl p-6">
                 <h3 className="text-2xl md:text-3xl font-semibold mb-2 text-blue-600">{op.name}</h3>
