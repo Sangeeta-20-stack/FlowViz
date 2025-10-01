@@ -113,6 +113,7 @@ const Navbar = () => {
         <div className="text-3xl font-extrabold bg-gradient-to-r from-[#4DA6FF] to-[#00CFFF] bg-clip-text text-transparent cursor-pointer">
           FlowViz
         </div>
+        
 
         {/* Links */}
         <ul className="hidden md:flex space-x-4 items-center">
