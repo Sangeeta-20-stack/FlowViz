@@ -11,13 +11,13 @@ const features = [
   },
   {
     icon: <BookOpen size={24} />,
-    title: "Hands-on Practice",
-    description: "Practice algorithms and data structures with interactive exercises.",
+    title: "Step-by-Step Insight",
+    description: "Break down each algorithm into clear steps to see exactly how it works.",
   },
   {
     icon: <ArrowRightCircle size={24} />,
-    title: "Guided Learning",
-    description: "Structured paths to help you master concepts efficiently.",
+    title: "Interactive Exploration",
+    description: "Experiment with algorithm inputs and watch results in real time.",
   },
   {
     icon: <Zap size={24} />,
@@ -25,6 +25,7 @@ const features = [
     description: "Immediate feedback on your practice problems to accelerate learning.",
   },
 ];
+
 
 const cardVariants = {
   hidden: { opacity: 0, y: 40 },

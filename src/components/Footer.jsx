@@ -50,10 +50,10 @@ const Footer = () => {
               Home
             </motion.span>
           </Link>
-          <motion.a href="#" className="hover:text-[#4B4B4B] transition" whileHover={{ scale: 1.05, color: "#F5F5F5" }}>
+          <motion.a href="/sorting-overview" className="hover:text-[#4B4B4B] transition" whileHover={{ scale: 1.05, color: "#F5F5F5" }}>
             Algorithms
           </motion.a>
-          <motion.a href="#" className="hover:text-[#4B4B4B] transition" whileHover={{ scale: 1.05, color: "#F5F5F5" }}>
+          <motion.a href="/ds-overview" className="hover:text-[#4B4B4B] transition" whileHover={{ scale: 1.05, color: "#F5F5F5" }}>
             Data Structures
           </motion.a>
           <Link to="/about">

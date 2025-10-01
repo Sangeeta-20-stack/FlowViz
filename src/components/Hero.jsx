@@ -70,7 +70,6 @@ const Hero = () => {
       .domain(d3.range(array.length))
       .range(["#3B82F6", "#10B981", "#F59E0B", "#EF4444", "#6366F1", "#14B8A6"]);
 
-    // Bind data
     svg
       .selectAll("rect")
       .data(array)
@@ -84,10 +83,8 @@ const Hero = () => {
       .attr("y", (d) => height - yScale(d))
       .attr("height", (d) => yScale(d))
       .attr("fill", (_, i) => colorScale(i));
-
   }, [array]);
 
-  // Animation preset (Framer still used for left-side text/buttons)
   const fadeInUp = {
     hidden: { opacity: 0, y: 40 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
@@ -95,7 +92,7 @@ const Hero = () => {
 
   return (
     <section className="flex flex-col md:flex-row items-center justify-between px-16 pt-32 pb-16 bg-[#FFFFFF] text-[#1A1A1A]">
-      {/* ✅ Left Side (unchanged) */}
+      {/* Left Side */}
       <motion.div
         className="md:w-1/2 flex flex-col gap-6 md:pr-16"
         initial="hidden"
@@ -130,8 +127,8 @@ const Hero = () => {
         <motion.div className="flex flex-wrap gap-4 mt-4">
           {[
             { icon: <Cpu size={20} />, text: "Visualize Algorithms in Action" },
-            { icon: <BookOpen size={20} />, text: "Hands-on Data Control" },
-            { icon: <ArrowRightCircle size={20} />, text: "Guided Learning Journey" },
+            { icon: <BookOpen size={20} />, text: "Learn the Logic Behind Each Step" },
+            { icon: <ArrowRightCircle size={20} />, text: "Experiment and Explore Freely" },
           ].map((item, idx) => (
             <motion.div
               key={idx}
@@ -143,17 +140,29 @@ const Hero = () => {
           ))}
         </motion.div>
 
+        {/* Buttons */}
         <motion.div className="flex gap-4 mt-6">
-          <motion.button className="flex items-center gap-2 bg-[#4B4B4B] text-white px-6 py-3 rounded-lg hover:bg-[#333333] transition font-semibold shadow">
-            <Play size={20} /> Start Learning
-          </motion.button>
-          <motion.button className="flex items-center gap-2 border border-[#4B4B4B] text-[#1A1A1A] px-6 py-3 rounded-lg hover:bg-[#F5F5F5] transition font-semibold shadow">
-            Take a Quiz
-          </motion.button>
-        </motion.div>
-      </motion.div>
+          <a href="/ds-overview" className="w-max">
+            <motion.button
+              className="flex items-center gap-2 bg-[#4B4B4B] text-white px-6 py-3 rounded-lg hover:bg-[#333333] transition font-semibold shadow"
+              whileHover={{ scale: 1.05 }}
+            >
+              <Play size={20} /> Start Learning
+            </motion.button>
+          </a>
 
-      {/* ✅ Right Side - D3 Bars */}
+          <a href="/searching-overview" className="w-max">
+            <motion.button
+              className="flex items-center gap-2 border border-[#4B4B4B] text-[#1A1A1A] px-6 py-3 rounded-lg hover:bg-[#F5F5F5] transition font-semibold shadow"
+              whileHover={{ scale: 1.05 }}
+            >
+              Explore Algorithms
+            </motion.button>
+          </a>
+        </motion.div>
+      </motion.div> {/* ✅ Left side closed */}
+
+      {/* Right Side - D3 Bars */}
       <div className="md:w-1/2 flex justify-center mt-10 md:mt-0">
         <div className="bg-white p-6 rounded-3xl shadow-lg w-full max-w-md border border-gray-100">
           {/* Header */}
@@ -166,8 +175,13 @@ const Hero = () => {
             </span>
           </div>
 
-          {/* ✅ D3 SVG for bars */}
-          <svg ref={svgRef} width={400} height={250} className="rounded-xl bg-gradient-to-t from-gray-50 to-transparent"></svg>
+        <svg
+  ref={svgRef}
+  width={400}
+  height={250}
+  className="rounded-xl bg-gradient-to-t from-gray-50 to-transparent border border-red-500"
+/>
+
 
           {/* Stats */}
           <div className="flex justify-between items-center mt-4 text-sm font-medium">
